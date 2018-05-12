@@ -1,3 +1,4 @@
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
 <?php
 
 require_once "Paginator.php";
@@ -5,13 +6,25 @@ require_once "Paginator.php";
 $totalItems = 1000;
 $itemsPerPage = 50;
 $currentPage = 8;
-$urlPattern = '/foo/page/(:num)';
+$urlPattern = '/codehub/php/pagination/(:num)';
 
 $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
 echo "<pre>";
-print_r($paginator);
+print_r($_REQUEST);
 echo "</pre>";
+
 ?>
+<div class="container">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+</div>
 <?php if ($paginator->getNumPages() > 1): ?>
     <ul class="pagination">
         <?php if ($paginator->getPrevUrl()): ?>
