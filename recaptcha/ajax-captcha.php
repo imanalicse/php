@@ -11,7 +11,6 @@
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <div class="container justify-content-center login-container">
-
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" id="login-form" method="post">
         <div class="form-group row col-md-12 captcha_wrapper">
             <div class="g-recaptcha" data-sitekey="6LdPOlUUAAAAAHhcpOLCUIO1lS7W_Xeic8FhDjoO"></div>
