@@ -32,6 +32,11 @@
                  data: data,
                  success: function(response){
                      console.log("response ", response);
+                     if(response == 'ok') {
+
+                     }else {
+                         grecaptcha.reset();
+                     }
                  }
              });
 
