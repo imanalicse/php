@@ -3,10 +3,10 @@
 
 require_once "Paginator.php";
 
-$totalItems = 1000;
-$itemsPerPage = 50;
+$totalItems = 100;
+$itemsPerPage = 20;
 $currentPage = 8;
-$urlPattern = '/codehub/php/pagination/(:num)';
+$urlPattern = '/codehub/php/pagination/index/(:num)';
 
 $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
 echo "<pre>";
