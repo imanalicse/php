@@ -1,0 +1,11 @@
+Smooth slider-- continuous running
+
+=>tkahn-Smooth-Div-Scroll-9df8fde
+=>https://github.com/tkahn/Smooth-Div-Scroll
+
+Current element slidely up slider
+bkosborne-jQuery-Feature-Carousel => Feature image and content.
+
+Monte =>http://www.jacklmoore.com/monte => any image or content
+
+http://fredhq.com/projects/roundabout/
