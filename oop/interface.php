@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Interface provides the basic design for a class with zero implementation details
+ * Interface provides only declaration of methods, no implementation detail
  * Interface cannot be instantiated
  * Interface variable must be constant
  * Method in interface must be public
  * To get the constant variable of interface use Scope regulation operator
+ * We can create object from class but we cannot create object from interface
  */
 class A
 {
