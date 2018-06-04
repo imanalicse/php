@@ -1,6 +1,7 @@
 <?php
 
 define("TRANSACTION_MODE", "test");
+define("BASE_URL", "http://localhost/codehub/php/payment/paypal");
 function getPaypalUrl(){
     if(TRANSACTION_MODE=='live'){
         return 'https://www.paypal.com/cgi-bin/webscr';
@@ -10,12 +11,12 @@ function getPaypalUrl(){
 }
 
 $price = 10;
-$orderId = 5;
+$orderId = time();
 $customer_email = 'iman@bitmascot.com';
 
-$return_url	  = 'thank-you-page.php?order_id='.$orderId;
-$cancel_url	  =	'cancel.php';
-$notify_url	  =	'notify-url.php';
+$return_url	  = BASE_URL.'/thank-you-page.php?order_id='.$orderId;
+$cancel_url	  =	BASE_URL.'/cancel.php';
+$notify_url	  =	BASE_URL.'/notify-url.php';
 //$paypal_email ='paypal@webmascot.com';
 $paypal_email ='iman-facilitator@bitmascot.com';
 $querystring  = '';
