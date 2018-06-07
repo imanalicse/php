@@ -28,7 +28,7 @@
              var data =  $( this ).serialize();
              $.ajax({
                  type:"POST",
-                 url: "validation",
+                 url: "validation.php",
                  data: data,
                  success: function(response){
                      console.log("response ", response);
