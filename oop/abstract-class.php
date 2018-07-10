@@ -2,6 +2,7 @@
 
 /*
  * Abstract class cannot be instantiated, abstract class can be only extended
+ * any class that contains at least one abstract method must also be abstract
  * Abstract class's method cannot access directly
  *Different between abstract class and interface
  * 1. An abstract class does not provide full abstraction but an interface provide full abstraction.
@@ -12,14 +13,14 @@
 
 abstract class Car
 {
-    protected $name;
+    protected $name = 'Nissan';
 
     public function getName()
     {
         echo $this->name;
     }
 
-    abstract public function setName($name);
+    abstract protected function setName($name);
 }
 
 class BMW extends Car
@@ -32,5 +33,5 @@ class BMW extends Car
 
 
 $obj = new BMW();
-//$obj->setName("BMD");
+$obj->setName("BMD");
 $obj->getName();
