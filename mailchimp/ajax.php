@@ -32,6 +32,7 @@ function call($method, $args = array())
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($args));
         $result = curl_exec($ch);
+
         curl_close($ch);
     } else {
         $json_data = json_encode($args);
@@ -47,8 +48,8 @@ function call($method, $args = array())
             ),
         )));
     }
-    echo "<pre>";
-    print_r($result);
-    echo "</pre>";
+//    echo "<pre>";
+//    print_r($result);
+//    echo "</pre>";
     return $result ? json_decode($result, true) : false;
 }

@@ -9,40 +9,9 @@
 <?php
 include_once 'mailchimp-form.php';
 
-//add_action('wp_ajax_upload_mailchimp_subscriber', 'upload_mailchimp_subscriber');
-//add_action('wp_ajax_nopriv_upload_mailchimp_subscriber', 'upload_mailchimp_subscriber');
-
-function upload_mailchimp_subscriber()
-{
-    $email = $_POST['email'];
-
-    //CakeLog::write('debug', $user);
-    $result = call('lists/subscribe', array(
-        'id' => '3f6098aeb3',
-        'email' => array('email' => $email),
-        'double_optin' => false,
-        'update_existing' => true,
-        'replace_interests' => false,
-        'send_welcome' => false,
-    ));
-
-    if (!empty($result["leid"]))
-        wp_send_json($result);
-    else if ($result["error"])
-        wp_send_json($result);
-    exit();
-
-}
-
-
-
 ?>
 
 <script>
-
-    /**
-     * mailchip
-     */
     $('form.mailchimp').on('submit', function (e) {
         var self = $(this);
         var data = self.serialize();
@@ -57,24 +26,23 @@ function upload_mailchimp_subscriber()
                 console.log('response ', response);
 
                 if (response.error) {
-                    $this.siblings('.message').removeClass('success');
-                    $this.siblings('.message').addClass('error');
-                    $this.siblings('.message').show().html(response.error);
+                    self.siblings('.message').removeClass('success');
+                    self.siblings('.message').addClass('error');
+                    self.siblings('.message').show().html(response.error);
                 } else if (response) {
-                    $this.find("#email").val("");
-                    $this.siblings('.message').removeClass('error');
-                    $this.siblings('.message').addClass('success');
-                    $this.siblings('.message').show().html('Subscribed successfully');
+                    self.find("#email").val("");
+                    self.siblings('.message').removeClass('error');
+                    self.siblings('.message').addClass('success');
+                    self.siblings('.message').show().html('Subscribed successfully');
                 } else {
-                    $this.siblings('.message').removeClass('success');
-                    $this.siblings('.message').addClass('error');
-                    $this.siblings('.message').show().html('Not subscribed. Please try again.');
+                    self.siblings('.message').removeClass('success');
+                    self.siblings('.message').addClass('error');
+                    self.siblings('.message').show().html('Not subscribed. Please try again.');
                 }
-                $this.find('.loader').hide();
+                self.find('.loader').hide();
             }
         });
         e.preventDefault();
-
     });
 </script>
 

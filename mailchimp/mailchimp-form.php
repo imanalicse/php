@@ -21,3 +21,4 @@
             src="https://www.eventbookings.com/wp-content/themes/webalive/images/ajax-loader.gif"/>
     </div>
 </form>
+<div class="message"></div>
