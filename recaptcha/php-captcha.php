@@ -21,19 +21,30 @@ if (isset($_POST['g-recaptcha-response'])) {
         'secret' => '6LdPOlUUAAAAALw0Nr_fyxIgd3l01zhVwZyAtMfr',
         'response' => $_POST["g-recaptcha-response"]
     );
-    $options = array(
-        'http' => array(
-            'method' => 'POST',
-            'content' => http_build_query($data)
-        ),
-        "ssl" => array(
-            "verify_peer" => false,
-            "verify_peer_name" => false,
-        )
-    );
-    $context = stream_context_create($options);
-    $verify = @file_get_contents($captcha_url, false, $context);
-    $captcha_response = json_decode($verify);
+//    $options = array(
+//        'http' => array(
+//            'method' => 'POST',
+//            'content' => http_build_query($data)
+//        ),
+//        "ssl" => array(
+//            "verify_peer" => false,
+//            "verify_peer_name" => false,
+//        )
+//    );
+//    $context = stream_context_create($options);
+//    $verify = @file_get_contents($captcha_url, false, $context);
+//    $captcha_response = json_decode($verify);
+
+    $verify = curl_init();
+    curl_setopt($verify, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+    curl_setopt($verify, CURLOPT_POST, true);
+    curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($verify, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
+    $captcha_response = curl_exec($verify);
+    echo '<pre>';
+    print_r($captcha_response);
+    echo '</pre>';
     if (isset($captcha_response->success) && $captcha_response->success) {
         echo "validate Captcha";
     } else {
