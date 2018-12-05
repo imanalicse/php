@@ -1,28 +1,157 @@
-2018-12-05 08:04:06 {"MessageInfo":{"messageID":"6a037a4aa3d058037179a07ebea83e","messageTimestamp":"20180512190406808000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"AUD","purchaseOrderNo":"1543997045","approved":"No","responseCode":"101","responseText":"Invalid Credit Card Number","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"980","thinlinkEventStatusText":"Error - Bad Card Number","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
+2018-12-05 10:15:41 Debug: Array
+(
+    [MessageInfo] => Array
+        (
+            [messageID] => e9c8d35c7f2cc6fd4bfdd6e209f8ce
+            [messageTimestamp] => 20180512211540878000+660
+            [apiVersion] => xml-4.2
+        )
 
-2018-12-05 08:07:42 {"MessageInfo":{"messageID":"54db2a325dea25079035e877fa891e","messageTimestamp":"20180512190742313000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"AUD","purchaseOrderNo":"1543997261","approved":"No","responseCode":"101","responseText":"Invalid Credit Card Number","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"980","thinlinkEventStatusText":"Error - Bad Card Number","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
+    [RequestType] => Payment
+    [MerchantInfo] => Array
+        (
+            [merchantID] => ABC0001
+        )
 
-2018-12-05 08:08:20 {"MessageInfo":{"messageID":"46181ccf474bae1e4e22fce8e659d1","messageTimestamp":"20180512190819980000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"AUD","purchaseOrderNo":"1543997299","approved":"No","responseCode":"101","responseText":"Invalid Credit Card Number","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"980","thinlinkEventStatusText":"Error - Bad Card Number","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
+    [Status] => Array
+        (
+            [statusCode] => 000
+            [statusDescription] => Normal
+        )
 
-2018-12-05 08:09:15 {"MessageInfo":{"messageID":"5e35928568fe3ce7411123f2d55a12","messageTimestamp":"20180512190914966000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"AUD","purchaseOrderNo":"1543997353","approved":"No","responseCode":"101","responseText":"Invalid Credit Card Number","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"980","thinlinkEventStatusText":"Error - Bad Card Number","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
+    [Payment] => Array
+        (
+            [TxnList] => Array
+                (
+                    [Txn] => Array
+                        (
+                            [txnType] => 0
+                            [txnSource] => 23
+                            [amount] => 200
+                            [currency] => USD
+                            [purchaseOrderNo] => 1544004939
+                            [approved] => Yes
+                            [responseCode] => 00
+                            [responseText] => Approved
+                            [thinlinkResponseCode] => 100
+                            [thinlinkResponseText] => 000
+                            [thinlinkEventStatusCode] => 000
+                            [thinlinkEventStatusText] => Normal
+                            [settlementDate] => 20181205
+                            [txnID] => 890631
+                            [ID] => 1
+                        )
 
-2018-12-05 08:10:15 {"MessageInfo":{"messageID":"f7fbad0afa3ad942ca6ea9550534da","messageTimestamp":"20180512191015717000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"AUD","purchaseOrderNo":"1543997414","approved":"No","responseCode":"101","responseText":"Invalid Credit Card Number","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"980","thinlinkEventStatusText":"Error - Bad Card Number","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
+                    [count] => 1
+                )
 
-2018-12-05 08:11:11 {"MessageInfo":{"messageID":"80df64c74efd0dfc08f90f7e6a9017","messageTimestamp":"20180512191111101000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"AUD","purchaseOrderNo":"1543997470","approved":"No","responseCode":"101","responseText":"Invalid Credit Card Number","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"980","thinlinkEventStatusText":"Error - Bad Card Number","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
+        )
 
-2018-12-05 08:12:46 {"MessageInfo":{"messageID":"e0878627de0bf34ccb4d6416840977","messageTimestamp":"20180512191246709000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"AUD","purchaseOrderNo":"1543997565","approved":"No","responseCode":"102","responseText":"Invalid Expiry Date","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"981","thinlinkEventStatusText":"Error - Expired Card","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
+)
 
-2018-12-05 08:13:42 {"MessageInfo":{"messageID":"fa50aef24a65ef7a1a77ff4c2830ba","messageTimestamp":"20180512191342660000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"AUD","purchaseOrderNo":"1543997621","approved":"No","responseCode":"102","responseText":"Invalid Expiry Date","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"981","thinlinkEventStatusText":"Error - Expired Card","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
 
-2018-12-05 08:13:58 {"MessageInfo":{"messageID":"82406a7bab96ef072abd28d2dd63e3","messageTimestamp":"20180512191358654000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"AUD","purchaseOrderNo":"1543997637","approved":"No","responseCode":"102","responseText":"Invalid Expiry Date","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"981","thinlinkEventStatusText":"Error - Expired Card","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
+2018-12-05 10:15:51 Debug: Array
+(
+    [MessageInfo] => Array
+        (
+            [messageID] => db6ad0b663c8424ce6261d00201eff
+            [messageTimestamp] => 20180512211551003000+660
+            [apiVersion] => xml-4.2
+        )
 
-2018-12-05 08:14:04 {"MessageInfo":{"messageID":"a96e72fa28aa980a1a4d8fef3d0314","messageTimestamp":"20180512191403883000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"AUD","purchaseOrderNo":"1543997642","approved":"No","responseCode":"102","responseText":"Invalid Expiry Date","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"981","thinlinkEventStatusText":"Error - Expired Card","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
+    [RequestType] => Payment
+    [MerchantInfo] => Array
+        (
+            [merchantID] => ABC0001
+        )
 
-2018-12-05 08:20:27 {"MessageInfo":{"messageID":"455bb8f3e83208e7937cbebe04f698","messageTimestamp":"20180512192026967000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"USD","purchaseOrderNo":"1543998025","approved":"No","responseCode":"102","responseText":"Invalid Expiry Date","thinlinkResponseCode":"300","thinlinkResponseText":"000","thinlinkEventStatusCode":"981","thinlinkEventStatusText":"Error - Expired Card","settlementDate":[],"txnID":[],"ID":"1"},"count":"1"}}}
+    [Status] => Array
+        (
+            [statusCode] => 000
+            [statusDescription] => Normal
+        )
 
-2018-12-05 08:25:43 {"MessageInfo":{"messageID":"30d40cf87778f2a1962bb54159a9e3","messageTimestamp":"20180512192543415000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"USD","purchaseOrderNo":"1543998341","approved":"Yes","responseCode":"00","responseText":"Approved","thinlinkResponseCode":"100","thinlinkResponseText":"000","thinlinkEventStatusCode":"000","thinlinkEventStatusText":"Normal","settlementDate":"20181205","txnID":"890330","ID":"1"},"count":"1"}}}
+    [Payment] => Array
+        (
+            [TxnList] => Array
+                (
+                    [Txn] => Array
+                        (
+                            [txnType] => 0
+                            [txnSource] => 23
+                            [amount] => 200
+                            [currency] => USD
+                            [purchaseOrderNo] => 1544004948
+                            [approved] => Yes
+                            [responseCode] => 00
+                            [responseText] => Approved
+                            [thinlinkResponseCode] => 100
+                            [thinlinkResponseText] => 000
+                            [thinlinkEventStatusCode] => 000
+                            [thinlinkEventStatusText] => Normal
+                            [settlementDate] => 20181205
+                            [txnID] => 890632
+                            [ID] => 1
+                        )
 
-2018-12-05 09:39:33 {"MessageInfo":{"messageID":"13f57c50d133aac3a58a4b9d5c861d","messageTimestamp":"20180512203933215000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"USD","purchaseOrderNo":"1544002771","approved":"Yes","responseCode":"00","responseText":"Approved","thinlinkResponseCode":"100","thinlinkResponseText":"000","thinlinkEventStatusCode":"000","thinlinkEventStatusText":"Normal","settlementDate":"20181205","txnID":"890558","ID":"1"},"count":"1"}}}
+                    [count] => 1
+                )
 
-2018-12-05 09:39:42 {"MessageInfo":{"messageID":"817dbf584fad08de26c660040372a4","messageTimestamp":"20180512203942197000+660","apiVersion":"xml-4.2"},"RequestType":"Payment","MerchantInfo":{"merchantID":"ABC0001"},"Status":{"statusCode":"000","statusDescription":"Normal"},"Payment":{"TxnList":{"Txn":{"txnType":"0","txnSource":"23","amount":"200","currency":"USD","purchaseOrderNo":"1544002780","approved":"Yes","responseCode":"00","responseText":"Approved","thinlinkResponseCode":"100","thinlinkResponseText":"000","thinlinkEventStatusCode":"000","thinlinkEventStatusText":"Normal","settlementDate":"20181205","txnID":"890559","ID":"1"},"count":"1"}}}
+        )
+
+)
+
+
+2018-12-05 10:21:21 Debug: 
+Array
+(
+    [MessageInfo] => Array
+        (
+            [messageID] => ecdf7da27dcefff39fa8609e0d3a7b
+            [messageTimestamp] => 20180512212120954000+660
+            [apiVersion] => xml-4.2
+        )
+
+    [RequestType] => Payment
+    [MerchantInfo] => Array
+        (
+            [merchantID] => ABC0001
+        )
+
+    [Status] => Array
+        (
+            [statusCode] => 000
+            [statusDescription] => Normal
+        )
+
+    [Payment] => Array
+        (
+            [TxnList] => Array
+                (
+                    [Txn] => Array
+                        (
+                            [txnType] => 0
+                            [txnSource] => 23
+                            [amount] => 200
+                            [currency] => USD
+                            [purchaseOrderNo] => 1544005279
+                            [approved] => Yes
+                            [responseCode] => 00
+                            [responseText] => Approved
+                            [thinlinkResponseCode] => 100
+                            [thinlinkResponseText] => 000
+                            [thinlinkEventStatusCode] => 000
+                            [thinlinkEventStatusText] => Normal
+                            [settlementDate] => 20181205
+                            [txnID] => 890641
+                            [ID] => 1
+                        )
+
+                    [count] => 1
+                )
+
+        )
+
+)
+
 
