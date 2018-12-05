@@ -6,33 +6,49 @@
  * @return bool
  */
 
+$test_url = "https://test.api.securepay.com.au/xmlapi/payment";
+$production_url = "https://api.securepay.com.au/xmlapi/payment";
+$vendor_name = "ABC0001";
+$vendor_password = "abc123";
+
 $pay = array();
-$pay['orderTotal']                  = $this->Session->read('Order.info.total');
-$pay["card_holder"]                 = $this->Session->read('Order.payment.securepay.ccname');
-$pay["card_number"]                 = $this->Session->read('Order.payment.securepay.ccnumber');
-$pay["card_expiry_month"]           = $this->Session->read('Order.payment.securepay.month');
-$pay["card_expiry_year"]            = $this->Session->read('Order.payment.securepay.year');
-$pay["cvv"]                         = $this->Session->read('Order.payment.securepay.cvnumber');
-$pay["vendor_name"]                 = $this->Session->read('Order.payment.securepay.vendor_name');
-$pay["vendor_password"]             = $this->Session->read('Order.payment.securepay.vendor_password');
-$pay["transaction_mode"]            = $this->Session->read('Order.payment.securepay.transaction_mode');
-$pay["test_url"]                    = $this->Session->read('Order.payment.securepay.test_url');
-$pay["production_url"]              = $this->Session->read('Order.payment.securepay.production_url');
-$pay["production_url"]              = $this->Session->read('Order.payment.securepay.production_url');
-$pay["currency"]                    = $this->Session->read('Order.currency_info.currency_code');
+$pay['orderTotal'] = 2;
+$pay["card_holder"] = "Iman";
+$pay["card_number"] = '4444333322221111';
+$pay["card_expiry_month"] = '01';
+$pay["card_expiry_year"] = '21';
+$pay["cvv"] = '123';
+$pay["vendor_name"] = $vendor_name;
+$pay["vendor_password"] = $vendor_password;
+$pay["transaction_mode"] = '';
+$pay["test_url"] = $test_url;
+$pay["production_url"] = $production_url;
+$pay["currency"] = "USD";
 
-$payment_date = array();
 $customer = array(
-
+    'email' => 'iman@bitmascot.com',
+    'first_name' => 'Iman',
+    'last_name' => 'Ali',
+    'address_line_1' => '339, 17, lake road',
+    'postcode' => '1216'
 );
 
 $secure = new securePay();
 
-$payment_info = $secure->checkSecurepayPayment($payment_date, $customer);
+$result = $secure->checkSecurepayPayment($pay, $customer);
 
 echo '<pre>';
-print_r($payment_info);
+print_r($result);
 echo '</pre>';
+
+if ($result && isset($result['securepayTrxnStatusCode']) && ($result['securepayTrxnStatusCode'] == '08' || $result['securepayTrxnStatusCode'] == '00')) {
+    $response_details = explode(',', $result['securepayTrxnError']);
+
+    $payment_reference_number = $result['securepayTrxnNumber'];
+    $payment_response_code = $response_details[0];
+    $payment_response_text = $response_details[1];
+    $securepay_order_id = $result['securepayOrderId'];
+}
 
 class securePay
 {
@@ -41,18 +57,17 @@ class securePay
     {
 
         $price = $pay['orderTotal'];
-        $this->log($customer, 'customer');
 
         if ($pay['transaction_mode']) { //live mode
             $curlUrl = $pay['production_url'];
             $merchantID = $pay['vendor_name'];
             $merchantPassword = $pay['vendor_password'];
+
         } else { //test mode
             $curlUrl = $pay['test_url'];
             $merchantID = $pay['vendor_name'];
             $merchantPassword = $pay['vendor_password'];
         }
-
 
         $TotalAmount = $price * 100; // $price; /* 1$ = 100 cent */
         $msgId = $this->_GetMessageId();
@@ -130,9 +145,13 @@ class securePay
                 null, /* CURL GET PARAMETERS */
                 $directXML /* CURL POST PARAMETERS AS XML */
             );
+
             if ($result != null && isset($result["response"])) {
                 $response = new SimpleXMLElement($result["response"]);
                 $response = $this->__simpleXMLToArray($response);
+//                echo '<pre>';
+//                print_r($response);
+//                echo '</pre>';
                 unset($response['Payment']['TxnList']['Txn']['CreditCardInfo']);
                 $this->log($response, 'payment');
                 if (isset($response['Payment']['TxnList']['Txn']['responseCode']) && ($response['Payment']['TxnList']['Txn']['responseCode'] == '08' || $response['Payment']['TxnList']['Txn']['responseCode'] == '00')) {
@@ -189,21 +208,97 @@ class securePay
         );
     }
 
+    public function __simpleXMLToArray(\SimpleXMLElement $xml, $attributesKey = null, $childrenKey = null, $valueKey = null)
+    {
+
+        if ($childrenKey && !is_string($childrenKey)) {
+            $childrenKey = '@children';
+        }
+        if ($attributesKey && !is_string($attributesKey)) {
+            $attributesKey = '@attributes';
+        }
+        if ($valueKey && !is_string($valueKey)) {
+            $valueKey = '@values';
+        }
+
+        $return = array();
+        $name = $xml->getName();
+        $_value = trim((string)$xml);
+        if (!strlen($_value)) {
+            $_value = null;
+        };
+
+        if ($_value !== null) {
+            if ($valueKey) {
+                $return[$valueKey] = $_value;
+            } else {
+                $return = $_value;
+            }
+        }
+
+        $children = array();
+        $first = true;
+        foreach ($xml->children() as $elementName => $child) {
+            $value = $this->__simpleXMLToArray($child, $attributesKey, $childrenKey, $valueKey);
+            if (isset($children[$elementName])) {
+                if (is_array($children[$elementName])) {
+                    if ($first) {
+                        $temp = $children[$elementName];
+                        unset($children[$elementName]);
+                        $children[$elementName][] = $temp;
+                        $first = false;
+                    }
+                    $children[$elementName][] = $value;
+                } else {
+                    $children[$elementName] = array($children[$elementName], $value);
+                }
+            } else {
+                $children[$elementName] = $value;
+            }
+        }
+        if ($children) {
+            if ($childrenKey) {
+                $return[$childrenKey] = $children;
+            } else {
+                $return = array_merge($return, $children);
+            }
+        }
+
+        $attributes = array();
+        foreach ($xml->attributes() as $name => $value) {
+            $attributes[$name] = trim($value);
+        }
+        if ($attributes) {
+            if ($attributesKey) {
+                $return[$attributesKey] = $attributes;
+            } else {
+                if (!is_array($return)) {
+                    $return = array('returnValue' => $return);
+                }
+                $return = array_merge($return, $attributes);
+            }
+        }
+
+        return $return;
+    }
+
     /**
      * Generates a new message ID
      * @return string A string of 30 random hex characters
      */
-    function _GetMessageId() {
+    function _GetMessageId()
+    {
         $code = '';
 
-        foreach (range(1,30) as $offset)
-            $code .= dechex(rand(0,15));
+        foreach (range(1, 30) as $offset)
+            $code .= dechex(rand(0, 15));
         return $code;
     }
 
-    function valid($CardExpiryMonth,$CardExpiryYear) {
+    function valid($CardExpiryMonth, $CardExpiryYear)
+    {
 
-        $expireDate= $CardExpiryMonth.'/'.$CardExpiryYear;
+        $expireDate = $CardExpiryMonth . '/' . $CardExpiryYear;
         return (
         $this->ValidExpiryDate($expireDate)
 
@@ -215,20 +310,28 @@ class securePay
      * @param string $ExpiryDate Optional expiry date to test. If none is specified the objects expiry date is used instead
      * @return bool TRUE if the expiry date passes validation
      */
-    function ValidExpiryDate($ExpiryDate = null) {
+    function ValidExpiryDate($ExpiryDate = null)
+    {
         $test_expiry = ($ExpiryDate) ? $ExpiryDate : $this->ExpiryDate;
-        if (preg_match('!([0-9]{1,2})/([0-9]{2,4})!',$test_expiry, $matches)) {
+        if (preg_match('!([0-9]{1,2})/([0-9]{2,4})!', $test_expiry, $matches)) {
             if (strlen($matches[1]) == 1)
                 $matches[1] = "0{$matches[1]}";
             if (strlen($matches[2]) == 4)
-                $matches[2] = substr($matches[2],-2);
+                $matches[2] = substr($matches[2], -2);
             $this->ExpiryDate = "{$matches[1]}/{$matches[2]}";
 
-            return ( ($matches[1] > 0) && ($matches[1] < 13) && ($matches[2] >= date('y')) && ($matches[2] < date('y') + 30) ); // Check that month and years are valid
+            return (($matches[1] > 0) && ($matches[1] < 13) && ($matches[2] >= date('y')) && ($matches[2] < date('y') + 30)); // Check that month and years are valid
         } else {
             $this->Error = 'Invalid Expiry Date';
             return FALSE; // Failed RegExp checks
         }
+    }
+
+    function log($data, $file_name)
+    {
+        $new_data = date('Y-m-d H:i:s') . " ";
+        $new_data .= json_encode($data) . "\n\n";
+        error_log($new_data, 3, 'logs/' . $file_name . '.log');
     }
 
 }
