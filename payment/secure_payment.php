@@ -340,7 +340,7 @@ class securePay
         $folder = 'logs';
 
         if(!file_exists('logs')){
-            mkdir($folder, 755);
+            mkdir($folder, 0755);
         }
 
         $file_path = $folder.'/' . $file_name;
