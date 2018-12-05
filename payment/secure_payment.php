@@ -30,6 +30,7 @@ $customer = array(
     'first_name' => 'Iman',
     'last_name' => 'Ali',
     'address_line_1' => '339, 17, lake road',
+    'address_line_2' => 'Mohakhali, DOSH, Dhaka',
     'postcode' => '1216'
 );
 
@@ -43,11 +44,13 @@ echo '</pre>';
 
 if ($result && isset($result['securepayTrxnStatusCode']) && ($result['securepayTrxnStatusCode'] == '08' || $result['securepayTrxnStatusCode'] == '00')) {
     $response_details = explode(',', $result['securepayTrxnError']);
-
-    $payment_reference_number = $result['securepayTrxnNumber'];
     $payment_response_code = $response_details[0];
     $payment_response_text = $response_details[1];
+
+    $payment_reference_number = $result['securepayTrxnNumber'];
     $securepay_order_id = $result['securepayOrderId'];
+    $securepayTrxnStatus = $result['securepayTrxnStatus'];
+    $securepayTrxnStatusCode = $result['securepayTrxnStatusCode'];
 }
 
 class securePay
