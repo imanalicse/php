@@ -84,8 +84,14 @@ $data['transactionDetails'] = array(
     'thinlinkEventStatusText' => $xml_data['Payment']['TxnList']['Txn']['thinlinkEventStatusText']
 );
 
-//print_r($xml_data);
+echo '<pre>';
+print_r($xml_data);
+echo '</pre>';
+
+echo '<pre>';
 print_r($data);
+echo '</pre>';
+
 
 
 
