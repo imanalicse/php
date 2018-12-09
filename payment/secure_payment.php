@@ -20,7 +20,7 @@ $pay["card_expiry_year"] = '21';
 $pay["cvv"] = '123';
 $pay["vendor_name"] = $vendor_name;
 $pay["vendor_password"] = $vendor_password;
-$pay["transaction_mode"] = '';
+$pay["transaction_mode"] = 'test';
 $pay["test_url"] = $test_url;
 $pay["production_url"] = $production_url;
 $pay["currency"] = "USD";
@@ -61,7 +61,7 @@ class securePay
 
         $price = $pay['orderTotal'];
 
-        if ($pay['transaction_mode']) { //live mode
+        if ($pay['transaction_mode'] == 'live') { //live mode
             $curlUrl = $pay['production_url'];
             $merchantID = $pay['vendor_name'];
             $merchantPassword = $pay['vendor_password'];
