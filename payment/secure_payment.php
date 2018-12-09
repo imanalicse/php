@@ -1,10 +1,6 @@
 <?php
 
-//securepay
-/**
- * check payment info
- * @return bool
- */
+include_once "../functions.php";
 
 $test_url = "https://test.api.securepay.com.au/xmlapi/payment";
 $production_url = "https://api.securepay.com.au/xmlapi/payment";
@@ -12,7 +8,7 @@ $vendor_name = "ABC0001";
 $vendor_password = "abc123";
 
 $pay = array();
-$pay['orderTotal'] = 2;
+$pay['orderTotal'] = 6;
 $pay["card_holder"] = "Iman";
 $pay["card_number"] = '4444333322221111';
 $pay["card_expiry_month"] = '01';
@@ -38,9 +34,7 @@ $secure = new securePay();
 
 $result = $secure->checkSecurepayPayment($pay, $customer);
 
-echo '<pre>';
-print_r($result);
-echo '</pre>';
+wa_log($result, 'payment');
 
 if ($result && isset($result['securepayTrxnStatusCode']) && ($result['securepayTrxnStatusCode'] == '08' || $result['securepayTrxnStatusCode'] == '00')) {
     $response_details = explode(',', $result['securepayTrxnError']);
@@ -73,6 +67,7 @@ class securePay
         }
 
         $TotalAmount = $price * 100; // $price; /* 1$ = 100 cent */
+        wa_log("total amount ".$TotalAmount, 'payment');
         $msgId = $this->_GetMessageId();
         $date = new DateTime();
         $CustomerEmail = trim($customer['email']);
@@ -332,28 +327,6 @@ class securePay
 
     function log($log, $file_name = '')
     {
-        if (empty($file_name)) {
-            $file_name = 'debug';
-        }
-
-        $file_name = $file_name . '.log';
-        $folder = 'logs';
-
-        if(!file_exists('logs')){
-            mkdir($folder, 0755);
-        }
-
-        $file_path = $folder.'/' . $file_name;
-
-        if (is_array($log) || is_object($log)) {
-            $log_data = print_r($log, true);
-        } else {
-            $log_data = $log;
-        }
-
-        $log_data = date('Y-m-d H:i:s') . " Debug: \n" . $log_data."\n\n";
-
-        error_log($log_data, 3, $file_path);
+       wa_log($log, $file_name);
     }
-
 }
