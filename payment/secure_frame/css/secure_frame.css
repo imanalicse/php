@@ -1,0 +1,122 @@
+
+body {
+    color: #000000;
+    font-family:  'Open Sans', sans-serif;
+}
+#header span {
+    color: #000000;
+    font-size: 27px;
+    display:  block;
+    margin-bottom: 6px;
+}
+
+#header div {
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+#formwidget #buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#formwidget .cancel,
+#formwidget .continue {
+    display: inline-block;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 55px;
+    margin: 0 8px;
+    border-radius: 0;
+    border: none;
+    font-size: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: 0 3px 5px #c5c5c5;
+}
+
+#formwidget .continue {
+    color: #ffffff;
+    background: linear-gradient(to right, #19bbbc 0%, #1989bc 100%);
+}
+#formwidget .continue:hover{
+    background: linear-gradient(to left, #19bbbc 0%, #1989bc 100%);
+}
+
+#formwidget .cancel {
+    border: 2px solid #19bcbc;
+    background: #fff;
+    color: #19bcbc;
+    -webkit-transition: all 0.5s ease 0s;
+    transition: all 0.5s ease 0s;
+}
+#formwidget .cancel:hover{
+    background: #000;
+    border-color: #000;
+    color: #fff;
+}
+
+
+
+#formwidget input {
+    display: inline-block;
+    height: 34px;
+    padding: 2px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    margin-left: 2px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+
+#formwidget select {
+    display: inline-block;
+    height: 34px;
+    padding: 2px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+#pay_page label {
+    font-size: 14px;
+    line-height: 24px;
+    color: #5d5d5d;
+}
+#pay_page div {
+    font-size: 14px;
+    line-height: 24px;
+    color: #5d5d5d;
+}
+#pay_page.main_wrap {
+    width: 920px !important;
+}
+#pay_page .field_label, .field_value {
+    width: 450px;
+}
+#formwidget .error {
+    background-position: 0px 9px;
+    margin: 0 0;
+    padding: 5px 0 9px 18px;
+}
+
+#formwidget  .disabled_input {
+    background: #e6e6e6;
+}

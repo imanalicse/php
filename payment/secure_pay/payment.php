@@ -1,1 +1,0 @@
-<iframe class="securepay-iframe" src="http://localhost/codehub/php/payment/secure_pay/payment_iframe.php"  width="100%" height="500" frameBorder="0"> </iframe>

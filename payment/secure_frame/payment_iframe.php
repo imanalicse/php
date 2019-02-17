@@ -38,9 +38,9 @@
     <input type="hidden" name="fp_timestamp">
     <input type="hidden" name="fingerprint">
     <input type="hidden" name="currency" value="AUD">
-    <input type="hidden" name="return_url" value="http://facebookshop.info/checkouts/processOrder">
-    <input type="hidden" name="callback_url" value="http://facebookshop.info//universities/securepayCallbackUrl">
-    <input type="hidden" name="cancel_url" value="http://facebookshop.info/my-account">
+    <input type="hidden" name="return_url" value="http://localhost/codehub/php/payment/secure_frame/return_url.php">
+    <input type="hidden" name="callback_url" value="http://localhost/codehub/php/payment/secure_frame/callback_url.php">
+    <input type="hidden" name="cancel_url" value="http://localhost/codehub/php/payment/secure_frame/my-account.php">
 
     <input type="hidden" name="return_url_text" value="Continue...">
     <input type="hidden" name="return_url_target" value="parent">
@@ -49,7 +49,7 @@
     <input type="hidden" name="template" value="responsive">
     <input type="hidden" name="display_receipt" value="no">
     <input type="hidden" name="confirmation" value="no">
-    <input type="hidden" name="page_style_url" value="http://facebookshop.info/css/styles/secure_frame.css">
+    <input type="hidden" name="page_style_url" value="http://localhost/codehub/php/payment/secure_frame/css/secure_frame.css">
 </form>
 </body>
 </html>
