@@ -33,8 +33,8 @@
     <input type="hidden" name="bill_name" value="transact">
     <input type="hidden" name="merchant_id">
     <input type="hidden" name="txn_type">
-    <input id="primary_ref"  type="hidden" name="primary_ref" value="4444333322221111">
-    <input id="amount" type="hidden" name="amount"  value="2600">
+    <input id="primary_ref"  type="hidden" name="primary_ref" value="123">
+    <input id="amount" type="hidden" name="amount"  value="200">
     <input type="hidden" name="fp_timestamp">
     <input type="hidden" name="fingerprint">
     <input type="hidden" name="currency" value="AUD">
