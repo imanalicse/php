@@ -40,7 +40,7 @@
     <input type="hidden" name="currency" value="AUD">
     <input type="hidden" name="return_url" value="http://localhost/codehub/php/payment/secure_frame/return_url.php">
     <input type="hidden" name="callback_url" value="http://localhost/codehub/php/payment/secure_frame/callback_url.php">
-    <input type="hidden" name="cancel_url" value="http://localhost/codehub/php/payment/secure_frame/my-account.php">
+    <input type="hidden" name="cancel_url" value="http://localhost/codehub/php/payment/secure_frame/my_account.php">
 
     <input type="hidden" name="return_url_text" value="Continue...">
     <input type="hidden" name="return_url_target" value="parent">
