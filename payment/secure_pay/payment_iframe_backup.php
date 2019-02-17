@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
     <script>
         $(function() {
-            var merchantId = $("#merchantID").val();
+            var merchantId = $("#merchantID").val();;
             var password =$("#merchantPassword").val();
             var txnType = "0";
             var primaryRef = $("#primary_ref").val();//"Test Reference";
