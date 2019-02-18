@@ -21,6 +21,7 @@
             $('input[name="txn_type"]').val(txnType);
             $('input[name="fp_timestamp"]').val(timestamp);
             $('input[name="fingerprint"]').val(fingerprint);
+            $('input[name="return_url_text"]').val('Confirm');
             $("form").submit();
         });
     </script>
@@ -45,8 +46,9 @@
     <input type="hidden" name="return_url" value="<?php echo $base_url; ?>/secure_frame/return_url.php">
     <input type="hidden" name="callback_url" value="<?php echo $base_url; ?>/secure_frame/callback_url.php">
     <input type="hidden" name="cancel_url" value="<?php echo $base_url; ?>/secure_frame/my_account.php">
+<!--    <input type="hidden" name="display_cardholder_name" value="yes">-->
 
-    <input type="hidden" name="return_url_text" value="Continue...">
+    <input type="hidden" name="return_url_text" value="Confirm">
     <input type="hidden" name="return_url_target" value="parent">
     <input type="hidden" name="title" value="Payment Page">
     <input type="hidden" name="primary_ref_name" value="Order Number">
