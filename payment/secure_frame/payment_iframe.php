@@ -26,6 +26,10 @@
     </script>
 </head>
 <body>
+<?php
+    include "include.php";
+    $base_url = get_base_url();
+?>
 <form action="https://test.payment.securepay.com.au/secureframe/invoice" method="post">
     <input type="hidden" name="merchantID" id="merchantID" value="ABC0001">
     <input type="hidden" name="merchantPassword" id="merchantPassword" value="abc123">
@@ -38,9 +42,9 @@
     <input type="hidden" name="fp_timestamp">
     <input type="hidden" name="fingerprint">
     <input type="hidden" name="currency" value="AUD">
-    <input type="hidden" name="return_url" value="http://localhost/codehub/php/payment/secure_frame/return_url.php">
-    <input type="hidden" name="callback_url" value="http://localhost/codehub/php/payment/secure_frame/callback_url.php">
-    <input type="hidden" name="cancel_url" value="http://localhost/codehub/php/payment/secure_frame/my_account.php">
+    <input type="hidden" name="return_url" value="<?php echo $base_url; ?>/secure_frame/return_url.php">
+    <input type="hidden" name="callback_url" value="<?php echo $base_url; ?>/secure_frame/callback_url.php">
+    <input type="hidden" name="cancel_url" value="<?php echo $base_url; ?>/secure_frame/my_account.php">
 
     <input type="hidden" name="return_url_text" value="Continue...">
     <input type="hidden" name="return_url_target" value="parent">
@@ -49,7 +53,7 @@
     <input type="hidden" name="template" value="responsive">
     <input type="hidden" name="display_receipt" value="no">
     <input type="hidden" name="confirmation" value="no">
-    <input type="hidden" name="page_style_url" value="http://localhost/codehub/php/payment/secure_frame/css/secure_frame.css">
+    <input type="hidden" name="page_style_url" value="<?php echo $base_url; ?>/secure_frame/css/secure_frame.css">
 </form>
 </body>
 </html>
