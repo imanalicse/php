@@ -5,20 +5,15 @@ $db_password = '';
 $db_name = 'classicmodels';
 $mysqli = new mysqli($db_host, $db_user, $db_password, $db_name);
 
+
+
 $mysqli->query('START TRANSACTION');
+$mysqli->query("SELECT @orderNumber:=MAX(orderNUmber)+2 FROM orders");
 
-//$mysqli->query("SELECT @orderNumber:=MAX(orderNUmber)+2 FROM orders");
-
-$orderNumber = 1;
-if ($result = $mysqli->query("SELECT @orderNumber:=MAX(orderNUmber)+2 FROM orders"))
-{
-    $orderNumber = $result->fetch_row()[0];
-}
-
-
-echo '<pre>';
-print_r($orderNumber);
-echo '</pre>';
+//$orderNumber = $result->fetch_row()[0];
+//echo '<pre>';
+//print_r($orderNumber);
+//echo '</pre>';
 
 
 $query = "INSERT INTO orders(orderNumber,
@@ -41,7 +36,7 @@ $query = "INSERT INTO orderdetails(orderNumber,
                          quantityOrdered,
                          priceEach,
                          orderLineNumber)
-VALUES(@orderNumber,'S18_1749', 30, '136', 1),
+VALUES(@orderNumber,'S18_1749', 32, '136', 1),
       (@orderNumber,'S18_2248', 50, '55.09', 2)";
 
 $mysqli->query($query);
@@ -66,12 +61,20 @@ $query = "SELECT
             a.ordernumber = @orderNumber";
 
 $result = $mysqli->query($query);
-$rows = @$result->fetch_all();
+
+$rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
 if(!empty($rows)){
     $mysqli->query('COMMIT');
+    echo '<pre>';
+    print_r("COMMIT");
+    echo '</pre>';
+}else{
+    $mysqli->query('ROLLBACK');
+    echo '<pre>';
+    print_r("ROLLBACK");
+    echo '</pre>';
 }
-echo '<pre>';
-print_r($rows);
-echo '</pre>';
-$mysqli->query('ROLLBACK');
+
+
+
 
