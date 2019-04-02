@@ -27,11 +27,11 @@
     };
 
     payway.createCreditCardFrame({
-        publishableApiKey: 'T11915_PUB_gjjg685bbrqkvwzb2jzw8ye4wu8xvfigkzfqmqrshzy28y67fp765pqjangi',
-        onValid: function() { submit.disabled = false; },
-        onInvalid: function() { submit.disabled = true; },
-        style: style,
-        layout: 'narrow'
+            publishableApiKey: 'T11915_PUB_gjjg685bbrqkvwzb2jzw8ye4wu8xvfigkzfqmqrshzy28y67fp765pqjangi',
+            onValid: function() { submit.disabled = false; },
+            onInvalid: function() { submit.disabled = true; },
+            style: style,
+            layout: 'narrow'
         },
         createdCallback
     );
