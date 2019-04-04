@@ -2,7 +2,7 @@
 <html>
 <body>
 <!-- this form will POST a single use token to your server -->
-<form action="/process-payment" method="post">
+<form action="process-payment.php" method="post">
     <div id="payway-credit-card"></div>
     <input id="payway-cc-submit" type="submit" disabled="true"/>
 </form>
@@ -12,9 +12,13 @@
     var submit = document.getElementById('payway-cc-submit');
 
     var createdCallback = function( err, frame ) {
-        if ( !err ) {
-            console.log('Yes');
+        if ( err ) {
+            console.log( 'error=' + err.message );
+        } else {
+            console.log( 'token=' + frame.singleUseTokenId );
+            // TODO: Send token to your server via AJAX
         }
+        console.log(frame.getToken());
     };
 
     var style = {
@@ -32,11 +36,10 @@
             onInvalid: function() { submit.disabled = true; },
             style: style,
             layout: 'narrow'
+            //tokenMode: 'callback'
         },
-        createdCallback
+        //createdCallback
     );
-//
-
 
 </script>
 </body>
