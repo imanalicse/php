@@ -1,3 +1,5 @@
 <?php
-print_r($_POST);
-?>
+include '../../../functions.php';
+if(isset($_POST)) {
+    wa_log($_POST, 'payway');
+}
