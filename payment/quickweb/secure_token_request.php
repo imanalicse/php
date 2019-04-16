@@ -1,6 +1,7 @@
 <?php
 /*
  * https://quickstream.westpac.com.au/docs/general/urls-and-ip-addresses/#urls-and-ip-addresses
+ * https://quickstream.westpac.com.au/docs/quickweb/#parameters-for-secure-token-request
  */
 
 

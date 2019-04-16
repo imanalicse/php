@@ -1,4 +1,8 @@
 <?php
+/*
+ * https://quickstream.westpac.com.au/docs/general/secure-token-request/#secure-token-request
+ */
+
 //define('HAND_OFF_URL', 'https://quickweb.westpac.com.au/OnlinePaymentServlet3'); //LIVE
 define('HAND_OFF_URL', 'https://quickweb.support.qvalent.com/OnlinePaymentServlet3'); //Test
 define('communityCode', '');
