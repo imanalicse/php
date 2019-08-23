@@ -1,6 +1,7 @@
 <?php
 class smarterTrack
 {
+
     public function __makeCurlCall($url, $method = "GET", $headers = null, $gets = null, $posts = null)
     {
         $ch = curl_init();
@@ -144,14 +145,15 @@ class smarterTrack
         }
     }
 
-
+    /*
+     * Create Ticket
+     * https://testrgs.smartertrack.com/Services2/svcTickets.asmx?op=CreateTicket
+     *
+     */
 
     public function addTicket(){
-        //https://testrgs.smartertrack.com/Services2/svcTickets.asmx?op=CreateTicket
-        $this->waLog("=========addTicket===========");
 
         $url = 'https://testrgs.smartertrack.com/Services2/svcTickets.asmx';
-        //Add Ticket
         $directXML = '<?xml version="1.0" encoding="utf-8"?>
                 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
                   <soap:Body>
@@ -171,8 +173,9 @@ class smarterTrack
                   </soap:Body>
                 </soap:Envelope>';
 
+        $this->waLog("=========addTicket===========");
         $this->waLog($directXML);
-
+        
         $result = $this->__makeCurlCall(
             $url,
             "POST",
@@ -185,22 +188,25 @@ class smarterTrack
             '', /* CURL GET PARAMETERS */
             $directXML /* CURL POST PARAMETERS AS XML */
         );
-        
-        $this->waLog($result);
 
-        if($result != null && isset($result["response"])) {
-            $response = new \SimpleXMLElement($result["response"]);
-
-            $xml=simplexml_load_string($result["response"]) or $this->waLog("Error: Cannot create object");
-            print_r($xml);
-            $this->waLog($response);
-
-            $this->waLog($response);
+        if($result["code"] == 200 && isset($result["response"])) {
+            $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $result["response"]);
+            $response = simplexml_load_string($clean_xml);
             $response = $this->__simpleXMLToArray($response);
-            $this->waLog($response);
-        }
+            if (isset($response['Body']['CreateTicketResponse']['CreateTicketResult'])) {
+                $process_response = $response['Body']['CreateTicketResponse']['CreateTicketResult'];
+                $this->waLog($process_response);
+                if ($process_response["Result"] == 'true') {
+                    $ticket_id = $process_response["RequestResult"];
+                    $this->waLog($ticket_id);
+                }else{
 
-        $this->waLog("====================");
+                }
+            }
+        }else{
+            $this->waLog("Error");
+            $this->waLog($result);
+        }
     }
 
     public function addAttachment(){
@@ -282,4 +288,4 @@ class smarterTrack
 }
 
 $obj = new smarterTrack();
-$obj->xmlParse();
+$obj->addTicket();
