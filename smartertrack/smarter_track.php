@@ -163,9 +163,9 @@ class smarterTrack
                       <departmentID>1</departmentID>
                       <groupId>1</groupId>
                       <userIdOfAgent>1</userIdOfAgent>
-                      <toAddress>iman@bitmascot.com</toAddress>
-                      <subject>Test subject</subject>
-                      <body>Test body</body>
+                      <toAddress>webalive.srv@gmail.com</toAddress>
+                      <subject>Hello test subject</subject>
+                      <body>This is test message</body>
                       <isHtml>true</isHtml>
                       <setWaiting>true</setWaiting>
                       <sendEmail>false</sendEmail>
@@ -209,7 +209,7 @@ class smarterTrack
         }
     }
 
-    public function addAttachment(){
+    public function addAttachment($ticket_number){
 
         $this->waLog("===addAttachment==");
         $url = 'https://testrgs.smartertrack.com/Services2/svcTickets.asmx';
@@ -217,16 +217,19 @@ class smarterTrack
         $path = "1.jpg";
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
+        //$this->waLog($data);
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $base64 = base64_encode($data);
 
-        $dateTime = date('Y-m-d h:i:s', time());
+        $dateTime = date('n/d/Y H:i:s A');
+        $dateTime = '2019-08-23T22:16:00';
         $directXML = '<?xml version="1.0" encoding="utf-8"?>
                 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
                   <soap:Body>
                     <AddTicketAttachment xmlns="http://www.smartertools.com/SmarterTrack/Services2/svcTickets.asmx">
                       <authUserName>admin</authUserName>
                       <authPassword>123456789</authPassword>
-                      <ticketNumber>224-24F22F61-0009</ticketNumber>
+                      <ticketNumber>'.$ticket_number.'</ticketNumber>
                       <ticketMessageId>0</ticketMessageId>
                       <fileName>1.jpg</fileName>
                       <data>'.$base64.'</data>
@@ -250,8 +253,14 @@ class smarterTrack
             '', /* CURL GET PARAMETERS */
             $directXML /* CURL POST PARAMETERS AS XML */
         );
-
         $this->waLog($result);
+
+        if(isset($result["response"])) {
+            $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $result["response"]);
+            $response = simplexml_load_string($clean_xml);
+            $response = $this->__simpleXMLToArray($response);
+            $this->waLog($response);
+        }
     }
 
 
@@ -288,4 +297,5 @@ class smarterTrack
 }
 
 $obj = new smarterTrack();
-$obj->addTicket();
+//$obj->addTicket();
+$obj->addAttachment("069-24F284AF-0020");
