@@ -68,18 +68,25 @@ function saveLog($path = "", $file = "", $data = array(), $logType = 'debug')
  * Log write
  */
 
-if (!function_exists('wa_log')) {
-    function wa_log ( $log, $file_name = '' )  {
+if (!function_exists('waLog')) {
+
+    function waLog ( $log, $file_name = '', $path = '' )  {
+
+        if(!empty($path)){
+            $folder = dirname(__FILE__).('/logs/'.$path);
+        }else{
+            $folder = dirname(__FILE__).('/logs/wa-logs');
+        }
+
+        if(!file_exists($folder)){
+            mkdir($folder, 0755, true);
+        }
+
         if (empty($file_name)) {
             $file_name = 'debug';
         }
 
         $file_name = $file_name . '.log';
-        $folder = dirname(__FILE__).'/wa-logs';
-
-        if(!file_exists($folder)){
-            mkdir($folder, 0755);
-        }
 
         $file_path = $folder.'/' . $file_name;
 
