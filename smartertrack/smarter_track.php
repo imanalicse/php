@@ -112,6 +112,38 @@ class smarterTrack
         return $return;
     }
 
+    public function xmlParse(){
+
+        $directXml = '<?xml version="1.0" encoding="utf-8"?>
+            <soap:Envelope
+                xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                <soap:Body>
+                    <CreateTicketResponse
+                        xmlns="http://www.smartertools.com/SmarterTrack/Services2/svcTickets.asmx">
+                        <CreateTicketResult>
+                            <Message />
+                            <RequestResult>168-24F24A57-000E</RequestResult>
+                            <Result>true</Result>
+                            <ResultCode>0</ResultCode>
+                        </CreateTicketResult>
+                    </CreateTicketResponse>
+                </soap:Body>
+            </soap:Envelope>';
+        $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $directXml);
+        $response = simplexml_load_string($clean_xml);
+        $response = $this->__simpleXMLToArray($response);
+        if(isset($response['Body']['CreateTicketResponse']['CreateTicketResult'])){
+            $process_response = $response['Body']['CreateTicketResponse']['CreateTicketResult'];
+            if($process_response["Result"] === true){
+                $ticket_id = $process_response["RequestResult"];
+                $this->waLog($ticket_id);
+            }
+            $this->waLog($process_response);
+        }
+    }
+
 
 
     public function addTicket(){
@@ -250,4 +282,4 @@ class smarterTrack
 }
 
 $obj = new smarterTrack();
-$obj->addTicket();
+$obj->xmlParse();
