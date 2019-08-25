@@ -173,7 +173,7 @@ class smarterTrack
                   </soap:Body>
                 </soap:Envelope>';
 
-        $this->waLog("=========addTicket===========");
+        $this->waLog("=========Start addTicket===========");
         $this->waLog($directXML);
         
         $result = $this->__makeCurlCall(
@@ -189,7 +189,7 @@ class smarterTrack
             $directXML /* CURL POST PARAMETERS AS XML */
         );
 
-        if($result["code"] == 200 && isset($result["response"])) {
+        if(isset($result["response"])) {
             $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $result["response"]);
             $response = simplexml_load_string($clean_xml);
             $response = $this->__simpleXMLToArray($response);
@@ -203,26 +203,24 @@ class smarterTrack
 
                 }
             }
-        }else{
-            $this->waLog("Error");
-            $this->waLog($result);
         }
+
+        $this->waLog("=========End addTicket===========");
     }
 
     public function addAttachment($ticket_number){
 
-        $this->waLog("===addAttachment==");
+        $this->waLog("===Start addAttachment==");
         $url = 'https://testrgs.smartertrack.com/Services2/svcTickets.asmx';
 
         $path = "1.jpg";
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
-        //$this->waLog($data);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        //$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
         $base64 = base64_encode($data);
 
-        $dateTime = date('n/d/Y H:i:s A');
-        $dateTime = '2019-08-23T22:16:00';
+        //$dateTime = '2019-08-23T22:16:00';
+        $dateTime = date('Y-m-d').'T'.date('H:i:s');
         $directXML = '<?xml version="1.0" encoding="utf-8"?>
                 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
                   <soap:Body>
@@ -255,12 +253,27 @@ class smarterTrack
         );
         $this->waLog($result);
 
-        if(isset($result["response"])) {
+        if($result["code"] == 200 && isset($result["response"])) {
             $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $result["response"]);
             $response = simplexml_load_string($clean_xml);
             $response = $this->__simpleXMLToArray($response);
-            $this->waLog($response);
+            if (isset($response['Body']['AddTicketAttachmentResponse']['AddTicketAttachmentResult'])) {
+                $process_response = $response['Body']['AddTicketAttachmentResponse']['AddTicketAttachmentResult'];
+                $this->waLog("Final response");
+                $this->waLog($process_response);
+                if ($process_response["Result"] == 'true') {
+
+                }
+            }else{
+                $this->waLog("Response");
+                $this->waLog($response);
+            }
+        }else{
+            $this->waLog("Error");
+            $this->waLog($result);
         }
+
+        $this->waLog("===End addAttachment==");
     }
 
 
@@ -297,5 +310,5 @@ class smarterTrack
 }
 
 $obj = new smarterTrack();
-//$obj->addTicket();
-$obj->addAttachment("069-24F284AF-0020");
+$obj->addTicket();
+//$obj->addAttachment("069-24F284AF-0020");
