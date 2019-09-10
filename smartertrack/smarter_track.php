@@ -153,11 +153,22 @@ class smarterTrack
 
     public function addTicket(){
 
+        $formatted_message = 'Full Name: Red Wilson222 '."\r\n";
+        $formatted_message .= 'Reference: 4512454, '."\n";
+        $formatted_message .= 'This is test message';
+        $formatted_message = '<table>
+                            <tr>
+                                <td>Hello</td>
+                                <td>World</td>
+                            </tr>
+                        </table>
+                ';
         $url = 'https://testrgs.smartertrack.com/Services2/svcTickets.asmx';
         $directXML = '<?xml version="1.0" encoding="utf-8"?>
                 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
                   <soap:Body>
                     <CreateTicket xmlns="http://www.smartertools.com/SmarterTrack/Services2/svcTickets.asmx">
+                       <isHtml>true</isHtml>
                       <authUserName>admin</authUserName>
                       <authPassword>123456789</authPassword>
                       <departmentID>1</departmentID>
@@ -165,8 +176,7 @@ class smarterTrack
                       <userIdOfAgent>1</userIdOfAgent>
                       <toAddress>webalive.srv@gmail.com</toAddress>
                       <subject>Hello test subject</subject>
-                      <body>This is test message</body>
-                      <isHtml>true</isHtml>
+                      <body><![CDATA[<p>your html here<br/>fdsafaf</p>]]></body>                      
                       <setWaiting>true</setWaiting>
                       <sendEmail>false</sendEmail>
                     </CreateTicket>
@@ -199,6 +209,7 @@ class smarterTrack
                 if ($process_response["Result"] == 'true') {
                     $ticket_id = $process_response["RequestResult"];
                     $this->waLog($ticket_id);
+                    //$this->setTicketCustomFields($ticket_id);
                 }else{
 
                 }
@@ -206,6 +217,64 @@ class smarterTrack
         }
 
         $this->waLog("=========End addTicket===========");
+    }
+
+    public function setTicketCustomFields($ticket_number){
+
+        $this->waLog("===Start SetTicketCustomFields==");
+        $url = 'https://testrgs.smartertrack.com/Services2/svcTickets.asmx';
+        $directXML = '<?xml version="1.0" encoding="utf-8"?>
+                    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+                      <soap:Body>
+                        <SetTicketCustomFields xmlns="http://www.smartertools.com/SmarterTrack/Services2/svcTickets.asmx">
+                          <authUserName>admin</authUserName>
+                          <authPassword>123456789</authPassword>
+                          <ticketNumber>'.$ticket_number.'</ticketNumber>
+                          <customFieldValues>
+                            <string>university=ANU</string>
+                            <string>reference=G34344434</string>
+                          </customFieldValues>
+                        </SetTicketCustomFields>
+                      </soap:Body>
+                    </soap:Envelope>';
+
+        $this->waLog($directXML);
+
+        $result = $this->__makeCurlCall(
+            $url,
+            "POST",
+            array( /* CURL HEADERS */
+                "Content-Type: text/xml; charset=utf-8",
+                "Accept: text/xml",
+                "Pragma: no-cache",
+                "Content_length: ".strlen(trim($directXML))
+            ),
+            '', /* CURL GET PARAMETERS */
+            $directXML /* CURL POST PARAMETERS AS XML */
+        );
+        $this->waLog($result);
+
+        if($result["code"] == 200 && isset($result["response"])) {
+            $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $result["response"]);
+            $response = simplexml_load_string($clean_xml);
+            $response = $this->__simpleXMLToArray($response);
+            if (isset($response['Body']['AddTicketAttachmentResponse']['AddTicketAttachmentResult'])) {
+                $process_response = $response['Body']['AddTicketAttachmentResponse']['AddTicketAttachmentResult'];
+                $this->waLog("Final response");
+                $this->waLog($process_response);
+                if ($process_response["Result"] == 'true') {
+
+                }
+            }else{
+                $this->waLog("Response");
+                $this->waLog($response);
+            }
+        }else{
+            $this->waLog("Error");
+            $this->waLog($result);
+        }
+
+        $this->waLog("===End SetTicketCustomFields==");
     }
 
     public function addAttachment($ticket_number){
@@ -312,3 +381,4 @@ class smarterTrack
 $obj = new smarterTrack();
 $obj->addTicket();
 //$obj->addAttachment("069-24F284AF-0020");
+//$obj->setTicketCustomFields("2DD-24F4E085-002F");
