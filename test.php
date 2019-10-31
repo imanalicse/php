@@ -7,22 +7,57 @@
 </head>
 <body>
 <?php
-$pageUrl = "https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE23306";
 
-$links_string = "https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104182,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105457,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103909,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103480,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105815,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103504,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104769,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105254,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104053,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103790,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104437,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105787,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105275,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104344,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104464,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105138,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104952,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104871,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104518,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104206,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105089,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104317,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103526,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105110,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105665,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104898,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104139,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103576,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105430,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105577,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105741,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103930,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105233,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104488,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104925,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105355,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104412,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103549,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103453,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104230,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105947,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103627,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103975,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105693,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104823,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105499,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105038,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105403,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103999,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104724,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104157,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103951,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104700";
-$links_arr = explode(",", $links_string);
-echo '<pre>';
-print_r($links_arr);
-echo '</pre>';
+$content = '<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta content="text/html; charset=us-ascii">
+<meta name="Generator" content="Microsoft Word 15 (filtered medium)">
+<style>
+<!--
+@font-face
+	{font-family:"Cambria Math"}
+@font-face
+	{font-family:Calibri}
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif}
+a:link, span.MsoHyperlink
+	{color:#0563C1;
+	text-decoration:underline}
+a:visited, span.MsoHyperlinkFollowed
+	{color:#954F72;
+	text-decoration:underline}
+p.msonormal0, li.msonormal0, div.msonormal0
+	{margin-right:0in;
+	margin-left:0in;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif}
+span.EmailStyle19
+	{font-family:"Calibri",sans-serif;
+	color:windowtext}
+.MsoChpDefault
+	{font-size:10.0pt}
+@page WordSection1
+	{margin:1.0in 1.0in 1.0in 1.0in}
+div.WordSection1
+	{}
+-->
+</style>
+</head>
+<body lang="EN-US" link="#0563C1" vlink="#954F72">
+<div class="WordSection1">
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">Yes. &nbsp;please procced</p>
+</div>
+</body>
+</html>';
+
+echo trim(strip_tags($content));
 
 ?>
-
-<script>
-    var links_string = "https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104182,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105457,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103909,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103480,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105815,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103504,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104769,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105254,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104053,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103790,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104437,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105787,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105275,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104344,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104464,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105138,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104952,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104871,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104518,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104206,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105089,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104317,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103526,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105110,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105665,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104898,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104139,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103576,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105430,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105577,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105741,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103930,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105233,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104488,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104925,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105355,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104412,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103549,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103453,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104230,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105947,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103627,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103975,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105693,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104823,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105499,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105038,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE105403,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103999,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104724,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104157,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE103951,https://rosetta.recordsnsw.com.au/delivery/DeliveryManagerServlet?dps_pid=IE104700";
-    var imagesLinks = links_string.split(",", 10);
-    console.log(imagesLinks);
-
-</script>
 </body>
 </html>
 

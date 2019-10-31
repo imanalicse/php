@@ -1,4 +1,10 @@
 <?php
+
+define( 'ST_AUTH_USER_NAME', "admin");
+define( 'ST_AUTH_PASSWORD', "123456789");
+define( 'ST_ACTION_URL', "https://testrgs.smartertrack.com/Services2/svcTickets.asmx");
+define( 'ST_SVC_ORGANIZATION_ACTION_URL', "https://testrgs.smartertrack.com/Services2/svcOrganization.asmx");
+
 class smarterTrack
 {
 
@@ -345,6 +351,56 @@ class smarterTrack
         $this->waLog("===End addAttachment==");
     }
 
+    /*
+     * Get all departments of smarter Track
+     *
+     */
+
+    public function getAllDepartments(){
+
+        $directXML = '<?xml version="1.0" encoding="utf-8"?>
+            <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+              <soap:Body>
+                <GetAllDepartments xmlns="http://www.smartertools.com/SmarterTrack/Services2/svcOrganization.asmx">
+                  <authUserName>'.ST_AUTH_USER_NAME.'</authUserName>
+                  <authPassword>'.ST_AUTH_PASSWORD.'</authPassword>
+                </GetAllDepartments>
+              </soap:Body>
+            </soap:Envelope>';
+
+        $this->waLog("=========Start GetAllDepartments===========");
+        $this->waLog($directXML);
+
+        $result = $this->__makeCurlCall(
+            ST_SVC_ORGANIZATION_ACTION_URL,
+            "POST",
+            array( /* CURL HEADERS */
+                "Content-Type: text/xml; charset=utf-8",
+                "Accept: text/xml",
+                "Pragma: no-cache",
+                "Content_length: ".strlen(trim($directXML))
+            ),
+            '', /* CURL GET PARAMETERS */
+            $directXML /* CURL POST PARAMETERS AS XML */
+        );
+
+        if(isset($result["response"])) {
+            $clean_xml = str_ireplace(['SOAP-ENV:', 'SOAP:'], '', $result["response"]);
+            $response = simplexml_load_string($clean_xml);
+            $response = $this->__simpleXMLToArray($response);
+            if (isset($response['Body']['GetAllDepartmentsResponse']['GetAllDepartmentsResult'])) {
+                $process_response = $response['Body']['GetAllDepartmentsResponse']['GetAllDepartmentsResult'];
+                if ($process_response["Result"] == 'true') {
+                    $departments = $process_response["Departments"]["DepartmentInfo"];
+                    $this->waLog('$departments');
+                    $this->waLog($departments);
+                }
+            }
+        }
+
+        $this->waLog("=========End GetAllDepartments===========");
+    }
+
 
     function waLog ( $log, $file_name = '', $path = '' )  {
 
@@ -379,6 +435,6 @@ class smarterTrack
 }
 
 $obj = new smarterTrack();
-$obj->addTicket();
+$obj->getAllDepartments();
 //$obj->addAttachment("069-24F284AF-0020");
 //$obj->setTicketCustomFields("2DD-24F4E085-002F");
