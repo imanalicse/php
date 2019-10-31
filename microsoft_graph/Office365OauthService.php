@@ -13,39 +13,36 @@ class Office365OauthService
     private static $authorizeUrl = '/common/oauth2/v2.0/authorize?client_id=%1$s&redirect_uri=%2$s&response_type=code&scope=%3$s';
     private static $tokenUrl = "/common/oauth2/v2.0/token";
 
-    private static $scopes = array("openid",
-        "offline_access",
+    private static $scopes = array(
+        //"openid",
+        //"offline_access",
         "Mail.Read",
         "mail.send",
-        "Mail.ReadWrite",
-        "user.read",
-        "Files.Read",
-        "Files.ReadWrite",
-        "Files.Read.All",
-        "Files.ReadWrite.All",
-        "Sites.ReadWrite.All",
-        "Calendars.Read",
-        "Calendars.Read.Shared",
-        "Calendars.ReadWrite",
-        "Calendars.ReadWrite.Shared",
-        "contacts.read"
+//        "Mail.ReadWrite",
+//        "user.read",
+//        "Files.Read",
+//        "Files.ReadWrite",
+//        "Files.Read.All",
+//        "Files.ReadWrite.All",
+//        "Sites.ReadWrite.All",
+//        "Calendars.Read",
+//        "Calendars.Read.Shared",
+//        "Calendars.ReadWrite",
+//        "Calendars.ReadWrite.Shared",
+//        "contacts.read"
     );
 
-//    function startup(Event $event)
-//    {
-//        $this->controller = $this->_registry->getController();
-//        $this->Session = $this->request->getSession();
-//        self::$clientId = Configure::read('Office365.clientId');
-//        self::$clientSecret = Configure::read('Office365.clientSecret');
-//        self::$redirect_url = Configure::read('Office365.redirect_url');
-//
-//        $this->configureOffice365();
-//    }
+    function __construct()
+    {
+        self::$clientId = Office365_clientId;
+        self::$clientSecret = Office365_clientSecret;
+        self::$redirect_url = Office365_redirect_url;
+    }
 
 
     public static function getLoginUrl($redirectUri) {
-        $scopestr = implode(" ", self::$scopes);
 
+        $scopestr = implode(" ", self::$scopes);
         $loginUrl = self::$authority.sprintf(self::$authorizeUrl, self::$clientId, urlencode($redirectUri), urlencode($scopestr));
 
         return $loginUrl;

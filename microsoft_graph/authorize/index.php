@@ -1,4 +1,6 @@
 <?php
+include_once '../configuration.php';
+include_once '../Office365OauthService.php';
 
 if (!function_exists('waLog')) {
 
@@ -34,4 +36,10 @@ if (!function_exists('waLog')) {
     }
 }
 
-waLog($_REQUEST);
+$auth_code = $_REQUEST['code'];
+
+$Office365OauthService = new Office365OauthService();
+$tokens = $Office365OauthService->getTokenFromAuthCode($auth_code, Office365_redirect_url);
+echo '<pre>';
+print_r($tokens);
+echo '</pre>';
