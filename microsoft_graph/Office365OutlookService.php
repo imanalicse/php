@@ -28,6 +28,8 @@ class Office365OutlookService
         );
 
         $getUserUrl = $this->apiUrl()."/Me?".http_build_query($getUserParameters);
+        waLog($access_token);
+        waLog($getUserUrl);
 
         return $this->makeApiCall($access_token, "", "GET", $getUserUrl);
     }
