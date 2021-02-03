@@ -76,4 +76,56 @@ class FileHandler
         $ext = trim(substr($file,strrpos($file,".")+1,strlen($file)));
         return $ext;
     }
+
+    function createFolder($path, $mode = 0777) {
+        $folder_permissions = $mode;
+        $folder = $path;
+        if (strlen($folder) > 0) {
+            if (!is_dir($folder) && !is_file($folder)) {
+
+                switch((int)$folder_permissions) {
+                    case 777:
+                        mkdir($folder, 0777, true);
+                        break;
+                    case 705:
+                        mkdir($folder, 0705, true);
+                        break;
+                    case 666:
+                        mkdir($folder, 0666, true);
+                        break;
+                    case 644:
+                        mkdir($folder, 0644, true);
+                        break;
+                    case 755:
+                    default:
+                        mkdir($folder, 0755, true);
+                        break;
+                }
+                //@JFolder::create($folder, $folder_permissions );
+                if (isset($folder)) {
+                    $this->writeFile($folder . DIRECTORY_SEPARATOR . "index.html", "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>");
+                }
+                // folder was not created
+                if (!is_dir($folder)) {
+                    $errorMsg = "CreatingFolder";
+                    return false;
+                }
+            } else {
+                $errorMsg = "Folder Already Exists";
+                return false;
+            }
+        } else {
+            $errorMsg = "Folder Name Empty";
+            return false;
+        }
+        return true;
+    }
+
+    function writeFile($file, $buffer) {
+        if (!is_file(dirname($file))) {
+            $fp = fopen($file, "w+");
+            fwrite($fp, $buffer);
+            fclose($fp);
+        }
+    }
 }
