@@ -128,4 +128,33 @@ class FileHandler
             fclose($fp);
         }
     }
+
+    function setFileUniqueName ($filePath, $fileName) {
+        $fileName = $this->makeSafe($fileName);
+        $unique_name = $fileName;
+        if (file_exists($filePath . DIRECTORY_SEPARATOR . $fileName)) {
+            $unique_name = time() . "_" . $fileName;
+        }
+        return $unique_name;
+    }
+
+    function makeSafe($file) {
+        $regex = ['#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#', '/\s+/'];
+        return preg_replace($regex, '_', $file);
+    }
+
+    function isImage( $fileName ) {
+        static $imageTypes = 'xcf|odg|gif|jpg|png|bmp|jpeg|ico';
+        return preg_match("/$imageTypes/i",$fileName);
+    }
+
+    function isVideo( $fileName ) {
+        static $imageTypes = 'swf|flv|mp3|wma|mp4';
+        return preg_match("/$imageTypes/i",$fileName);
+    }
+
+    function isAudio( $fileName ) {
+        static $imageTypes = 'wav|flv|mp3|wma|m4a';
+        return preg_match("/$imageTypes/i",$fileName);
+    }
 }
