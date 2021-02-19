@@ -74,6 +74,7 @@ if(!empty($rows)){
     print_r("ROLLBACK");
     echo '</pre>';
 }
+$mysqli->close();
 
 
 
