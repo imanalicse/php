@@ -45,12 +45,9 @@ jQuery(document).ready(function ($){
 
     $survey_form.submit(function (e) {
         e.preventDefault();
-
-
-
         var testForm=jQuery("#student_survey_form").validate({
             // rules: {
-            //     'reynolds_post_graduation_plan[*]': {
+            //     'reynolds_post_graduation_plan[]': {
             //         required: true,
             //         minLength: 1
             //     },

@@ -270,7 +270,7 @@ label.cngratulation-text {
 
 <div class="survey-form-body">
 <h4 class="sub-title-alumni">Alumni Survey Questions</h4>
-<input name="data[StudentSurvey][consent_type]" type="hidden" value="physical-presence" />
+<!--<input name="data[StudentSurvey][consent_type]" type="hidden" value="physical-presence" />-->
 <!--<div class="yes-no-box">-->
 <!--<div class="inline-row">-->
 <!--<div class="from-row-alumi"><label>1. I will attend the ceremony:</label>-->
@@ -316,7 +316,7 @@ label.cngratulation-text {
     </div>
 
     <div class="js-input-wrapper">
-        <input class="required2 checkbox_validation " id="Undecided" name="reynolds_post_graduation_plan[]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label>
+        <input class="required2 checkbox_validation" id="Undecided" name="reynolds_post_graduation_plan[]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label>
         <div class="js-conditional-display" style="display:none">
             <label class="label">Would you like to meet with someone in the Office of Career Services?</label>
                 <div class="radio-button js-input-wrapper" data-conditional-value="Yes">
