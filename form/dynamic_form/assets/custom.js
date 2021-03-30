@@ -6,7 +6,6 @@ jQuery(document).ready(function ($){
         var input_wrapper = _self.parent();
         var is_checked = _self.is(":checked");
         console.log('is_checked=' + is_checked);
-        //is_checked ? input_wrapper.find(".js-conditional-display").show() : input_wrapper.find(".js-conditional-display").hide();
         if (is_checked) {
             input_wrapper.find(".js-conditional-display").first().show()
         } else {
@@ -17,7 +16,8 @@ jQuery(document).ready(function ($){
     $.validator.addMethod("checkbox_validation", function(value, element, params) {
         //return $(".roles:checkbox:checked").length > 0;
         var checked_length = $(element).parents('.checkbox-group').find('input[type="checkbox"]:checked').length;
-        return $(element).parents('.checkbox-group').find('input[type="checkbox"]:checked').length > 0
+        console.log('checked_length', checked_length);
+        return checked_length > 0
         //return params.test(value);
     }, "You must select at least one!");
 
@@ -54,6 +54,7 @@ jQuery(document).ready(function ($){
                 }
                 if (element.attr('type') == 'checkbox') {
                     if (element.parents(".checkbox-group").length > 0) {
+                        console.log(error);
                         error.insertAfter(element.parents(".checkbox-group"));
                     } else {
                         error.insertAfter(element);

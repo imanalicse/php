@@ -252,7 +252,7 @@ label.cngratulation-text {
             src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
             crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+    <script src="assets/jquery.validate.js"></script>
     <script src="assets/custom.js"></script>
 </head>
 <body data-gr-ext-installed="" data-new-gr-c-s-check-loaded="14.1000.0" data-new-gr-c-s-loaded="14.1000.0">
@@ -286,33 +286,33 @@ label.cngratulation-text {
 
 <div class="checkbox-group">
     <div>
-        <input class="checkbox_validation" id="opportun_yes"  name="reynolds_post_graduation_plan[reynolds_transferring_to_a_4_year_institution]" type="checkbox" value="Transferring to a 4-year institution" /> <label for="transfer_in">Transferring to a 4-year institution</label>
+        <input class="checkbox_validation" id="opportun_yes"  name="reynolds_post_graduation_plan[]" type="checkbox" value="Transferring to a 4-year institution" /> <label for="transfer_in">Transferring to a 4-year institution</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
             <div class="texarea-box"><span class="question-content">What Institution?</span> <span class="count-number">150 characters</span><textarea id="textarea2" name="reynolds_transferring_to_a_4_year_institution_textbox" maxlength="150"></textarea>
             </div>
         </div>
     </div>
 
-    <div><input class="checkbox_validation" id="other_edu" name="reynolds_post_graduation_plan[reynolds_other_continued_education]" type="checkbox" value="Other continued education" /> <label for="other_edu">Other continued education</label>
+    <div><input class="checkbox_validation" id="other_edu" name="reynolds_post_graduation_plan[]" type="checkbox" value="Other continued education" /> <label for="other_edu">Other continued education</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
             <div class="texarea-box"><span class="question-content">What educational plans?</span> <span class="count-number">150 characters</span><textarea name="reynolds_other_continued_education_textbox" maxlength="150"></textarea></div>
         </div>
     </div>
 
-    <div><input class="checkbox_validation" id="fulltime_em" name="reynolds_post_graduation_plan[reynolds_full_time_employment]" type="checkbox" value="Full-time employment" /> <label for="fulltime_em">Full-time employment</label>
+    <div><input class="checkbox_validation" id="fulltime_em" name="reynolds_post_graduation_plan[]" type="checkbox" value="Full-time employment" /> <label for="fulltime_em">Full-time employment</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
             <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span><textarea name="reynolds_full_time_employment_textbox" maxlength="150"></textarea></div>
         </div>
     </div>
 
-    <div><input class="checkbox_validation" id="parttime_em" name="reynolds_post_graduation_plan[reynolds_part_time_employment]" type="checkbox" value="Part-time employment" /> <label for="parttime_em">Part-time employment</label>
+    <div><input class="checkbox_validation" id="parttime_em" name="reynolds_post_graduation_plan[]" type="checkbox" value="Part-time employment" /> <label for="parttime_em">Part-time employment</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
             <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span><textarea name="reynolds_part_time_employment_textbox" maxlength="150"></textarea></div>
         </div>
     </div>
 
     <div>
-        <input class="required2 checkbox_validation " id="Undecided" name="reynolds_post_graduation_plan[undecided]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label>
+        <input class="required2 checkbox_validation " id="Undecided" name="reynolds_post_graduation_plan[]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label>
         <div class="js-conditional-display" style="display:none">
             <label class="label">Would you like to meet with someone in the Office of Career Services?</label>
                 <div class="radio-button">
