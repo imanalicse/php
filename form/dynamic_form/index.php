@@ -284,7 +284,7 @@ label.cngratulation-text {
 <div class="inline-row">
 <div class="from-row-alumi"><label class="label">2. What are your post-graduation plans?</label>
 
-<div class="checkbox-group">
+<div class="js-checkbox-group">
     <div class="js-input-wrapper">
         <input class="checkbox_validation" id="opportun_yes"  name="reynolds_post_graduation_plan[]" type="checkbox" value="Transferring to a 4-year institution" /> <label for="transfer_in">Transferring to a 4-year institution</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
@@ -319,9 +319,10 @@ label.cngratulation-text {
         <input class="required2 checkbox_validation" id="Undecided" name="reynolds_post_graduation_plan[]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label>
         <div class="js-conditional-display" style="display:none">
             <label class="label">Would you like to meet with someone in the Office of Career Services?</label>
-                <div class="radio-button js-input-wrapper" data-conditional-value="Yes">
+                <div class="radio-button js-radio-group js-input-wrapper" data-conditional-value="Yes">
                     <span><input class="required" name="reynolds_post_graduation_plan_child" type="radio" value="Yes" /> <label>Yes</label></span>
                     <span><input class="required" name="reynolds_post_graduation_plan_child" type="radio" value="No" /> <label>No</label></span>
+                    <div class="js-validation-error"></div>
                     <div class="js-conditional-display" style="display:none">
                         <input class="required" name="reynolds_choose_to_attend_option_other" type="text" value="" placeholder="Name of officer" />
                     </div>
