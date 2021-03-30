@@ -271,110 +271,116 @@ label.cngratulation-text {
 <div class="survey-form-body">
 <h4 class="sub-title-alumni">Alumni Survey Questions</h4>
 <input name="data[StudentSurvey][consent_type]" type="hidden" value="physical-presence" />
-<div class="yes-no-box">
-<div class="inline-row">
-<div class="from-row-alumi"><label>1. I will attend the ceremony:</label>
-
-<div class="radio-button"><span><input class="required" id="news_yes" name="data[StudentSurvey][student_consent]" type="radio" value="1" /> <label for="news_yes">Yes</label> </span> <span><input class="required" id="news_no" name="data[StudentSurvey][student_consent]" type="radio" value="0" /> <label for="news_no">No</label></span></div>
-</div>
-</div>
-</div>
+<!--<div class="yes-no-box">-->
+<!--<div class="inline-row">-->
+<!--<div class="from-row-alumi"><label>1. I will attend the ceremony:</label>-->
+<!---->
+<!--<div class="radio-button"><span><input class="required" id="news_yes" name="data[StudentSurvey][student_consent]" type="radio" value="1" /> <label for="news_yes">Yes</label> </span> <span><input class="required" id="news_no" name="data[StudentSurvey][student_consent]" type="radio" value="0" /> <label for="news_no">No</label></span></div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
 <div class="content-box block-hidenbox">
 <div class="inline-row">
 <div class="from-row-alumi"><label class="label">2. What are your post-graduation plans?</label>
 
 <div class="checkbox-group">
-    <div>
+    <div class="js-input-wrapper">
         <input class="checkbox_validation" id="opportun_yes"  name="reynolds_post_graduation_plan[]" type="checkbox" value="Transferring to a 4-year institution" /> <label for="transfer_in">Transferring to a 4-year institution</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
-            <div class="texarea-box"><span class="question-content">What Institution?</span> <span class="count-number">150 characters</span><textarea id="textarea2" name="reynolds_transferring_to_a_4_year_institution_textbox" maxlength="150"></textarea>
+            <div class="texarea-box"><span class="question-content">What Institution?</span> <span class="count-number">150 characters</span>
+                <textarea id="textarea2" name="reynolds_post_graduation_plan_child[]" maxlength="150"></textarea>
             </div>
         </div>
     </div>
 
-    <div><input class="checkbox_validation" id="other_edu" name="reynolds_post_graduation_plan[]" type="checkbox" value="Other continued education" /> <label for="other_edu">Other continued education</label>
+    <div class="js-input-wrapper"><input class="checkbox_validation" id="other_edu" name="reynolds_post_graduation_plan[]" type="checkbox" value="Other continued education" /> <label for="other_edu">Other continued education</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
-            <div class="texarea-box"><span class="question-content">What educational plans?</span> <span class="count-number">150 characters</span><textarea name="reynolds_other_continued_education_textbox" maxlength="150"></textarea></div>
+            <div class="texarea-box"><span class="question-content">What educational plans?</span> <span class="count-number">150 characters</span>
+                <textarea name="reynolds_post_graduation_plan_child[]" maxlength="150"></textarea></div>
         </div>
     </div>
 
-    <div><input class="checkbox_validation" id="fulltime_em" name="reynolds_post_graduation_plan[]" type="checkbox" value="Full-time employment" /> <label for="fulltime_em">Full-time employment</label>
+    <div class="js-input-wrapper"><input class="checkbox_validation" id="fulltime_em" name="reynolds_post_graduation_plan[]" type="checkbox" value="Full-time employment" /> <label for="fulltime_em">Full-time employment</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
-            <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span><textarea name="reynolds_full_time_employment_textbox" maxlength="150"></textarea></div>
+            <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span>
+                <textarea name="reynolds_post_graduation_plan_child[]" maxlength="150"></textarea></div>
         </div>
     </div>
 
-    <div><input class="checkbox_validation" id="parttime_em" name="reynolds_post_graduation_plan[]" type="checkbox" value="Part-time employment" /> <label for="parttime_em">Part-time employment</label>
+    <div class="js-input-wrapper"><input class="checkbox_validation" id="parttime_em" name="reynolds_post_graduation_plan[]" type="checkbox" value="Part-time employment" /> <label for="parttime_em">Part-time employment</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
-            <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span><textarea name="reynolds_part_time_employment_textbox" maxlength="150"></textarea></div>
+            <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span>
+                <textarea name="reynolds_post_graduation_plan_child[]" maxlength="150"></textarea></div>
         </div>
     </div>
 
-    <div>
+    <div class="js-input-wrapper">
         <input class="required2 checkbox_validation " id="Undecided" name="reynolds_post_graduation_plan[]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label>
         <div class="js-conditional-display" style="display:none">
             <label class="label">Would you like to meet with someone in the Office of Career Services?</label>
-                <div class="radio-button">
-                    <span><input class="required" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="radio" value="Yes" /> <label>Yes</label></span>
-
-                    <span><input class="required" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="radio" value="No" /> <label>No</label></span>
+                <div class="radio-button js-input-wrapper">
+                    <span><input class="required" name="reynolds_post_graduation_plan_child" type="radio" value="Yes" /> <label>Yes</label></span>
+                    <span><input class="required" name="reynolds_post_graduation_plan_child" type="radio" value="No" /> <label>No</label></span>
+                    <div class="js-conditional-display" style="display:none">
+                        <input class="required" name="reynolds_choose_to_attend_option_other" type="text" value="" placeholder="Name of officer" />
+                    </div>
                 </div>
         </div>
     </div>
 </div>
 </div>
 </div>
-
-<div class="inline-row">
-<div class="from-row-alumi"><label class="label">3. Why did you choose to attend Reynolds?</label>
-
-<div class="radio-button">
-<div><input class="required" id="affordability_3" name="data[StudentSurvey][extra][reynolds_choose_to_attend_reynolds]" type="checkbox" value="Affordability" /> <label for="affordability_3">Affordability</label></div>
-
-<div><input class="required" id="pro_offer" name="data[StudentSurvey][extra][reynolds_choose_to_attend_reynolds]" type="checkbox" value="Programs Offered" /> <label for="pro_offer">Programs Offered</label></div>
-
-<div><input class="required" id="convenient_location" name="data[StudentSurvey][extra][reynolds_choose_to_attend_reynolds]" type="checkbox" value="Convenient locations" /> <label for="fulltime_em">Convenient locations</label></div>
-
-<div><input class="required" id="faculty_staff" name="data[StudentSurvey][extra][reynolds_choose_to_attend_reynolds]" type="checkbox" value="Faculty and Staff" /> <label for="parttime_em">Faculty and Staff</label></div>
-
-<div><input class="required" id="other_p" name="data[StudentSurvey][extra][reynolds_choose_to_attend_reynolds]" type="checkbox" value="Other" /> <label for="other_p">Other</label>
-	<input class="required" name="reynolds_choose_to_attend_option_other" style="display:none;" type="text" value="" placeholder="Name of the institution" />
-</div>
-</div>
-</div>
-</div>
-
-<div class="inline-row">
-<div class="from-row-alumi"><label class="label">4. As a Reynolds alum, how do you want to stay informed and connected?</label>
-
-<div class="radio-button">
-<div><input class="required" id="e-newsletter" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="e-newsletter" /> <label for="e-newsletter">Alumni e-newsletter</label></div>
-
-<div><input class="required" id="Linkedin" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="Linkedin" /> <label for="Linkedin">Linkedin</label></div>
-
-<div><input class="required" id="events_3" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="events_3" /> <label for="events_3">Invited to alumni events </label></div>
-
-<div><input class="required" id="communi_study" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="communi_study" /> <label for="communi_study">Communication with faculty in your area of study</label></div>
-
-<div><input class="required" id="support_student" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="support_student" /> <label for="support_student">Connect with/support current students</label></div>
-
-<div><input class="required" id="Others_3" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="Others_3" /> <label for="Others_3">Others</label></div>
-</div>
-</div>
-</div>
-
-<div class="inline-content-box">5. Please provide updated contact information for you so we can stay in touch!</div>
-
-<div class="inline-row">
-<div class="from-row"><label class="label">Preferred email</label> <input class="input form-control required" name="data[StudentSurvey][extra][address_line_1]" placeholder="" type="text" value="" /></div>
-
-<div class="from-row"><label class="label">Mobile phone</label> <input class="input form-control" name="data[StudentSurvey][extra][address_line_2]" type="text" value="" /></div>
-</div>
-
-<div class="inline-row">
-<div class="from-row"><label class="label">Mailing address </label> <input class="input form-control required" name="data[StudentSurvey][extra][city]" type="text" value="" /></div>
-</div>
+<!---->
+<!--<div class="inline-row">-->
+<!--<div class="from-row-alumi"><label class="label">3. Why did you choose to attend Reynolds?</label>-->
+<!---->
+<!--<div class="radio-button">-->
+<!--<div><input class="required" id="affordability_3" name="data[StudentSurvey][extra][reynolds_choose_to_attend_reynolds]" type="checkbox" value="Affordability" /> <label for="affordability_3">Affordability</label></div>-->
+<!---->
+<!--<div><input class="required" id="pro_offer" name="data[StudentSurvey][extra][reynolds_choose_to_attend_reynolds]" type="checkbox" value="Programs Offered" /> <label for="pro_offer">Programs Offered</label></div>-->
+<!---->
+<!--<div><input class="required" id="convenient_location" name="data[StudentSurvey][extra][reynolds_choose_to_attend_reynolds]" type="checkbox" value="Convenient locations" /> <label for="fulltime_em">Convenient locations</label></div>-->
+<!---->
+<!--<div><input class="required" id="faculty_staff" name="data[StudentSurvey][extra][reynolds_choose_to_attend_reynolds]" type="checkbox" value="Faculty and Staff" /> <label for="parttime_em">Faculty and Staff</label></div>-->
+<!---->
+<!--<div><input class="required" id="other_p" name="data[StudentSurvey][extra][reynolds_choose_to_attend_reynolds]" type="checkbox" value="Other" /> <label for="other_p">Other</label>-->
+<!--	<input class="required" name="reynolds_choose_to_attend_option_other" style="display:none;" type="text" value="" placeholder="Name of the institution" />-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!---->
+<!--<div class="inline-row">-->
+<!--<div class="from-row-alumi"><label class="label">4. As a Reynolds alum, how do you want to stay informed and connected?</label>-->
+<!---->
+<!--<div class="radio-button">-->
+<!--<div><input class="required" id="e-newsletter" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="e-newsletter" /> <label for="e-newsletter">Alumni e-newsletter</label></div>-->
+<!---->
+<!--<div><input class="required" id="Linkedin" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="Linkedin" /> <label for="Linkedin">Linkedin</label></div>-->
+<!---->
+<!--<div><input class="required" id="events_3" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="events_3" /> <label for="events_3">Invited to alumni events </label></div>-->
+<!---->
+<!--<div><input class="required" id="communi_study" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="communi_study" /> <label for="communi_study">Communication with faculty in your area of study</label></div>-->
+<!---->
+<!--<div><input class="required" id="support_student" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="support_student" /> <label for="support_student">Connect with/support current students</label></div>-->
+<!---->
+<!--<div><input class="required" id="Others_3" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="checkbox" value="Others_3" /> <label for="Others_3">Others</label></div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!---->
+<!--<div class="inline-content-box">5. Please provide updated contact information for you so we can stay in touch!</div>-->
+<!---->
+<!--<div class="inline-row">-->
+<!--<div class="from-row"><label class="label">Preferred email</label> <input class="input form-control required" name="data[StudentSurvey][extra][address_line_1]" placeholder="" type="text" value="" /></div>-->
+<!---->
+<!--<div class="from-row"><label class="label">Mobile phone</label> <input class="input form-control" name="data[StudentSurvey][extra][address_line_2]" type="text" value="" /></div>-->
+<!--</div>-->
+<!---->
+<!--<div class="inline-row">-->
+<!--<div class="from-row"><label class="label">Mailing address </label> <input class="input form-control required" name="data[StudentSurvey][extra][city]" type="text" value="" /></div>-->
+<!--</div>-->
 
 <div class="survey-form-footer continue-btn-wrap"><a class="btn btn-primary border-btn" href="">Cancel</a> <input class="btn btn-primary normalbtn submit-button" name="submit" type="submit" value="Proceed" /></div>
 </div>

@@ -3,13 +3,25 @@ jQuery(document).ready(function ($){
 
     $survey_form.find("input[type='checkbox']").change(function () {
         var _self = $(this);
-        var input_wrapper = _self.parent();
+        var input_wrapper = _self.closest('.js-input-wrapper');
         var is_checked = _self.is(":checked");
         console.log('is_checked=' + is_checked);
         if (is_checked) {
             input_wrapper.find(".js-conditional-display").first().show()
         } else {
-            input_wrapper.find(".js-conditional-display").first().hide();
+            input_wrapper.find(".js-conditional-display").hide();
+        }
+    });
+
+    $survey_form.find("input[type='radio']").change(function () {
+        var _self = $(this);
+        var input_wrapper = _self.closest('.js-input-wrapper');
+        var is_checked = _self.is(":checked");
+        console.log('is_checked=' + is_checked);
+        if (is_checked) {
+            input_wrapper.find(".js-conditional-display").first().show()
+        } else {
+            input_wrapper.find(".js-conditional-display").hide();
         }
     });
 
@@ -66,7 +78,9 @@ jQuery(document).ready(function ($){
         });
 
         if(testForm.form()){
-            var formData = $('#student_survey_form').serialize();
+            var formData = $('#student_survey_form').serializeArray();
+            // var myForm = document.getElementById('student_survey_form');
+            // var formData = new FormData(myForm);
             console.log('formData', formData);
             $.ajax({
                 url: 'save.php',
