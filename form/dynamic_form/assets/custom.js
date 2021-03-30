@@ -13,13 +13,48 @@ jQuery(document).ready(function ($){
             input_wrapper.find(".js-conditional-display").first().hide();
         }
     });
+
+    $.validator.addMethod("checkbox_validation", function(value, element, params) {
+        //return $(".roles:checkbox:checked").length > 0;
+        var checked_length = $(element).parents('.checkbox-group').find('input[type="checkbox"]:checked').length;
+        return $(element).parents('.checkbox-group').find('input[type="checkbox"]:checked').length > 0
+        //return params.test(value);
+    }, "You must select at least one!");
+
+    // $( ".checkbox_validation" ).rules( "checkbox_validation", {
+    //     minlength: 2
+    // });
+
+    $.validator.addClassRules({
+        checkbox_validation: {
+            //required: true,
+            checkbox_validation: /[0-9]{1}\/[0-9]{6}$/,
+        }
+    });
+
     $survey_form.submit(function (e) {
         e.preventDefault();
+
+
+
         var testForm=jQuery("#student_survey_form").validate({
+            // rules: {
+            //     'reynolds_post_graduation_plan[*]': {
+            //         required: true,
+            //         minLength: 1
+            //     },
+            // },
             errorPlacement: function(error, element) {
                 if (element.attr('type') == 'radio') {
                     if (element.parents(".radio-button").length > 0) {
                         error.insertAfter(element.parents(".radio-button"));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                }
+                if (element.attr('type') == 'checkbox') {
+                    if (element.parents(".checkbox-group").length > 0) {
+                        error.insertAfter(element.parents(".checkbox-group"));
                     } else {
                         error.insertAfter(element);
                     }

@@ -1,7 +1,8 @@
 <html>
 <head>
 	<title></title>
-	<style type="text/css">.sub-title-alumni{
+	<style type="text/css">
+.sub-title-alumni{
     color:#39a9d6;
     font-size:24px;
     text-align:center;
@@ -285,33 +286,33 @@ label.cngratulation-text {
 
 <div class="checkbox-group">
     <div>
-        <input class="" id="opportun_yes" name="reynolds_post_graduation_plan[reynolds_transferring_to_a_4_year_institution]" type="checkbox" value="Transferring to a 4-year institution" /> <label for="transfer_in">Transferring to a 4-year institution</label>
+        <input class="checkbox_validation" id="opportun_yes"  name="reynolds_post_graduation_plan[reynolds_transferring_to_a_4_year_institution]" type="checkbox" value="Transferring to a 4-year institution" /> <label for="transfer_in">Transferring to a 4-year institution</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
             <div class="texarea-box"><span class="question-content">What Institution?</span> <span class="count-number">150 characters</span><textarea id="textarea2" name="reynolds_transferring_to_a_4_year_institution_textbox" maxlength="150"></textarea>
             </div>
         </div>
     </div>
 
-    <div><input class="" id="other_edu" name="reynolds_post_graduation_plan[reynolds_other_continued_education]" type="checkbox" value="Other continued education" /> <label for="other_edu">Other continued education</label>
+    <div><input class="checkbox_validation" id="other_edu" name="reynolds_post_graduation_plan[reynolds_other_continued_education]" type="checkbox" value="Other continued education" /> <label for="other_edu">Other continued education</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
             <div class="texarea-box"><span class="question-content">What educational plans?</span> <span class="count-number">150 characters</span><textarea name="reynolds_other_continued_education_textbox" maxlength="150"></textarea></div>
         </div>
     </div>
 
-    <div><input class="" id="fulltime_em" name="reynolds_post_graduation_plan[reynolds_full_time_employment]" type="checkbox" value="Full-time employment" /> <label for="fulltime_em">Full-time employment</label>
+    <div><input class="checkbox_validation" id="fulltime_em" name="reynolds_post_graduation_plan[reynolds_full_time_employment]" type="checkbox" value="Full-time employment" /> <label for="fulltime_em">Full-time employment</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
             <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span><textarea name="reynolds_full_time_employment_textbox" maxlength="150"></textarea></div>
         </div>
     </div>
 
-    <div><input class="" id="parttime_em" name="reynolds_post_graduation_plan[reynolds_part_time_employment]" type="checkbox" value="Part-time employment" /> <label for="parttime_em">Part-time employment</label>
+    <div><input class="checkbox_validation" id="parttime_em" name="reynolds_post_graduation_plan[reynolds_part_time_employment]" type="checkbox" value="Part-time employment" /> <label for="parttime_em">Part-time employment</label>
         <div class="inline-row text-area-box js-conditional-display" style="display:none">
             <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span><textarea name="reynolds_part_time_employment_textbox" maxlength="150"></textarea></div>
         </div>
     </div>
 
     <div>
-        <input class="required " id="Undecided" name="reynolds_post_graduation_plan[undecided]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label>
+        <input class="required2 checkbox_validation " id="Undecided" name="reynolds_post_graduation_plan[undecided]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label>
         <div class="js-conditional-display" style="display:none">
             <label class="label">Would you like to meet with someone in the Office of Career Services?</label>
                 <div class="radio-button">
