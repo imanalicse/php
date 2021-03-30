@@ -284,36 +284,43 @@ label.cngratulation-text {
 <div class="from-row-alumi"><label class="label">2. What are your post-graduation plans?</label>
 
 <div class="checkbox-group">
-
-<div>
-<input class="reynolds_post_graduation_plan_checkbox" id="opportun_yes" name="reynolds_post_graduation_plan[reynolds_transferring_to_a_4_year_institution]" type="checkbox" value="Transferring to a 4-year institution" /> <label for="transfer_in">Transferring to a 4-year institution</label>
-    <div class="inline-row text-area-box js-conditional-display" style="display:none">
-        <div class="texarea-box"><span class="question-content">What Institution?</span> <span class="count-number">150 characters</span><textarea id="textarea2" name="reynolds_transferring_to_a_4_year_institution_textbox" maxlength="150"></textarea>
+    <div>
+        <input class="" id="opportun_yes" name="reynolds_post_graduation_plan[reynolds_transferring_to_a_4_year_institution]" type="checkbox" value="Transferring to a 4-year institution" /> <label for="transfer_in">Transferring to a 4-year institution</label>
+        <div class="inline-row text-area-box js-conditional-display" style="display:none">
+            <div class="texarea-box"><span class="question-content">What Institution?</span> <span class="count-number">150 characters</span><textarea id="textarea2" name="reynolds_transferring_to_a_4_year_institution_textbox" maxlength="150"></textarea>
+            </div>
         </div>
     </div>
-</div>
 
-<div><input class="reynolds_post_graduation_plan_checkbox" id="other_edu" name="reynolds_post_graduation_plan[reynolds_other_continued_education]" type="checkbox" value="Other continued education" /> <label for="other_edu">Other continued education</label>
-    <div class="inline-row text-area-box js-conditional-display" style="display:none">
-        <div class="texarea-box"><span class="question-content">What educational plans?</span> <span class="count-number">150 characters</span><textarea name="reynolds_other_continued_education_textbox" maxlength="150"></textarea></div>
+    <div><input class="" id="other_edu" name="reynolds_post_graduation_plan[reynolds_other_continued_education]" type="checkbox" value="Other continued education" /> <label for="other_edu">Other continued education</label>
+        <div class="inline-row text-area-box js-conditional-display" style="display:none">
+            <div class="texarea-box"><span class="question-content">What educational plans?</span> <span class="count-number">150 characters</span><textarea name="reynolds_other_continued_education_textbox" maxlength="150"></textarea></div>
+        </div>
     </div>
-</div>
 
-<div><input class="reynolds_post_graduation_plan_checkbox" id="fulltime_em" name="reynolds_post_graduation_plan[reynolds_full_time_employment]" type="checkbox" value="Full-time employment" /> <label for="fulltime_em">Full-time employment</label>
-    <div class="inline-row text-area-box js-conditional-display" style="display:none">
-        <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span><textarea name="reynolds_full_time_employment_textbox" maxlength="150"></textarea></div>
+    <div><input class="" id="fulltime_em" name="reynolds_post_graduation_plan[reynolds_full_time_employment]" type="checkbox" value="Full-time employment" /> <label for="fulltime_em">Full-time employment</label>
+        <div class="inline-row text-area-box js-conditional-display" style="display:none">
+            <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span><textarea name="reynolds_full_time_employment_textbox" maxlength="150"></textarea></div>
+        </div>
     </div>
-</div>
 
-
-
-<div><input class="reynolds_post_graduation_plan_checkbox" id="parttime_em" name="reynolds_post_graduation_plan[reynolds_part_time_employment]" type="checkbox" value="Part-time employment" /> <label for="parttime_em">Part-time employment</label>
-    <div class="inline-row text-area-box js-conditional-display" style="display:none">
-        <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span><textarea name="reynolds_part_time_employment_textbox" maxlength="150"></textarea></div>
+    <div><input class="" id="parttime_em" name="reynolds_post_graduation_plan[reynolds_part_time_employment]" type="checkbox" value="Part-time employment" /> <label for="parttime_em">Part-time employment</label>
+        <div class="inline-row text-area-box js-conditional-display" style="display:none">
+            <div class="texarea-box"><span class="question-content">Who is your employer?</span> <span class="count-number">150 characters</span><textarea name="reynolds_part_time_employment_textbox" maxlength="150"></textarea></div>
+        </div>
     </div>
-</div>
 
-<div><input class="required reynolds_post_graduation_plan_checkbox" id="Undecided" name="reynolds_post_graduation_plan[undecided]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label></div>
+    <div>
+        <input class="required " id="Undecided" name="reynolds_post_graduation_plan[undecided]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label>
+        <div class="js-conditional-display" style="display:none">
+            <label class="label">Would you like to meet with someone in the Office of Career Services?</label>
+                <div class="radio-button">
+                    <span><input class="required" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="radio" value="Yes" /> <label>Yes</label></span>
+
+                    <span><input class="required" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="radio" value="No" /> <label>No</label></span>
+                </div>
+        </div>
+    </div>
 </div>
 </div>
 </div>
