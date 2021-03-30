@@ -33,7 +33,7 @@ jQuery(document).ready(function ($){
     });
 
     $.validator.addMethod("checkbox_validation", function(value, element, params) {
-        var checked_length = $(element).parents('.js-checkbox-group').find('input[type="checkbox"]:checked').length;
+        var checked_length = $(element).closest('.js-checkbox-group').find('input[type="checkbox"]:checked').length;
         return checked_length > 0
     }, "Please select at least one!");
 
@@ -54,18 +54,18 @@ jQuery(document).ready(function ($){
             // },
             errorPlacement: function(error, element) {
                 if (element.attr('type') == 'radio') {
-                    if (element.parents(".js-radio-group").length > 0) {
-                        var radio_group = element.parents(".js-radio-group");
+                    if (element.closest(".js-radio-group").length > 0) {
+                        var radio_group = element.closest(".js-radio-group");
                         radio_group.find(".js-validation-error").first().html(error);
-                    } else if (element.parents(".radio-button").length > 0) {
-                        error.insertAfter(element.parents(".radio-button"));
+                    } else if (element.closest(".radio-button").length > 0) {
+                        error.insertAfter(element.closest(".radio-button"));
                     } else {
                         error.insertAfter(element);
                     }
                 }
                 else if (element.attr('type') == 'checkbox') {
-                    if (element.parents(".js-checkbox-group").length > 0) {
-                        error.insertAfter(element.parents(".js-checkbox-group"));
+                    if (element.closest(".js-checkbox-group").length > 0) {
+                        error.insertAfter(element.closest(".js-checkbox-group"));
                     } else {
                         error.insertAfter(element);
                     }
