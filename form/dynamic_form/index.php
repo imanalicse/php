@@ -319,7 +319,7 @@ label.cngratulation-text {
         <input class="required2 checkbox_validation " id="Undecided" name="reynolds_post_graduation_plan[]" type="checkbox" value="Undecided" /> <label for="Undecided">Undecided</label>
         <div class="js-conditional-display" style="display:none">
             <label class="label">Would you like to meet with someone in the Office of Career Services?</label>
-                <div class="radio-button js-input-wrapper">
+                <div class="radio-button js-input-wrapper" data-conditional-value="Yes">
                     <span><input class="required" name="reynolds_post_graduation_plan_child" type="radio" value="Yes" /> <label>Yes</label></span>
                     <span><input class="required" name="reynolds_post_graduation_plan_child" type="radio" value="No" /> <label>No</label></span>
                     <div class="js-conditional-display" style="display:none">
