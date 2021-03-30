@@ -9,6 +9,7 @@ jQuery(document).ready(function ($){
         if (is_checked) {
             input_wrapper.find(".js-conditional-display").first().show()
         } else {
+            input_wrapper.find(".js-conditional-display").find("input[type='radio']").prop('checked', false);
             input_wrapper.find(".js-conditional-display").hide();
         }
     });
