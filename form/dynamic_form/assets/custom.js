@@ -2,6 +2,7 @@ function resetField($selector) {
     $selector.find("textarea").val("");
     $selector.find("input[type='text']").val("");
     $selector.find("input[type='radio']").prop('checked', false);
+    $selector.find("select option:first").prop('selected', true);
 }
 jQuery(document).ready(function ($){
 
@@ -24,8 +25,36 @@ jQuery(document).ready(function ($){
         var input_wrapper = _self.closest('.js-input-wrapper');
         var conditional_value = input_wrapper.data("conditional-value");
         var is_checked = _self.is(":checked");
-        if (is_checked && value == conditional_value) {
-            input_wrapper.find(".js-conditional-display").first().show()
+        var input_wrapper_group = _self.closest('.js-input-group-wrapper');
+        //input_wrapper_group.find(".js-conditional-display").hide();
+        input_wrapper_group.find(".js-input-wrapper:visible").each(function (index, each_input_wrapper){
+            var $each_input_wrapper = $(each_input_wrapper);
+            if ($each_input_wrapper.data("conditional-value") == value) {
+                //console.log('if=each_input_wrapper', $each_input_wrapper);
+                $each_input_wrapper.find(".js-conditional-display").first().show()
+            }else {
+                //console.log('else=each_input_wrapper', $each_input_wrapper);
+                resetField($each_input_wrapper.find(".js-conditional-display"));
+                $each_input_wrapper.find(".js-conditional-display").hide();
+            }
+        });
+        // if (is_checked && value == conditional_value) {
+        //     input_wrapper.find(".js-conditional-display").first().show()
+        // }
+        // else {
+        //     resetField(input_wrapper.find(".js-conditional-display"));
+        //     input_wrapper.find(".js-conditional-display").hide();
+        // }
+    });
+
+    $survey_form.find("select").change(function () {
+        var _self = $(this);
+        var value = _self.val();
+        var input_wrapper = _self.closest('.js-input-wrapper');
+        var conditional_value = input_wrapper.data("conditional-value");
+        conditional_value = conditional_value && conditional_value.split("|");
+        if (Array.isArray(conditional_value) && conditional_value.includes(value)) {
+            input_wrapper.find(".js-conditional-display").first().show();
         } else {
             resetField(input_wrapper.find(".js-conditional-display"));
             input_wrapper.find(".js-conditional-display").hide();
