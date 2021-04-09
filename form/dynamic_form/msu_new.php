@@ -238,48 +238,48 @@ label.cngratulation-text {
 <div class="survey-form-body"><input name="data[StudentSurvey][extra][student_consent_no_checkout_for]" type="hidden" value="No" /> <input name="data[StudentSurvey][consent_type]" type="hidden" value="physical-presence" /> <input id="has_submit_confimation" name="has_submit_confimation" type="hidden" value="Are you sure to proceed?" />
 <div class="yes-no-box">
 <div class="inline-row">
-<div class="from-row-alumi"><span style="font-size: 14px;"><b>I will attend the ceremony:</b></span>
-
-<div class="radio-button"><span><input class="required" id="news_yes" name="data[StudentSurvey][student_consent]" type="radio" value="1" /> <label for="news_yes">Yes</label> </span> <span><input class="required" id="news_no" name="data[StudentSurvey][student_consent]" type="radio" value="0" /> <label for="news_no">No</label></span></div>
-</div>
-</div>
-</div>
-
-<div class="content-box block-hidenbox">
-<div class="inline-content-box">Future Information</div>
-
-<div class="inline-row">
-<div class="from-row"><label class="label">Phone</label> <input class="input form-control required" name="data[StudentSurvey][extra][phone]" placeholder="" type="text" value="" /></div>
-
-<div class="from-row"><label class="label">Non-MSU Email </label> <input class="input form-control required" name="data[StudentSurvey][extra][non_msu_email]" type="email" value="" /></div>
-</div>
-
-<div class="inline-content-box">Permanent Mailing Address:</div>
-
-<div class="inline-row">
-<div class="from-row"><label class="label">Address Line 1</label> <input class="input form-control required" name="data[StudentSurvey][extra][address_line_1]" placeholder="" type="text" value="" /></div>
-
-<div class="from-row"><label class="label">Address Line 2</label> <input class="input form-control" name="data[StudentSurvey][extra][address_line_2]" type="text" value="" /></div>
-</div>
-
-<div class="inline-row">
-<div class="from-row"><label class="label">City</label> <input class="input form-control required" name="data[StudentSurvey][extra][city]" type="text" value="" /></div>
-
-<div class="from-row"><label class="label">State</label> <input class="input form-control required" name="data[StudentSurvey][extra][state]" type="text" value="" /></div>
-</div>
-
-<div class="inline-row">
-<div class="from-row"><label class="label">Postcode</label> <input class="input form-control required" name="data[StudentSurvey][extra][postcode]" type="text" value="" /></div>
-
-<div class="from-row"><label class="label">Country</label> <input class="input form-control required" name="data[StudentSurvey][extra][country]" type="text" value="" /></div>
-</div>
-
-<div class="inline-row">
-<div class="from-row-alumi"><label class="label">Would you like to learn more about opportunities for Spartan alumni?</label>
-
-<div class="radio-button"><span><input class="required" id="opportun_yes" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="radio" value="Yes" /> <label for="opportun_yes">Yes</label> </span> <span><input id="opportun_no" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="radio" value="No" /> <label for="opportun_no">No</label></span></div>
-</div>
-</div>
+<!--<div class="from-row-alumi"><span style="font-size: 14px;"><b>I will attend the ceremony:</b></span>-->
+<!---->
+<!--<div class="radio-button"><span><input class="required" id="news_yes" name="data[StudentSurvey][student_consent]" type="radio" value="1" /> <label for="news_yes">Yes</label> </span> <span><input class="required" id="news_no" name="data[StudentSurvey][student_consent]" type="radio" value="0" /> <label for="news_no">No</label></span></div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!---->
+<!--<div class="content-box block-hidenbox">-->
+<!--<div class="inline-content-box">Future Information</div>-->
+<!---->
+<!--<div class="inline-row">-->
+<!--<div class="from-row"><label class="label">Phone</label> <input class="input form-control required" name="data[StudentSurvey][extra][phone]" placeholder="" type="text" value="" /></div>-->
+<!---->
+<!--<div class="from-row"><label class="label">Non-MSU Email </label> <input class="input form-control required" name="data[StudentSurvey][extra][non_msu_email]" type="email" value="" /></div>-->
+<!--</div>-->
+<!---->
+<!--<div class="inline-content-box">Permanent Mailing Address:</div>-->
+<!---->
+<!--<div class="inline-row">-->
+<!--<div class="from-row"><label class="label">Address Line 1</label> <input class="input form-control required" name="data[StudentSurvey][extra][address_line_1]" placeholder="" type="text" value="" /></div>-->
+<!---->
+<!--<div class="from-row"><label class="label">Address Line 2</label> <input class="input form-control" name="data[StudentSurvey][extra][address_line_2]" type="text" value="" /></div>-->
+<!--</div>-->
+<!---->
+<!--<div class="inline-row">-->
+<!--<div class="from-row"><label class="label">City</label> <input class="input form-control required" name="data[StudentSurvey][extra][city]" type="text" value="" /></div>-->
+<!---->
+<!--<div class="from-row"><label class="label">State</label> <input class="input form-control required" name="data[StudentSurvey][extra][state]" type="text" value="" /></div>-->
+<!--</div>-->
+<!---->
+<!--<div class="inline-row">-->
+<!--<div class="from-row"><label class="label">Postcode</label> <input class="input form-control required" name="data[StudentSurvey][extra][postcode]" type="text" value="" /></div>-->
+<!---->
+<!--<div class="from-row"><label class="label">Country</label> <input class="input form-control required" name="data[StudentSurvey][extra][country]" type="text" value="" /></div>-->
+<!--</div>-->
+<!---->
+<!--<div class="inline-row">-->
+<!--<div class="from-row-alumi"><label class="label">Would you like to learn more about opportunities for Spartan alumni?</label>-->
+<!---->
+<!--<div class="radio-button"><span><input class="required" id="opportun_yes" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="radio" value="Yes" /> <label for="opportun_yes">Yes</label> </span> <span><input id="opportun_no" name="data[StudentSurvey][extra][opportunity_for_spartan_alumni]" type="radio" value="No" /> <label for="opportun_no">No</label></span></div>-->
+<!--</div>-->
+<!--</div>-->
 
 <div class="inline-row" id="after_graguation_plan_wrapper">
 <div class="from-row-alumi"><label class="label">Please tell us about your plans about after graduation</label>
@@ -295,14 +295,14 @@ label.cngratulation-text {
 <input id="after_graguation_plan_radio2" name="data[StudentSurvey][extra][after_graduation_plan][0][field_value]" type="radio" value="I plan to further my education" /> 
 <label for="after_graguation_plan_radio2">I plan to further my education</label>
 	<div class="js-conditional-display js-input-wrapper" style="display:none" data-conditional-value="Other Michigan Institution|Outside of Michigan">
-		 <select class="required" name="data[StudentSurvey][extra][after_graduation_plan][1][child_value]">
+		 <select class="required" name="data[StudentSurvey][extra][after_graduation_plan][1][field_value][0]">
 			 <option value="">Please select</option>
 			 <option value="Michigan State University">Michigan State University</option>
 			 <option value="Other Michigan Institution">Other Michigan Institution</option>
 			 <option value="Outside of Michigan">Outside of Michigan</option> 
 		 </select> 
 		 <div class="js-conditional-display" style="display:none">
-			<input class="required" name="i_plan_to_further_my_education_option_other" placeholder="Name of the institution" type="text" value="" />
+			<input class="required" name="data[StudentSurvey][extra][after_graduation_plan][1][field_value][0][field_value]" placeholder="Name of the institution" type="text" value="" />
 		 </div>
 	 </div>
 </div>
