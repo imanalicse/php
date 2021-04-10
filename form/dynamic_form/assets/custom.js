@@ -22,18 +22,14 @@ jQuery(document).ready(function ($){
     $survey_form.find("input[type='radio']").change(function () {
         var _self = $(this);
         var value = _self.val();
-        var input_wrapper = _self.closest('.js-input-wrapper');
-        var conditional_value = input_wrapper.data("conditional-value");
-        var is_checked = _self.is(":checked");
         var input_wrapper_group = _self.closest('.js-input-group-wrapper');
-        //input_wrapper_group.find(".js-conditional-display").hide();
+        var radio_selected_index = input_wrapper_group.find("input[type='radio']:visible").index(_self);
+        input_wrapper_group.find('.radio_selected_index').val(radio_selected_index);
         input_wrapper_group.find(".js-input-wrapper:visible").each(function (index, each_input_wrapper){
             var $each_input_wrapper = $(each_input_wrapper);
             if ($each_input_wrapper.data("conditional-value") == value) {
-                //console.log('if=each_input_wrapper', $each_input_wrapper);
                 $each_input_wrapper.find(".js-conditional-display").first().show()
             }else {
-                //console.log('else=each_input_wrapper', $each_input_wrapper);
                 resetField($each_input_wrapper.find(".js-conditional-display"));
                 $each_input_wrapper.find(".js-conditional-display").hide();
             }

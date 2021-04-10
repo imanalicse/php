@@ -8,12 +8,12 @@ if (isset($post_data['data']['StudentSurvey']['extra'])) {
     waLog($extra_fields);
     foreach ($extra_fields as $field_name => $field_value) {
         if(is_array($field_value) && !empty($field_value)) {
-            if (array_key_exists('input_type_radio_selected_index', $field_value)) {
+            if (array_key_exists('radio_selected_index', $field_value)) {
                 $process_arr = [];
                 if (array_key_exists("field_value", $field_value)) {
                     $process_arr['field_value'] = $field_value['field_value'];
-                    if (isset($field_value[$field_value['input_type_radio_selected_index']])) {
-                        $child_array = $field_value[$field_value['input_type_radio_selected_index']];
+                    if (isset($field_value[$field_value['radio_selected_index']])) {
+                        $child_array = $field_value[$field_value['radio_selected_index']];
                         $process_arr['child_value'] = $child_array;
                     }
                 }
