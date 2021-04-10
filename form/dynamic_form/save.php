@@ -4,14 +4,26 @@ include '../../functions.php';
 $post_data = $_POST;
 if (isset($post_data['data']['StudentSurvey']['extra'])) {
     $extra_fields = $post_data['data']['StudentSurvey']['extra'];
+    waLog('=====================================');
     waLog($extra_fields);
     foreach ($extra_fields as $field_name => $field_value) {
-        if(is_array($field_value)) {
+        if(is_array($field_value) && !empty($field_value)) {
             if (array_key_exists('input_type_radio_selected_index', $field_value)) {
-
+                $process_arr = [];
+                if (array_key_exists("field_value", $field_value)) {
+                    $process_arr['field_value'] = $field_value['field_value'];
+                    if (isset($field_value[$field_value['input_type_radio_selected_index']])) {
+                        $child_array = $field_value[$field_value['input_type_radio_selected_index']];
+                        $process_arr['child_value'] = $child_array;
+                    }
+                }
+                $extra_fields[$field_name] = $process_arr;
             }
         }
     }
+
+    waLog('$extra_fields_new');
+    waLog($extra_fields);
 
     if (!empty($extra_fields) && is_array($extra_fields)) {
         foreach ($extra_fields as $field_name => $field_value) {

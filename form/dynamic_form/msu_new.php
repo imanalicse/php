@@ -287,31 +287,31 @@ label.cngratulation-text {
 <div class="radio-button js-input-group-wrapper">
 <div class="js-input-wrapper" data-conditional-value="I have a job offer in">
 <input name="data[StudentSurvey][extra][after_graduation_plan][input_type_radio_selected_index]" class="input_type_radio_selected_index" type="hidden" value="1" />
-<input class="required" id="after_graguation_plan_radio1" name="data[StudentSurvey][extra][after_graduation_plan][0][field_value]" type="radio" value="I have a job offer in" /> <label for="after_graguation_plan_radio1">I have a job offer in</label> 
+<input class="required" id="after_graguation_plan_radio1" name="data[StudentSurvey][extra][after_graduation_plan][field_value]" type="radio" value="I have a job offer in" /> <label for="after_graguation_plan_radio1">I have a job offer in</label>
 <div class="js-conditional-display js-input-wrapper" style="display:none">
 <select class="required" name="data[StudentSurvey][extra][after_graduation_plan][0][child_value]"><option value="">Where is the location of your job?</option><option value="Michigan">Michigan</option><option value="Alabama">Alabama</option><option value="Alaska">Alaska</option><option value="Arizona">Arizona</option><option value="Arkansas">Arkansas</option><option value="California">California</option><option value="Colorado">Colorado</option><option value="Connecticut">Connecticut</option><option value="Delaware">Delaware</option><option value="District of Columbia">District of Columbia</option><option value="Florida">Florida</option><option value="Georgia">Georgia</option><option value="Hawaii">Hawaii</option><option value="Idaho">Idaho</option><option value="Illinois">Illinois</option><option value="Indiana">Indiana</option><option value="Iowa">Iowa</option><option value="Kansas">Kansas</option><option value="Kentucky">Kentucky</option><option value="Louisiana">Louisiana</option><option value="Maine">Maine</option><option value="Maryland">Maryland</option><option value="Massachusetts">Massachusetts</option><option value="Minnesota">Minnesota</option><option value="Mississippi">Mississippi</option><option value="Missouri">Missouri</option><option value="Montana">Montana</option><option value="Nebraska">Nebraska</option><option value="Nevada">Nevada</option><option value="New Hampshire">New Hampshire</option><option value="New Jersey">New Jersey</option><option value="New Mexico">New Mexico</option><option value="New York">New York</option><option value="North Carolina">North Carolina</option><option value="North Dakota">North Dakota</option><option value="Ohio">Ohio</option><option value="Oklahoma">Oklahoma</option><option value="Oregon">Oregon</option><option value="Pennsylvania">Pennsylvania</option><option value="Rhode Island">Rhode Island</option><option value="South Carolina">South Carolina</option><option value="South Dakota">South Dakota</option><option value="Tennessee">Tennessee</option><option value="Texas">Texas</option><option value="Utah">Utah</option><option value="Vermont">Vermont</option><option value="Virginia">Virginia</option><option value="Washington">Washington</option><option value="West Virginia">West Virginia</option><option value="Wisconsin">Wisconsin</option><option value="Wyoming">Wyoming</option><option value="American Samoa">American Samoa</option><option value="Guam">Guam</option><option value="Northern Mariana Islands">Northern Mariana Islands</option><option value="Palau">Palau</option><option value="Puerto Rico">Puerto Rico</option><option value="Virgin Islands">Virgin Islands</option><option value="Outside of United States">Outside of United States</option> </select></div></div>
 
 <div class="js-input-wrapper" data-conditional-value="I plan to further my education">
-<input id="after_graguation_plan_radio2" name="data[StudentSurvey][extra][after_graduation_plan][0][field_value]" type="radio" value="I plan to further my education" /> 
+<input id="after_graguation_plan_radio2" name="data[StudentSurvey][extra][after_graduation_plan][field_value]" type="radio" value="I plan to further my education" />
 <label for="after_graguation_plan_radio2">I plan to further my education</label>
 	<div class="js-conditional-display js-input-wrapper" style="display:none" data-conditional-value="Other Michigan Institution|Outside of Michigan">
-		 <select class="required" name="data[StudentSurvey][extra][after_graduation_plan][1][field_value][0]">
+		 <select class="required" name="data[StudentSurvey][extra][after_graduation_plan][1][field_value]">
 			 <option value="">Please select</option>
 			 <option value="Michigan State University">Michigan State University</option>
 			 <option value="Other Michigan Institution">Other Michigan Institution</option>
 			 <option value="Outside of Michigan">Outside of Michigan</option> 
 		 </select> 
 		 <div class="js-conditional-display" style="display:none">
-			<input class="required" name="data[StudentSurvey][extra][after_graduation_plan][1][field_value][0][field_value]" placeholder="Name of the institution" type="text" value="" />
+			<input class="required" name="data[StudentSurvey][extra][after_graduation_plan][1][child_value]" placeholder="Name of the institution" type="text" value="" />
 		 </div>
 	 </div>
 </div>
 
-<div class="js-input-wrapper" data-conditional-value="I plan to serve in the military"><input id="after_graguation_plan_radio3" name="data[StudentSurvey][extra][after_graduation_plan][0][field_value]" type="radio" value="I plan to serve in the military" /> <label for="after_graguation_plan_radio3">I plan to serve in the military</label>
+<div class="js-input-wrapper" data-conditional-value="I plan to serve in the military"><input id="after_graguation_plan_radio3" name="data[StudentSurvey][extra][after_graduation_plan][field_value]" type="radio" value="I plan to serve in the military" /> <label for="after_graguation_plan_radio3">I plan to serve in the military</label>
 <div class="js-conditional-display js-input-wrapper" style="display:none">
 <select class="required" name="data[StudentSurvey][extra][after_graduation_plan][2][child_value]"><option value="">Please select</option><option value="Army">Army</option><option value="Navy">Navy</option><option value="Air Force">Air Force</option><option value="Marines">Marines</option><option value="Coast Guard">Coast Guard</option><option value="Space Force">Space Force</option> </select></div></div>
 
-<div><input id="after_graguation_plan_radio4" name="data[StudentSurvey][extra][after_graduation_plan][0][field_value]" type="radio" value="No plans at this time" /> <label for="after_graguation_plan_radio4">No plans at this time</label></div>
+<div><input id="after_graguation_plan_radio4" name="data[StudentSurvey][extra][after_graduation_plan][field_value]" type="radio" value="No plans at this time" /> <label for="after_graguation_plan_radio4">No plans at this time</label></div>
 <div class="js-validation-error"></div>
 </div>
 </div>
