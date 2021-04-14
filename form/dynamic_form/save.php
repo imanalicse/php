@@ -17,12 +17,13 @@ if (isset($post_data['data']['StudentSurvey']['extra'])) {
                         $process_arr['child_value'] = $child_array;
                     }
                 }
-                $extra_fields[$field_name] = $process_arr;
+                unset($extra_fields[$field_name]);
+                $extra_fields[$field_name][] = $process_arr;
             }
         }
     }
 
-    waLog('$extra_fields_new');
+    waLog('$extra_fields_after_radio');
     waLog($extra_fields);
 
     if (!empty($extra_fields) && is_array($extra_fields)) {
@@ -58,8 +59,8 @@ if (isset($post_data['data']['StudentSurvey']['extra'])) {
         }
     }
 
-//    waLog('$extra_fields_new');
-//    waLog($extra_fields);
+    waLog('$extra_fields_new');
+    waLog($extra_fields);
 
     $student_data['data']['StudentSurvey']['extra_fields'] = $this->json_encode($extra_fields);
 }
