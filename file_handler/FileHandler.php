@@ -141,6 +141,34 @@ class FileHandler
     function makeSafe($file) {
         $regex = ['#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#', '/\s+/'];
         return preg_replace($regex, '_', $file);
+            /*
+             Replacing following character by _
+
+            \
+            /
+            ;
+            ,
+            :
+            $
+            #
+            *
+            %
+            ^
+            &
+            (
+            )
+            {
+            }
+            [
+            ]
+            ~
+            <
+            >
+            ?
+            "
+            '
+            |
+            */
     }
 
     function isImage( $fileName ) {
