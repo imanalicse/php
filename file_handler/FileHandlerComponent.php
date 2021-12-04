@@ -106,6 +106,173 @@ class FileHandlerComponent extends FileStructureHandlerComponent
         return $filepath;
     }
 
+    function isFile( $file )
+    {
+        $file_name = basename($file);
+        $file_types = $this->allowFileUploadExtensions();
+        $file_types = implode('|', $file_types);
+        return preg_match("/$file_types/i",$file_name);
+    }
+
+    function maxFileSize() {
+        // 1MB = 1048576 Bytes (1*1024*1024)
+        $size = 20 * 1048576; // 20MB
+        return $size;
+    }
+
+     function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824)
+        {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        }
+        elseif ($bytes >= 1048576)
+        {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        }
+        elseif ($bytes >= 1024)
+        {
+            $bytes = number_format($bytes / 1024, 2) . ' KB';
+        }
+        elseif ($bytes > 1)
+        {
+            $bytes = $bytes . ' bytes';
+        }
+        elseif ($bytes == 1)
+        {
+            $bytes = $bytes . ' byte';
+        }
+        else
+        {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
+    }
+
+    function validateFileSize($file_size, $max_size = null) : array {
+        $response = ['is_success' => true, 'message' => 'File size is ok'];
+         $file_size = is_array($file_size) && isset($file_size['size'])  ? $file_size['size'] : $file_size;
+         $allow_max_size = $this->maxFileSize();
+         if ($file_size == 0) {
+            $response = ['is_success' => false, 'message' => 'File size 0 is not allowed'];
+         } else if ($max_size && $file_size > $max_size) {
+            $size_with_unit = $this->formatSizeUnits($max_size);
+            $response = ['is_success' => false, 'message' => 'Exceeded file size ('. $size_with_unit .') limit'];
+         } else if ($file_size > $allow_max_size) {
+            $size_with_unit = $this->formatSizeUnits($max_size);
+            $response = ['is_success' => false, 'message' => 'Exceeded file size size ('. $size_with_unit .') limit'];
+         }
+         return $response;
+    }
+
+    function allowFileUploadExtensions() {
+        return [
+            'gif',
+            'png',
+            'jpg',
+            'jpeg',
+            'tiff',
+            'tif',
+            'pdf',
+            'csv',
+            'xls',
+            'xlsx',
+            'doc',
+            'docx',
+            'rtf',
+            'ppt',
+            'pptx',
+            'mp3',
+            'mp4',
+            'mpeg',
+            'mpg',
+            'mpeg',
+            'wma',
+            'wav',
+            'avi',
+            'mov',
+            'acc',
+            'flac',
+            'm4a',
+            'ai',
+            'psd',
+        ];
+    }
+
+     function getExt($file) {
+        $ext = trim(substr($file,strrpos($file,".")+1,strlen($file)));
+        return $ext;
+    }
+
+    function validateFileExtension($file, $allow_extensions = []): array {
+        $response = [
+            'is_success' => true,
+            'message' => 'File extension allowed.'
+        ];
+        $file_name = basename($file);
+        $ext = strtolower($this->getExt($file_name));
+        if (!empty($allow_extensions) && !in_array($ext, $allow_extensions)) {
+           $response = [
+                'is_success' => false,
+                'message' => 'File with extension .'. $ext . ' not allowed to upload.'
+            ];
+        } else if (!in_array($ext, $this->allowFileUploadExtensions())) {
+           $response = [
+                'is_success' => false,
+                'message' => 'File with extension .'. $ext . ' not allowed to upload.'
+            ];
+        }
+
+        return $response;
+    }
+
+    function uploadFileNew($file, $filepath = null, $allow_extensions = [], $max_size = null ) : array
+    {
+        $response = [
+            'is_success' => false,
+            'message' => 'File not found'
+        ];
+
+        if (isset($file['name']) && !empty($file['name'])) {
+            $validate_file_extension = $this->validateFileExtension($file['name'], $allow_extensions);
+            if (!$validate_file_extension['is_success']) {
+                return $validate_file_extension;
+            }
+
+            $validate_file_size = $this->validateFileSize($file['size'], $max_size);
+            if (!$validate_file_size['is_success']) {
+                return $validate_file_size;
+            }
+
+            if(!$filepath) {
+                $controller_name = strtolower($this->getController()->name);
+                $filepath = WWW_ROOT.'uploads'.DS.$controller_name;
+            }
+
+            if (!is_dir($filepath) && !is_file($filepath)) {
+                $this->createFolder($filepath,'0777');
+            }
+
+            //set image name
+            $this->setUniqueName($filepath, $file['name']);
+            $filepath = $filepath.DS.$this->_uploadimgname;
+
+            if ($this->upload($file['tmp_name'], $filepath)) {
+                $response = [
+                    'is_success' => true,
+                    'message' => 'File uploaded successfully'
+                ];
+            } else {
+                $response = [
+                    'is_success' => false,
+                    'message' => 'File not uploaded. Please try again.'
+                ];
+            }
+        }
+        return $response;
+    }
+
 	function uploadfile( $file, $filepath = null, $sub_directory = null, $item_type = null, $subdomain = null, $is_secure = null )
 	{
 //        $item_type can be audio, reports, tmp, imports, pdf
