@@ -9,7 +9,7 @@ if (!empty($_FILES)) {
     $file_handler = new FileHandler();
     $upload_file_path = __DIR__ . '/uploads/';
     $file = $_FILES['attachment'];
-    $file_upload = $file_handler->uploadFileNew($file, $upload_file_path);
+    $file_upload = $file_handler->uploadFile($file, $upload_file_path);
     echo "<pre>";
     print_r($file_upload);
     echo "</pre>";

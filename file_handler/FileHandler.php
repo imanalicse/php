@@ -2,7 +2,9 @@
 
 class FileHandler
 {
-    function uploadFileNew($file, $filepath = null, $allow_extensions = [], $max_size = null, $new_file_name = null) : array
+    public $_uploadimgname;
+
+    function uploadFile($file, $filepath = null, $allow_extensions = [], $max_size = null, $new_file_name = null) : array
     {
         $response = [
             'is_success' => false,
@@ -10,21 +12,20 @@ class FileHandler
         ];
 
         if (isset($file['name']) && !empty($file['name'])) {
-//            $validate_file_extension = $this->validateFileExtension($file['name'], $allow_extensions);
-//            if (!$validate_file_extension['is_success']) {
-//                return $validate_file_extension;
-//            }
-//
-//            $validate_file_size = $this->validateFileSize($file['size'], $max_size);
-//            if (!$validate_file_size['is_success']) {
-//                return $validate_file_size;
-//            }
-//
-//            if(!$filepath) {
-//                $controller_name = strtolower($this->getController()->name);
-//                $filepath = WWW_ROOT.'uploads'.DS.$controller_name;
-//            }
-//
+            $validate_file_extension = $this->validateFileExtension($file['name'], $allow_extensions);
+            if (!$validate_file_extension['is_success']) {
+                return $validate_file_extension;
+            }
+
+            $validate_file_size = $this->validateFileSize($file['size'], $max_size);
+            if (!$validate_file_size['is_success']) {
+                return $validate_file_size;
+            }
+
+            if(!$filepath) {
+                $filepath = __DIR__ . '/uploads';
+            }
+
             if (!is_dir($filepath) && !is_file($filepath)) {
                 $this->createFolder($filepath,'0775');
             }
@@ -53,6 +54,114 @@ class FileHandler
                 ];
             }
         }
+        return $response;
+    }
+
+    function allowFileUploadExtensions() : array {
+        return [
+            'gif',
+            'png',
+            'jpg',
+            'jpeg',
+            'tiff',
+            'tif',
+            'pdf',
+            'csv',
+            'xls',
+            'xlsx',
+            'doc',
+            'docx',
+            'rtf',
+            'ppt',
+            'pptx',
+            'mp3',
+            'mp4',
+            'mpeg',
+            'mpg',
+            'mpeg',
+            'wma',
+            'wav',
+            'avi',
+            'mov',
+            'acc',
+            'flac',
+            'm4a',
+            'ai',
+            'psd',
+        ];
+    }
+
+    function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824)
+        {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        }
+        elseif ($bytes >= 1048576)
+        {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        }
+        elseif ($bytes >= 1024)
+        {
+            $bytes = number_format($bytes / 1024, 2) . ' KB';
+        }
+        elseif ($bytes > 1)
+        {
+            $bytes = $bytes . ' bytes';
+        }
+        elseif ($bytes == 1)
+        {
+            $bytes = $bytes . ' byte';
+        }
+        else
+        {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
+    }
+
+    function maxFileSize() {
+        // 1MB = 1048576 Bytes (1*1024*1024)
+        $size = 20 * 1048576; // 20MB
+        return $size;
+    }
+
+    function validateFileSize($file_size, $max_size = null) : array {
+        $response = ['is_success' => true, 'message' => 'File size is ok'];
+         $file_size = is_array($file_size) && isset($file_size['size'])  ? $file_size['size'] : $file_size;
+         $allow_max_size = $this->maxFileSize();
+         if ($file_size == 0) {
+            $response = ['is_success' => false, 'message' => 'File size 0 is not allowed'];
+         } else if ($max_size && $file_size > $max_size) {
+            $size_with_unit = $this->formatSizeUnits($max_size);
+            $response = ['is_success' => false, 'message' => 'File size can not be more than '. $size_with_unit];
+         } else if ($file_size > $allow_max_size) {
+            $size_with_unit = $this->formatSizeUnits($max_size);
+            $response = ['is_success' => false, 'message' => 'File size can not be more than '. $size_with_unit];
+         }
+         return $response;
+    }
+
+    function validateFileExtension($file, $allow_extensions = []): array {
+        $response = [
+            'is_success' => true,
+            'message' => 'File extension allowed.'
+        ];
+        $file_name = basename($file);
+        $ext = strtolower($this->getExt($file_name));
+        if (!empty($allow_extensions) && !in_array($ext, $allow_extensions)) {
+           $response = [
+                'is_success' => false,
+                'message' => 'Wrong file format. Please upload the file in proper format ('.implode(', ', $allow_extensions).').'
+            ];
+        } else if (!in_array($ext, $this->allowFileUploadExtensions())) {
+           $response = [
+                'is_success' => false,
+                'message' => 'File with extension .'. $ext . ' not allowed to upload.'
+            ];
+        }
+
         return $response;
     }
 
@@ -151,7 +260,7 @@ class FileHandler
     }
 
     function getExt($file) {
-        $ext = trim(substr($file,strrpos($file,".")+1,strlen($file)));
+        $ext = pathinfo($file, PATHINFO_EXTENSION);
         return $ext;
     }
 
@@ -209,21 +318,12 @@ class FileHandler
 
     function setUniqueName ($filePath, $fileName) {
         $fileName = $this->makeSafe($fileName);
-        if( file_exists($filePath.DS.$fileName) ){
+        if (file_exists($filePath . DIRECTORY_SEPARATOR . $fileName)) {
             $this->_uploadimgname = time() . "_".$fileName;
         }
         else{
             $this->_uploadimgname =  $fileName;
         }
-    }
-
-    function setFileUniqueName ($filePath, $fileName) {
-        $fileName = $this->makeSafe($fileName);
-        $unique_name = $fileName;
-        if (file_exists($filePath . DIRECTORY_SEPARATOR . $fileName)) {
-            $unique_name = time() . "_" . $fileName;
-        }
-        return $unique_name;
     }
 
     function makeSafe($file) {
