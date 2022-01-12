@@ -2,6 +2,84 @@
 
 class FileHandler
 {
+    function uploadFileNew($file, $filepath = null, $allow_extensions = [], $max_size = null, $new_file_name = null) : array
+    {
+        $response = [
+            'is_success' => false,
+            'message' => 'File not found'
+        ];
+
+        if (isset($file['name']) && !empty($file['name'])) {
+//            $validate_file_extension = $this->validateFileExtension($file['name'], $allow_extensions);
+//            if (!$validate_file_extension['is_success']) {
+//                return $validate_file_extension;
+//            }
+//
+//            $validate_file_size = $this->validateFileSize($file['size'], $max_size);
+//            if (!$validate_file_size['is_success']) {
+//                return $validate_file_size;
+//            }
+//
+//            if(!$filepath) {
+//                $controller_name = strtolower($this->getController()->name);
+//                $filepath = WWW_ROOT.'uploads'.DS.$controller_name;
+//            }
+//
+            if (!is_dir($filepath) && !is_file($filepath)) {
+                $this->createFolder($filepath,'0775');
+            }
+
+            //set image name
+            $new_file_name = $new_file_name ?? $file['name'];
+            $this->setUniqueName($filepath, $new_file_name);
+            $filepath = $filepath. DS . $this->_uploadimgname;
+
+            if ($this->upload($file['tmp_name'], $filepath)) {
+                $response = [
+                    'is_success' => true,
+                    'message' => 'File uploaded successfully'
+                ];
+            } else {
+                $baseDir = dirname($filepath);
+                $response = [
+                    'is_success' => false,
+                    'message' => 'File not uploaded. Please try again.',
+
+                    //debug data: we should not be here in live!
+                    'is_writable' => is_writeable($baseDir),
+                    'src'  => $file['tmp_name'],
+                    'dest' => $filepath,
+                    'test' => 0
+                ];
+            }
+        }
+        return $response;
+    }
+
+    function upload($src, $dest){
+        $ret = false;
+        $dest = $this->clean($dest);
+        $baseDir = dirname($dest);
+        if (is_writeable($baseDir) && move_uploaded_file($src, $dest)) {
+            $ret = true;
+        }
+        return $ret;
+    }
+
+    function clean($path, $ds=DS)
+    {
+        $path = trim($path);
+
+        if (empty($path)) {
+            $path = WWW_ROOT;
+        }
+        else {
+            $path = preg_replace('#[/\\\\]+#', $ds, $path);
+        }
+
+        return $path;
+    }
+
     function download($abspath)
     {
         ob_start();
@@ -126,6 +204,16 @@ class FileHandler
             $fp = fopen($file, "w+");
             fwrite($fp, $buffer);
             fclose($fp);
+        }
+    }
+
+    function setUniqueName ($filePath, $fileName) {
+        $fileName = $this->makeSafe($fileName);
+        if( file_exists($filePath.DS.$fileName) ){
+            $this->_uploadimgname = time() . "_".$fileName;
+        }
+        else{
+            $this->_uploadimgname =  $fileName;
         }
     }
 
