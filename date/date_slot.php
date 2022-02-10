@@ -11,11 +11,11 @@
             $start = $startTime;
             $end = date('Y-m-d',strtotime('+'.$interval, strtotime($startTime)));
             $startTime = date('Y-m-d',strtotime('+'.$interval, strtotime($startTime)));
-            $i++;
             if(strtotime($startTime) <= strtotime($endTime)){
                 $time[$i]['start_date'] = $start;
                 //$time[$i]['end_date'] = $end;
                 $time[$i]['end_date'] = date("Y-m-t", strtotime($start));
+                $i++;
             }
         }
         return $time;
