@@ -15,7 +15,7 @@
             if(strtotime($startTime) <= strtotime($endTime)){
                 $time[$i]['start_date'] = $start;
                 //$time[$i]['end_date'] = $end;
-                $time[$i]['end_date'] = date("y-m-t", strtotime($start));
+                $time[$i]['end_date'] = date("Y-m-t", strtotime($start));
             }
         }
         return $time;
