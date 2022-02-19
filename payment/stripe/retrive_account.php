@@ -8,7 +8,7 @@ $account_retrieve_response = '';
 
 try {
  $account_retrieve_response = $stripe->accounts->retrieve(
-    'acct_1KTQdn2HGZgo5oHQ',
+    getenv("STRIPE_ACCOUNT_ID"),
     []
  );
 } catch (Exception $exception) {
