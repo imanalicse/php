@@ -41,7 +41,7 @@ class FunctionsUtils
         );
     }
 
-   public static function shortenNumberFormat($n, int $precision = 1, bool $plus = false) : string
+   public static function shortenNumberFormat($n, int $precision = 1) : string
     {
         $one_thousand = 1000;
         $one_million  = 1000000;
@@ -52,20 +52,49 @@ class FunctionsUtils
         $suffix = '';
 
         if ($n >= $one_thousand && $n < $one_million) {
-            $number_format = $plus ? floor( $n / $one_thousand) : number_format($n / $one_thousand, $precision);
-            $suffix = $plus ? 'K+' : 'K';
+            $number_format = number_format($n / $one_thousand, $precision);
+            $suffix = 'K';
         }
         elseif ($n >= $one_million && $n < $one_billion) {
-            $number_format = $plus ? floor($n / $one_million) : number_format($n / $one_million, $precision);
-            $suffix = $plus ? 'M+' : 'M';
+            $number_format = number_format($n / $one_million, $precision);
+            $suffix = 'M';
         }
         elseif ($n >= $one_billion && $n < $one_trillion) {
-            $number_format = $plus ? floor($n / $one_billion) : number_format($n / $one_billion, $precision);
-            $suffix = $plus ? 'B+' : 'B';
+            $number_format = number_format($n / $one_billion, $precision);
+            $suffix = 'B';
         }
         elseif ($n >= $one_trillion) {
-            $number_format = $plus ? floor($n / $one_trillion) : number_format($n / $one_trillion, $precision);
-            $suffix = $plus ? 'T+' : 'T';
+            $number_format = number_format($n / $one_trillion, $precision);
+            $suffix = 'T';
+        }
+        return $number_format . $suffix;
+    }
+
+    public static function shortenNumberFormatPlus($n) : string
+    {
+        $one_thousand = 1000;
+        $one_million  = 1000000;
+        $one_billion  = 1000000000;
+        $one_trillion = 1000000000000;
+
+        $number_format = $n;
+        $suffix = '';
+
+        if ($n >= $one_thousand && $n < $one_million) {
+            $number_format = floor( $n / $one_thousand);
+            $suffix = 'K+';
+        }
+        elseif ($n >= $one_million && $n < $one_billion) {
+            $number_format = floor($n / $one_million);
+            $suffix = 'M+';
+        }
+        elseif ($n >= $one_billion && $n < $one_trillion) {
+            $number_format = floor($n / $one_billion);
+            $suffix = 'B+';
+        }
+        elseif ($n >= $one_trillion) {
+            $number_format = floor($n / $one_trillion);
+            $suffix = 'T+';
         }
         return $number_format . $suffix;
     }
