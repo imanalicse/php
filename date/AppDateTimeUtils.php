@@ -1,4 +1,10 @@
 <?php
+abstract class DateIntervalEnum {
+    const DAILY = "daily";
+    const WEEKLY = "weekly";
+    const MONTHLY = "monthly";
+}
+
 class AppDateTimeUtils
 {
     public static function firstDayNameOfWeek() : string {
@@ -94,11 +100,24 @@ class AppDateTimeUtils
 
         return $date_slot;
     }
+
+    public static function generateDateRanges($start_date, $end_date, $interval = DateIntervalEnum::MONTHLY): array
+    {
+        $date_ranges = [];
+        switch ($interval) {
+            case DateIntervalEnum::MONTHLY:
+            $date_ranges = self::generateMonthlyDateRanges($start_date, $end_date);
+            break;
+            case DateIntervalEnum::WEEKLY:
+            $date_ranges = self::generateWeeklyDateRanges($start_date, $end_date);
+            break;
+        }
+        return $date_ranges;
+    }
 }
 $start_date = '2021-11-16';
 $end_date = '2022-02-02';
-$date_slot = AppDateTimeUtils::generateWeeklyDateRanges($start_date, $end_date);
-//$date_slot = AppDateTimeUtils::generateMonthlyDateRanges($start_date, $end_date);
+$date_ranges = AppDateTimeUtils::generateDateRanges($start_date, $end_date, DateIntervalEnum::MONTHLY);
 echo "<pre>";
-print_r($date_slot);
+print_r($date_ranges);
 echo "</pre>";
