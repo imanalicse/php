@@ -19,6 +19,10 @@ class FunctionsUtils
         return $query_string_array;
     }
 
+    public static function redirect($url) {
+        header('Location: '.$url);
+    }
+
     public static function uuid(): string
     {
         return sprintf(
