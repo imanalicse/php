@@ -1,4 +1,6 @@
 <?php
+namespace App\Utils;
+
 class DataTypes
 {
     public function parseBooleanValue($val) {

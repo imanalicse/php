@@ -1,4 +1,6 @@
 <?php
+namespace App\Utils;
+
 class EncryptionDecryption
 {
     private static string $security_salt = "900f8c6d3892af94fa956a5b501b68a74d4335af";
