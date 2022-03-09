@@ -3,6 +3,17 @@ namespace App\Utils;
 
 class FunctionsUtils
 {
+    public static function getCurrentUrl() : string {
+        $request_scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+        $http_host = $_SERVER['HTTP_HOST'];
+        $request_uri = $_SERVER['REQUEST_URI'];
+        return $request_scheme . '//' . $http_host . $request_uri;
+    }
+
+    public static function redirect($url) {
+        header('Location: '.$url);
+    }
+
     public static function getQueryParamValue($url, $name) {
         preg_match("/[\?&]".$name."=([^&#]*)/", $url, $match);
         if(!empty($match) && isset($match[1])){
@@ -15,10 +26,6 @@ class FunctionsUtils
         $query_string = parse_url($url, PHP_URL_QUERY);
         parse_str($query_string, $query_string_array);
         return $query_string_array;
-    }
-
-    public static function redirect($url) {
-        header('Location: '.$url);
     }
 
     public static function uuid(): string
