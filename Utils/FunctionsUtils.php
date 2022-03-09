@@ -4,7 +4,7 @@ namespace App\Utils;
 class FunctionsUtils
 {
     public static function getCurrentUrl() : string {
-        $request_scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+        $request_scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
         $http_host = $_SERVER['HTTP_HOST'];
         $request_uri = $_SERVER['REQUEST_URI'];
         return $request_scheme . '//' . $http_host . $request_uri;
