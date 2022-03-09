@@ -3,6 +3,20 @@ namespace App\Utils;
 
 class FunctionsUtils
 {
+    public static function uniqueMultidimensionalArray( array $array, $key) : array {
+        $temp_array = [];
+        $i = 0;
+        $key_array = [];
+        foreach($array as $val) {
+            if (!in_array($val[$key], $key_array)) {
+                $key_array[$i] = $val[$key];
+                $temp_array[$i] = $val;
+                $i++;
+            }
+        }
+        return $temp_array;
+    }
+
     public static function getCurrentUrl() : string {
         $request_scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
         $http_host = $_SERVER['HTTP_HOST'];
