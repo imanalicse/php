@@ -35,6 +35,21 @@ class AppDateTimeUtils
         return $date_periods;
     }
 
+    public static function generateDailyDateRanges($start_date, $end_date): array {
+        $date_obj = date_create($start_date);
+        $today = $date_obj->format("Y-m-d");
+        $next_day = date('Y-m-d', strtotime($today.' +1 day'));
+
+        $date_ranges = [];
+        $date_ranges[] = ['start_date' => $today, 'end_date' => $today];
+        while ($end_date >= $next_day) {
+            $today = $next_day;
+            $date_ranges[] = ['start_date' => $today, 'end_date' => $today];
+            $next_day = date('Y-m-d', strtotime($today.' +1 day'));
+        }
+        return $date_ranges;
+    }
+
     public static function generateWeeklyDateRanges($start_date, $end_date): array {
         $week_start_date_of_start_date = self::weekStartDateOfSpecificDate($start_date);
         $week_end_date_of_start_date = self::weekEndDateOfSpecificDate($start_date);
@@ -106,18 +121,22 @@ class AppDateTimeUtils
         $date_ranges = [];
         switch ($interval) {
             case DateIntervalEnum::MONTHLY:
-            $date_ranges = self::generateMonthlyDateRanges($start_date, $end_date);
-            break;
+                $date_ranges = self::generateMonthlyDateRanges($start_date, $end_date);
+                break;
             case DateIntervalEnum::WEEKLY:
-            $date_ranges = self::generateWeeklyDateRanges($start_date, $end_date);
-            break;
+                $date_ranges = self::generateWeeklyDateRanges($start_date, $end_date);
+                break;
+            case DateIntervalEnum::DAILY:
+                $date_ranges = self::generateDailyDateRanges($start_date, $end_date);
+                break;
         }
         return $date_ranges;
     }
 }
-$start_date = '2021-11-16';
-$end_date = '2022-02-02';
-$date_ranges = AppDateTimeUtils::generateDateRanges($start_date, $end_date, DateIntervalEnum::MONTHLY);
+
+$start_date = '2022-02-25';
+$end_date = '2022-03-10';
+$date_ranges = AppDateTimeUtils::generateDateRanges($start_date, $end_date, DateIntervalEnum::DAILY);
 echo "<pre>";
 print_r($date_ranges);
 echo "</pre>";
