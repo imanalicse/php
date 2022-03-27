@@ -1,5 +1,5 @@
 <?php
-
+namespace App\FileHandler;
 class FileHandler
 {
     public $_uploadimgname;

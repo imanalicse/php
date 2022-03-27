@@ -5,6 +5,7 @@ use PHPExcel;
 use PHPExcel_IOFactory;
 use PHPExcel_Cell;
 use PHPExcel_Shared_Date;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class ExcelHandlerComponent
 {
