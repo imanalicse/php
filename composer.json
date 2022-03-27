@@ -1,7 +1,8 @@
 {
     "require": {
         "guzzlehttp/guzzle": "7.0",
-        "sendgrid/sendgrid": "^7.11"
+        "sendgrid/sendgrid": "^7.11",
+        "phpoffice/phpspreadsheet": "^1.22"
     },
     "autoload": {
         "psr-4": {

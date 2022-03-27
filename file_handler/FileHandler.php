@@ -33,7 +33,7 @@ class FileHandler
             //set image name
             $new_file_name = $new_file_name ?? $file['name'];
             $this->setUniqueName($filepath, $new_file_name);
-            $filepath = $filepath. DS . $this->_uploadimgname;
+            $filepath = $filepath. DIRECTORY_SEPARATOR . $this->_uploadimgname;
 
             if ($this->upload($file['tmp_name'], $filepath)) {
                 $response = [
@@ -175,7 +175,7 @@ class FileHandler
         return $ret;
     }
 
-    function clean($path, $ds=DS)
+    function clean($path, $ds = DIRECTORY_SEPARATOR)
     {
         $path = trim($path);
 

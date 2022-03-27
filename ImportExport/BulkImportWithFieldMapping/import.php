@@ -1,4 +1,6 @@
-<?php include('header.php'); ?>
+<?php
+include('header.php');
+?>
 <div class="workspace-dashboard page page-forms-elements">
     <div class="page-wrap">
         <div class="container-fluid">

@@ -1,5 +1,5 @@
 var $modal;
-const base_url = 'http://localhost/codehub/php/import-export/BulkImportWithFieldMapping';
+const base_url = 'http://localhost/codehub/php/ImportExport/BulkImportWithFieldMapping';
 
 jQuery(document).ready(function(){
     //loadPreDefinedFieldMapping();
@@ -64,6 +64,7 @@ function importBind() {
                 $(".import-file-box").hide();
             },
             success: function (resp) {
+                console.log('resp', resp);
                 var response = JSON.parse(resp);
                 if (response.status == true) {
                     loadFieldMapping();
@@ -82,7 +83,7 @@ function importBind() {
 
 function loadFieldMapping() {
     $.ajax({
-        url: '/admin/student-importer/fieldMapping',
+        url: base_url + '/ajax/field_mapping.php',
         type: 'POST',
         data: {},
         cache: false,
