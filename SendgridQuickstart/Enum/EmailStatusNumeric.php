@@ -1,10 +1,6 @@
 <?php
-namespace App\Enum\Email;
+namespace App\SendgridQuickstart\Enum;
 
-/**
- * Class EmailStatusNumeric
- * @package App\Enum\Email
- */
 abstract class EmailStatusNumeric {
     const IS_NO_ACTION = 0;
     const IS_SENT = 1;

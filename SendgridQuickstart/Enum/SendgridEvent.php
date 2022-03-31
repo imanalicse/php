@@ -1,10 +1,6 @@
 <?php
-namespace App\Enum\Email;
+namespace App\SendgridQuickstart\Enum;
 
-/**
- * Class SendgridEvent
- * @package App\Enum\Email
- */
 abstract class SendgridEvent {
     const PROCESSED = 'processed';
     const DEFERRED = 'deferred';

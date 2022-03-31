@@ -1,5 +1,5 @@
 <?php
-namespace App\Enum\Email;
+namespace App\SendgridQuickstart\Enum;
 
 abstract class EmailTransport {
     const SENDGRID = 'sendgrid';
