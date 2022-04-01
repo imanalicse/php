@@ -39,9 +39,9 @@ class EmailAction
                 $tracker_data['model_name'] = EmailTrackerModel::ORDER;
                 $tracker_data['email_type'] = EmailType::ORDER;
                 $tracker_data['to_email'] = strtolower($email_to);
-                $email_tracker = $this->saveEmailTracker($sendgrid_response, $tracker_data);
+                $email_tracker_row_d = $this->saveEmailTracker($sendgrid_response, $tracker_data);
                 echo "<pre>";
-                print_r($email_tracker);
+                print_r($email_tracker_row_d);
                 echo "</pre>";
             }
             else {
@@ -61,7 +61,7 @@ class EmailAction
     }
 
 
-    public function saveEmailTracker($send_email_response, $receive_data)
+    public function saveEmailTracker($send_email_response, $receive_data) : ?int
     {
         try {
             $data = [];
@@ -79,32 +79,11 @@ class EmailAction
             $data['to_email'] = $receive_data['to_email'];
             $data['is_debug'] = $receive_data['is_debug'] ?? 0;
 
-            $mysqli = new mysqli("localhost","root","","imanalicse");
-            if ($mysqli -> connect_errno) {
-              echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
-              exit();
-            }
-
-            $sql = "SELECT Lastname, Age FROM Persons ORDER BY Lastname";
-            $result = $mysqli -> query($sql);
-            // Fetch all
-            $result -> fetch_all(MYSQLI_ASSOC);
-            // Free result set
-            $result -> free_result();
-            $mysqli -> close();
-
-
-//            $entity = $this->EmailTrackers->newEmptyEntity();
-//            $entity = $this->EmailTrackers->patchEntity($entity, $data);
-//            $email_tracker = $this->EmailTrackers->save($entity);
-//            if ($email_tracker) {
-//                return $email_tracker->id;
-//            }
+            $query = new QueryBuilder();
+            return $query->insert("sendgrid_email_trackers", $data);
         } catch (\Exception $exception) {
-            echo $exception->getMessage();
-            //$this->controller->saveLog('', 'email_tracker_error', 'Error: Unable to save EmailTrackers:' . $exception->getMessage());
+            return $exception->getMessage();
         }
-        return null;
     }
 
     public function parseSendGridSendEmailResponse($sendgrid_response) {

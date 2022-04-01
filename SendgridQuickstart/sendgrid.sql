@@ -1,10 +1,12 @@
 CREATE TABLE IF NOT EXISTS sendgrid_email_trackers (
     `id` int(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     `model_id` int(11) NOT NULL,
+    `model_name` VARCHAR(100) NOT NULL COLLATE 'utf8_unicode_ci',
     `email_type` varchar(100) DEFAULT NULL,
     `email_transport` varchar(100) DEFAULT NULL,
     `multiple_email_model_name` varchar(100) DEFAULT NULL,
     `multiple_email_model_id` int(11) DEFAULT NULL,
+    `to_email` varchar(100) NOT NULL,
     `tracker_id` varchar(100) NOT NULL,
     `status_code` int(11) DEFAULT NULL,
     `response` text DEFAULT NULL,
@@ -16,9 +18,10 @@ CREATE TABLE IF NOT EXISTS sendgrid_email_trackers (
     `is_deferred` tinyint(1) NOT NULL DEFAULT 0,
     `is_bounced` tinyint(1) NOT NULL DEFAULT 0,
     `is_dropped` tinyint(1) NOT NULL DEFAULT 0,
+    `is_debug` tinyint(1) NOT NULL DEFAULT 0,
     `sent_email_response` LONGTEXT DEFAULT NULL,
-    `created` datetime DEFAULT NULL,
-    `modified` datetime DEFAULT NULL
+    `created` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `modified` DATETIME ON UPDATE CURRENT_TIMESTAMP
 )  ENGINE=INNODB AUTO_INCREMENT=1;
 
 CREATE TABLE `shared_s3v3_send_emails` (

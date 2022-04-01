@@ -20,6 +20,7 @@ class QueryBuilder
     }
 
     public function insert(string $table_name, array $data) {
+        $result = 0;
         try {
             $field_string = implode(',', array_keys($data));
             $values = array_map(function ($value, $key) {
@@ -27,7 +28,9 @@ class QueryBuilder
             }, array_values($data), array_keys($data));
             $value_string = implode(',', $values);
             $sql = "INSERT INTO $table_name ( $field_string ) VALUE ( $value_string )";
-            $result = $this->connection->query($sql);
+            if ($this->connection->query($sql)) {
+                $result =$this->connection->insert_id;
+            }
         } catch (Exception $exception) {
             $result =  $exception->getMessage();
         }
