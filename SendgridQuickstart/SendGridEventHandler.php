@@ -1,21 +1,16 @@
 <?php
-namespace App\Controller\Component;
+namespace App\SendgridQuickstart;
 
-use App\Enum\Email\EmailStatusNumeric;
-use App\Enum\Email\EmailType;
-use App\Enum\Email\SendgridEvent;
-use Cake\Datasource\ConnectionManager;
-use Cake\Event\Event;
+use App\Logger\Log;
 
 class SendGridEventHandler
 {
     public function updateMailTrackerByEvent($event) {
         try {
-            $this->controller->saveLog('', 'email_tracker', "===Event====");
-            $this->controller->saveLog('', 'email_tracker', $event);
+            Log::write("===Event====", 'email_tracker');
+            Log::write($event, 'email_tracker');
             $sg_message_id = $event['sg_message_id'];
             list($tracker_id) = explode('.', $sg_message_id);
-            //$tracker_id = '2J89f2BOQUO-Moh3SmctFw';
             $this->EmailTrackers = $this->getDbTable('EmailTrackers');
             $conditions = [
                 'tracker_id' => $tracker_id,
@@ -37,19 +32,6 @@ class SendGridEventHandler
             $this->controller->saveLog('', 'email_tracker', $email_tracker);
             if (!empty($email_tracker)) {
                 $this->saveEmailTrackerEvent($event, $email_tracker->id);
-//                $send_order_email = '';
-//                $checking_email_address = '';
-//                if ($email_tracker['email_type'] == EmailType::ORDER) {
-//                    if (!empty($email_tracker['multiple_email_model_id'])) {
-//                        try {
-//                            $this->SendOrderMails = $this->getDbTable('SendOrderMails');
-//                            $send_order_email = $this->SendOrderMails->get($email_tracker['multiple_email_model_id']);
-//                            $checking_email_address = strtolower($send_order_email->to_email);
-//                        } catch (\Exception $exception) {
-//                            $this->controller->saveLog('', 'email_tracker_error', 'Error: not found SendOrderMails: line=' . __LINE__ . $exception->getMessage());
-//                        }
-//                    }
-//                }
 
                 $tracker_email = strtolower($email_tracker['to_email']);
                 $event_email = strtolower($event['email']);

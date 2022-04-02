@@ -12,7 +12,7 @@ class QueryBuilder
         $this->connection = DbConnection::connect("localhost", "root", "", "imanalicse");
     }
 
-    public function fetchAll($query, int $mode = MYSQLI_NUM) {
+    public function fetchAll($query, int $mode = MYSQLI_ASSOC) {
         $result = $this->connection->query($query);
         $rows = $result->fetch_all($mode);
         $this->closeConnection();
