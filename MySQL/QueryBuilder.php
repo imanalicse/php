@@ -12,6 +12,44 @@ class QueryBuilder
         $this->connection = DbConnection::connect("localhost", "root", "", "imanalicse");
     }
 
+    public function get(string $table) : QueryBuilder {
+        $this->fetch_all_data = "SELECT * FROM $table";
+        return $this;
+    }
+
+    public function condition(string $condition) : QueryBuilder {
+        $this->fetch_all_data .= " WHERE $condition";
+        return $this;
+    }
+
+    public function orderBy(string $orderBy): QueryBuilder {
+        $this->fetch_all_data .= " ORDER BY $orderBy";
+        return $this;
+    }
+
+    public function limit(int $limit): QueryBuilder {
+        $this->fetch_all_data .= " LIMIT $limit";
+        return $this;
+    }
+
+     public function findAll() {
+        $result = $this->connection->query($this->fetch_all_data);
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+        $this->closeConnection();
+        return $rows;
+    }
+
+    public function find($print_query = false) {
+        $this->fetch_all_data .= " LIMIT 1";
+        if ($print_query) {
+            echo $this->fetch_all_data;
+        }
+        $result = $this->connection->query($this->fetch_all_data);
+        $rows = $result->fetch_assoc();
+        $this->closeConnection();
+        return $rows;
+    }
+
     public function fetchAll($query, int $mode = MYSQLI_ASSOC) {
         $result = $this->connection->query($query);
         $rows = $result->fetch_all($mode);
@@ -42,7 +80,7 @@ class QueryBuilder
         return $this->connection->query($query);
     }
 
-    public function closeConnection() {
+    protected function closeConnection() {
         $this->connection->close();
     }
 }
