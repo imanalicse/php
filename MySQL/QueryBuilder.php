@@ -17,12 +17,20 @@ class QueryBuilder
         return $this;
     }
 
-    public function condition(string $condition) : QueryBuilder {
-        $this->fetch_all_data .= " WHERE $condition";
+    public function where($conditions = null) : QueryBuilder {
+        $new_conditions = [];
+        if (!empty($conditions)) {
+            foreach ($conditions as $key => $value) {
+                $comparison_operator = strpos($key, ">") ? "" : " = ";
+                $new_conditions[] = $key .' '.$comparison_operator. "'".$value ."'";
+            }
+            $condition_string = implode(' AND ', $new_conditions);
+            $this->fetch_all_data .= " WHERE $condition_string";
+        }
         return $this;
     }
 
-    public function orderBy(string $orderBy): QueryBuilder {
+    public function order(string $orderBy): QueryBuilder {
         $this->fetch_all_data .= " ORDER BY $orderBy";
         return $this;
     }
@@ -32,7 +40,10 @@ class QueryBuilder
         return $this;
     }
 
-     public function findAll() {
+     public function findAll($print_query = false) {
+        if ($print_query) {
+            echo $this->fetch_all_data;
+        }
         $result = $this->connection->query($this->fetch_all_data);
         $rows = $result->fetch_all(MYSQLI_ASSOC);
         $this->closeConnection();
@@ -46,13 +57,6 @@ class QueryBuilder
         }
         $result = $this->connection->query($this->fetch_all_data);
         $rows = $result->fetch_assoc();
-        $this->closeConnection();
-        return $rows;
-    }
-
-    public function fetchAll($query, int $mode = MYSQLI_ASSOC) {
-        $result = $this->connection->query($query);
-        $rows = $result->fetch_all($mode);
         $this->closeConnection();
         return $rows;
     }
