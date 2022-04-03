@@ -15,49 +15,21 @@ class EmailAction
         (new DotEnv(__DIR__ . '/.env'))->load();
     }
 
-    public function sendEmail()
-    {
-        $email_to = getenv('TO_EMAIL_ADDRESS');
 
+    public function sendEmail($email_to, $subject, $content, $attachments = [])
+    {
         $email = new \SendGrid\Mail\Mail();
         $email->setFrom(getenv('SENDGRID_FROM_EMAIL_ADDRESS'), getenv('SENDGRID_FROM_NAME'));
-        $email->setSubject("Sending with sendgrid");
-        $email->addTo($email_to, getenv('TO_USER_NAME'));
-        $email->addContent(
-            "text/html", "Hello <strong>". getenv('TO_USER_NAME') ."</strong>,
-                        <p> Thank you for using sendgrid service</p>
-                        "
-        );
+        $email->setSubject($subject);
+        $email->addTo($email_to);
+        $email->addContent("text/html", $content);
         $sendgrid_api_key = getenv('SENDGRID_API_KEY');
         $sendgrid = new \SendGrid($sendgrid_api_key);
         try {
-            $sendgrid_response = $sendgrid->send($email);
-            if ($sendgrid_response->statusCode() == 202) {
-                $sendgrid_response = $this->parseSendGridSendEmailResponse($sendgrid_response);
-                $tracker_data = [];
-                $tracker_data['model_id'] = 100;
-                $tracker_data['model_name'] = EmailTrackerModel::ORDER;
-                $tracker_data['email_type'] = EmailType::ORDER;
-                $tracker_data['to_email'] = strtolower($email_to);
-                $email_tracker_row_d = $this->saveEmailTracker($sendgrid_response, $tracker_data);
-                echo "<pre>";
-                print_r($email_tracker_row_d);
-                echo "</pre>";
-            }
-            else {
-                $body = json_decode($sendgrid_response->body(), true);
-                $errors = $body["errors"];
-                foreach ($errors as $error) {
-                    echo "<pre>";
-                    print_r($error);
-                    echo "</pre>";
-                }
-            }
+            return $sendgrid->send($email);
         } catch (Exception $e) {
-            echo 'Send message exception: '. $e->getMessage() ."<br/>";
+            return 'Send message exception: '. $e->getMessage() ."<br/>";
         }
-
-        die('===End=====');
     }
 
 
