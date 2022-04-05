@@ -7,13 +7,14 @@ use Matrix\Exception;
 class QueryBuilder
 {
     private object $connection;
+    private string $select_query;
 
     public function __construct() {
         $this->connection = DbConnection::connect("localhost", "root", "", "imanalicse");
     }
 
     public function get(string $table) : QueryBuilder {
-        $this->fetch_all_data = "SELECT * FROM $table";
+        $this->select_query = "SELECT * FROM $table";
         return $this;
     }
 
@@ -25,42 +26,45 @@ class QueryBuilder
                 $new_conditions[] = $key .' '.$comparison_operator. "'".$value ."'";
             }
             $condition_string = implode(' AND ', $new_conditions);
-            $this->fetch_all_data .= " WHERE $condition_string";
+            $this->select_query .= " WHERE $condition_string";
         }
         return $this;
     }
 
     public function order(string $orderBy): QueryBuilder {
-        $this->fetch_all_data .= " ORDER BY $orderBy";
+        $this->select_query .= " ORDER BY $orderBy";
         return $this;
     }
 
     public function limit(int $limit): QueryBuilder {
-        $this->fetch_all_data .= " LIMIT $limit";
+        $this->select_query .= " LIMIT $limit";
         return $this;
     }
 
      public function findAll($print_query = false) {
         if ($print_query) {
-            echo $this->fetch_all_data;
+            echo $this->select_query;
         }
-        $result = $this->connection->query($this->fetch_all_data);
+        $result = $this->connection->query($this->select_query);
         $rows = $result->fetch_all(MYSQLI_ASSOC);
         $this->closeConnection();
         return $rows;
     }
 
     public function find($print_query = false) {
-        $this->fetch_all_data .= " LIMIT 1";
+        $this->select_query .= " LIMIT 1";
         if ($print_query) {
-            echo $this->fetch_all_data;
+            echo $this->select_query;
         }
-        $result = $this->connection->query($this->fetch_all_data);
+        $result = $this->connection->query($this->select_query);
         $rows = $result->fetch_assoc();
         $this->closeConnection();
         return $rows;
     }
 
+    /**
+     * @throws Exception
+     */
     public function insert(string $table_name, array $data) {
         $result = 0;
         try {
@@ -73,8 +77,9 @@ class QueryBuilder
             if ($this->connection->query($sql)) {
                 $result =$this->connection->insert_id;
             }
-        } catch (Exception $exception) {
-            $result =  $exception->getMessage();
+        }
+        catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
 
         return $result;
