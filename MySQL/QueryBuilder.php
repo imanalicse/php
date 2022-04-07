@@ -8,6 +8,7 @@ class QueryBuilder
 {
     private object $connection;
     private string $select_query;
+    private string $update_query;
 
     public function __construct() {
         $this->connection = DbConnection::connect("localhost", "root", "", "imanalicse");
@@ -65,7 +66,7 @@ class QueryBuilder
     /**
      * @throws Exception
      */
-    public function insert(string $table_name, array $data) {
+    public function insert(string $table_name, array $data): int {
         $result = 0;
         try {
             $field_string = implode(',', array_keys($data));
@@ -83,6 +84,46 @@ class QueryBuilder
         }
 
         return $result;
+    }
+
+    public function update(string $table_name) : QueryBuilder {
+        $this->update_query = "UPDATE $table_name";
+        return $this;
+    }
+
+    public function setUpdateData(array $data) : QueryBuilder {
+        $new_data = [];
+        foreach ($data as $key => $datum) {
+            $new_data[] = "$key = "."'" .$datum ."'";
+        }
+        $set_data = implode(', ', $new_data);
+        $this->update_query .= " SET $set_data";
+        return $this;
+    }
+
+    public function setUpdateCondition(array $conditions) : QueryBuilder {
+        $new_conditions = [];
+        foreach ($conditions as $key => $datum) {
+            $new_conditions[] = "$key = "."'" .$datum ."'";
+        }
+        $where_data = implode('AND ', $new_conditions);
+        $this->update_query .= "  WHERE $where_data";
+        return $this;
+    }
+
+    public function executeUpdate($debug = false): int {
+        try {
+            if ($debug) {
+                echo $this->update_query;
+            }
+            if ($this->connection->query($this->update_query)) {
+                return 1;
+            }
+        }
+        catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
+        return 0;
     }
 
     public function insertRaw($query) {
