@@ -2,6 +2,9 @@
 namespace App\SendgridQuickstart;
 
 use App\Logger\Log;
+use App\MySQL\QueryBuilder;
+use App\SendgridQuickstart\Enum\EmailType;
+use App\SendgridQuickstart\Enum\SendgridEvent;
 
 class SendGridEventHandler
 {
@@ -11,7 +14,6 @@ class SendGridEventHandler
             Log::write($event, 'email_tracker');
             $sg_message_id = $event['sg_message_id'];
             list($tracker_id) = explode('.', $sg_message_id);
-            $this->EmailTrackers = $this->getDbTable('EmailTrackers');
             $conditions = [
                 'tracker_id' => $tracker_id,
             ];
@@ -23,23 +25,22 @@ class SendGridEventHandler
                 $rgs_model_id = str_replace(['\'', '"'], '', $rgs_model_id);
                 $conditions['model_id'] = $rgs_model_id;
             }
-            //$conditions['to_email'] = strtolower($event['email']);
 
-            $this->controller->saveLog('', 'email_tracker', "Email Tracker Condition for tracker_id=$tracker_id");
-            $this->controller->saveLog('', 'email_tracker', $conditions);
+           Log::write("Email Tracker Condition for tracker_id=$tracker_id", 'email_tracker');
+           Log::write($conditions, 'email_tracker');
 
-            $email_tracker = $this->EmailTrackers->find()->where($conditions)->first();
-            $this->controller->saveLog('', 'email_tracker', $email_tracker);
+            $query_builder = new QueryBuilder();
+            $email_tracker = $query_builder->get("sendgrid_email_trackers")->where($conditions)->find();
+
+            Log::write($email_tracker, 'email_tracker');
             if (!empty($email_tracker)) {
-                $this->saveEmailTrackerEvent($event, $email_tracker->id);
+                $this->saveEmailTrackerEvent($event, $email_tracker["id"]);
 
                 $tracker_email = strtolower($email_tracker['to_email']);
                 $event_email = strtolower($event['email']);
-
-                $this->controller->saveLog('', 'email_tracker', "=tracker_email=$tracker_email, event_email=$event_email");
+                Log::write("=tracker_email=$tracker_email, event_email=$event_email", 'email_tracker');
                 if ($tracker_email == $event_email) {
-                //if ($tracker_email == $event_email || $checking_email_address == $event_email) {
-                    $this->controller->saveLog('', 'email_tracker', '$email_tracker->id='.$email_tracker['id']);
+                    Log::write('$email_tracker->id='.$email_tracker['id'],'email_tracker');
                     $updated_data = [];
                     switch ($event['event']) {
                         case SendgridEvent::DELIVERED:
@@ -64,18 +65,19 @@ class SendGridEventHandler
                             $updated_data['is_dropped'] = 1;
                             break;
                     }
+                    $query_builder = new QueryBuilder();
+                    $query_builder->update("sendgrid_email_trackers")
+                    ->setUpdateData($updated_data)
+                    ->setUpdateCondition(["id" => $email_tracker["id"]])
+                    ->executeUpdate();
 
-                    $email_tracker = $this->EmailTrackers->patchEntity($email_tracker, $updated_data);
-                    $this->EmailTrackers->save($email_tracker);
-
-                    $this->updateEmailStatusForEvent($email_tracker, $event);
-
-                    $this->controller->saveLog('', 'email_tracker', "END of ===updateMailTrackerByEvent====");
+                    //$this->updateEmailStatusForEvent($email_tracker, $event); TODO
                 }
             }
-        } catch (\Exception $exception) {
-            $this->controller->saveLog('', 'email_tracker_error', 'Error: Unable to update EmailTrackers:' . $exception->getMessage());
-            $this->controller->saveLog('', 'email_tracker_error', $event);
+        }
+        catch (\Exception $exception) {
+            Log::write('Error: Unable to update EmailTrackers:' . $exception->getMessage(), 'email_tracker_error');
+            Log::write($event, 'email_tracker_error');
         }
     }
 
@@ -83,18 +85,13 @@ class SendGridEventHandler
         try {
             $data = [];
             $data['email_tracker_id'] = $email_tracker_id;
-            $data['event_name'] = $email_tracker_id;
             $data['event_name'] = $event['event'];
-            $data['event_responses'] = $this->json_encode($event);
+            $data['event_responses'] = json_encode($event);
             $data['created'] = date('Y-m-d H:i:s');
             $data['modified'] = date('Y-m-d H:i:s');
-
-            $this->EmailTrackerEvents = $this->getDbTable('EmailTrackerEvents');
-            $entity = $this->EmailTrackerEvents->newEmptyEntity();
-            $entity = $this->EmailTrackerEvents->patchEntity($entity, $data);
-            $email_tracker_event = $this->EmailTrackerEvents->save($entity);
+            (new QueryBuilder())->insert("sendgrid_email_tracker_events", $data);
         } catch (\Exception $exception) {
-            $this->controller->saveLog('', 'email_tracker_error', 'Error: Unable to save saveEmailTrackerEvent:' . $exception->getMessage());
+           Log::write('Error: Unable to save saveEmailTrackerEvent:' . $exception->getMessage(), 'email_tracker_error');
         }
     }
 

@@ -46,6 +46,6 @@ CREATE TABLE IF NOT EXISTS sendgrid_email_tracker_events (
     `sendgrid_email_tracker_id` int(11) NOT NULL,
     `event_name` varchar(100) NOT NULL,
     `event_responses` text DEFAULT NULL,
-    `created` datetime DEFAULT NULL,
-    `modified` datetime DEFAULT NULL
+    `created` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `modified` DATETIME ON UPDATE CURRENT_TIMESTAMP
 )  ENGINE=INNODB AUTO_INCREMENT=1;
