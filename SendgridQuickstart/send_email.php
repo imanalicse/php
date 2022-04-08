@@ -1,9 +1,9 @@
 <?php
 
 require '../vendor/autoload.php';
-use App\DotEnv;
-use App\SendgridQuickstart\EmailAction;
+
 use App\MySQL\QueryBuilder;
+use App\SendgridQuickstart\EmailAction;
 use App\SendgridQuickstart\Enum\EmailTrackerModel;
 use App\SendgridQuickstart\Enum\EmailType;
 
@@ -14,12 +14,16 @@ $subject = "Sending with sendgrid";
 $content =  "Hello <strong>User</strong>,
             <p>Thank you for using sendgrid service</p>
             ";
+
+$query = new QueryBuilder();
+$order_last_id =  $query->insert("orders", ["product_name" => "Product 1", "price" => 10.00]);
+
 $attachments = [];
 $sendgrid_response = $email_action->sendEmail($to, $subject, $content, $attachments);
 if ($sendgrid_response->statusCode() == 202) {
     $sendgrid_response = $email_action->parseSendGridSendEmailResponse($sendgrid_response);
     $tracker_data = [];
-    $tracker_data['model_id'] = rand();
+    $tracker_data['model_id'] = $order_last_id;
     $tracker_data['model_name'] = EmailTrackerModel::ORDER;
     $tracker_data['email_type'] = EmailType::ORDER;
     $tracker_data['to_email'] = strtolower($to);

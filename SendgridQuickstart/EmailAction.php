@@ -3,9 +3,7 @@ namespace App\SendgridQuickstart;
 
 use App\DotEnv;
 use App\MySQL\QueryBuilder;
-use App\SendgridQuickstart\Enum\EmailTrackerModel;
 use App\SendgridQuickstart\Enum\EmailTransport;
-use App\SendgridQuickstart\Enum\EmailType;
 
 
 class EmailAction
@@ -41,13 +39,9 @@ class EmailAction
             $data['status_code'] = $send_email_response['status_code'];
             $data['tracker_id'] = $send_email_response['tracker_id'];
             $data['is_success'] = $send_email_response['is_success'];
-            //$this->controller->saveLog('email_tracker', $send_email_response['tracker_id'], $send_email_response['response']);
-
             $data['model_id'] = $receive_data['model_id'];
             $data['model_name'] = $receive_data['model_name'];
             $data['email_type'] = $receive_data['email_type'];
-            $data['multiple_email_model_name'] = $receive_data['multiple_email_model_name'] ?? '';
-            $data['multiple_email_model_id'] = $receive_data['multiple_email_model_id'] ?? 0;
             $data['to_email'] = $receive_data['to_email'];
             $data['is_debug'] = $receive_data['is_debug'] ?? 0;
 

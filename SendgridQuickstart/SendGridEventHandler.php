@@ -3,6 +3,7 @@ namespace App\SendgridQuickstart;
 
 use App\Logger\Log;
 use App\MySQL\QueryBuilder;
+use App\SendgridQuickstart\Enum\EmailStatusNumeric;
 use App\SendgridQuickstart\Enum\EmailType;
 use App\SendgridQuickstart\Enum\SendgridEvent;
 
@@ -66,12 +67,9 @@ class SendGridEventHandler
                             break;
                     }
                     $query_builder = new QueryBuilder();
-                    $query_builder->update("sendgrid_email_trackers")
-                    ->setUpdateData($updated_data)
-                    ->setUpdateCondition(["id" => $email_tracker["id"]])
-                    ->executeUpdate();
+                    $query_builder->update("sendgrid_email_trackers", $updated_data, ["id" => $email_tracker["id"]]);
 
-                    //$this->updateEmailStatusForEvent($email_tracker, $event); TODO
+                    $this->updateEmailStatusForEvent($email_tracker, $event);
                 }
             }
         }
@@ -109,34 +107,35 @@ class SendGridEventHandler
     }
 
    public function updateOrderEmailStatusForEvent($email_tracker, $event) {
-        $is_send_order_email = $this->controller->getComponent('EmailFunctions')->isSentOrderEmail($email_tracker['model_id'], $email_tracker['university_id']);
-        if ($is_send_order_email != EmailStatusNumeric::IS_SENT) {
+        $email_functions = new EmailFunctions();
+        $is_send_order_email = $email_functions->isSentOrderEmail($email_tracker['model_id']);
+        if (!$is_send_order_email) {
             try {
                 switch ($event['event']) {
                     case SendgridEvent::DELIVERED:
-                        $this->controller->getComponent('EmailFunctions')->updateOrderAfterEmailSend($email_tracker['model_id'], $email_tracker['university_id']);
+                        $email_functions->updateOrderEmailStatus($email_tracker['model_id'], EmailStatusNumeric::IS_SENT);
                         break;
 
                     case SendgridEvent::PROCESSED:
-                        $this->controller->getComponent('EmailFunctions')->updateOrderEmailStatus($email_tracker['model_id'], EmailStatusNumeric::IS_PROCESSED, $email_tracker['university_id']);
+                        $email_functions->updateOrderEmailStatus($email_tracker['model_id'], EmailStatusNumeric::IS_PROCESSED);
                         break;
 
                     case SendgridEvent::BOUNCE:
-                        $this->controller->getComponent('EmailFunctions')->updateOrderEmailStatus($email_tracker['model_id'], EmailStatusNumeric::IS_BOUNCED, $email_tracker['university_id']);
-                        $this->undeliveredEmailNotificationToAdmin($email_tracker);
+                        $email_functions->updateOrderEmailStatus($email_tracker['model_id'], EmailStatusNumeric::IS_BOUNCED);
+                        //$this->undeliveredEmailNotificationToAdmin($email_tracker);
                         break;
 
                     case SendgridEvent::DROPPED:
-                        $this->controller->getComponent('EmailFunctions')->updateOrderEmailStatus($email_tracker['model_id'], EmailStatusNumeric::IS_DROPPED, $email_tracker['university_id']);
-                        $this->undeliveredEmailNotificationToAdmin($email_tracker);
+                        $email_functions->updateOrderEmailStatus($email_tracker['model_id'], EmailStatusNumeric::IS_DROPPED);
+                        //$this->undeliveredEmailNotificationToAdmin($email_tracker);
                         break;
                 }
             } catch (\Exception $exception) {
-                $this->controller->saveLog('', 'email_tracker_error', 'Error: updateOrderEmailStatusForEvent for order:' . $exception->getMessage());
+               Log::write('Error: updateOrderEmailStatusForEvent for order:' . $exception->getMessage(), 'email_tracker_error');
             }
         }
 
-        $this->updateSendOrderEmailsStatusByEmailTrackerEvent($email_tracker, $event);
+        //$this->updateSendOrderEmailsStatusByEmailTrackerEvent($email_tracker, $event);
    }
 
    public function updateSlideEmailStatusForEvent($email_tracker, $event) {

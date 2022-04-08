@@ -1,11 +1,18 @@
+CREATE TABLE IF NOT EXISTS orders (
+    `id` int(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `product_name` VARCHAR(255) NOT NULL,
+    `price` DECIMAL(10, 2) DEFAULT 0.00,
+    `email_status` TINYINT(4) DEFAULT 0,
+    `created` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `modified` DATETIME ON UPDATE CURRENT_TIMESTAMP
+)  ENGINE=INNODB AUTO_INCREMENT=1;
+
 CREATE TABLE IF NOT EXISTS sendgrid_email_trackers (
     `id` int(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     `model_id` int(11) NOT NULL,
     `model_name` VARCHAR(100) NOT NULL COLLATE 'utf8_unicode_ci',
     `email_type` varchar(100) DEFAULT NULL,
     `email_transport` varchar(100) DEFAULT NULL,
-    `multiple_email_model_name` varchar(100) DEFAULT NULL,
-    `multiple_email_model_id` int(11) DEFAULT NULL,
     `to_email` varchar(100) NOT NULL,
     `tracker_id` varchar(100) NOT NULL,
     `status_code` int(11) DEFAULT NULL,
@@ -24,6 +31,17 @@ CREATE TABLE IF NOT EXISTS sendgrid_email_trackers (
     `modified` DATETIME ON UPDATE CURRENT_TIMESTAMP
 )  ENGINE=INNODB AUTO_INCREMENT=1;
 
+CREATE TABLE IF NOT EXISTS sendgrid_email_tracker_events (
+    `id` int(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `email_tracker_id` int(11) NOT NULL,
+    `event_name` varchar(100) NOT NULL,
+    `event_responses` text DEFAULT NULL,
+    `created` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `modified` DATETIME ON UPDATE CURRENT_TIMESTAMP
+)  ENGINE=INNODB AUTO_INCREMENT=1;
+
+
+
 CREATE TABLE `shared_s3v3_send_emails` (
 	`id` INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	`email_tracker_id` INT(11) NOT NULL DEFAULT '0',
@@ -41,11 +59,3 @@ CREATE TABLE `shared_s3v3_send_emails` (
 	INDEX `scheduled_time` (`scheduled_time`) USING BTREE
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS sendgrid_email_tracker_events (
-    `id` int(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `sendgrid_email_tracker_id` int(11) NOT NULL,
-    `event_name` varchar(100) NOT NULL,
-    `event_responses` text DEFAULT NULL,
-    `created` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `modified` DATETIME ON UPDATE CURRENT_TIMESTAMP
-)  ENGINE=INNODB AUTO_INCREMENT=1;

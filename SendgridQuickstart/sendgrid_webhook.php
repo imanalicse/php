@@ -5,7 +5,6 @@ namespace App\SendgridQuickstart;
 require '../vendor/autoload.php';
 
 use App\Logger\Log;
-use App\SendgridQuickstart\SendGridEventHandler;
 
 Log::write('Sendgrid webhook called', 'email_tracker');
 

@@ -86,6 +86,35 @@ class QueryBuilder
         return $result;
     }
 
+    public function update(string $table_name, array $data, array $conditions, $debug = false) : int {
+        try {
+            $new_data = [];
+            foreach ($data as $key => $datum) {
+                $new_data[] = "$key = "."'" .$datum ."'";
+            }
+            $set_data = implode(', ', $new_data);
+
+            $new_conditions = [];
+            foreach ($conditions as $key => $datum) {
+                $new_conditions[] = "$key = "."'" .$datum ."'";
+            }
+            $where_data = implode('AND ', $new_conditions);
+            $sql = "UPDATE $table_name SET $set_data WHERE $where_data";
+
+            if ($debug) {
+                echo $sql;
+            }
+            if ($this->connection->query($sql)) {
+                return 1;
+            }
+        }
+        catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
+        return 0;
+    }
+
+    /*
     public function update(string $table_name) : QueryBuilder {
         $this->update_query = "UPDATE $table_name";
         return $this;
@@ -125,6 +154,7 @@ class QueryBuilder
         }
         return 0;
     }
+    */
 
     public function insertRaw($query) {
         return $this->connection->query($query);
