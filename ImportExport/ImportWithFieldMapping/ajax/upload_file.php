@@ -1,9 +1,9 @@
 <?php
-include "../../../file_handler/FileHandler.php";
 require '../../../vendor/autoload.php';
 
 use App\ImportExport\SpreadsheetHandler;
 use App\Utils\Session;
+use App\FileHandler\FileHandler;
 
 
 //$excelFilePath = "../../test_importer.xlsx";

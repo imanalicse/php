@@ -160,6 +160,10 @@ class QueryBuilder
         return $this->connection->query($query);
     }
 
+    public function rawExecute($query) {
+        return $this->connection->query($query);
+    }
+
     protected function closeConnection() {
         $this->connection->close();
     }

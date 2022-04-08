@@ -1,5 +1,5 @@
 var $modal;
-const base_url = 'http://localhost/codehub/php/ImportExport/BulkImportWithFieldMapping';
+const base_url = 'http://localhost/codehub/php/ImportExport/ImportWithFieldMapping';
 
 jQuery(document).ready(function(){
     //loadPreDefinedFieldMapping();
@@ -83,7 +83,7 @@ function importBind() {
 
 function loadFieldMapping() {
     $.ajax({
-        url: base_url + '/ajax/field_mapping.php',
+        url: base_url + '/ajax/fieldMapping.php',
         type: 'POST',
         data: {},
         cache: false,
