@@ -1,5 +1,5 @@
 <?php
-namespace App\ImportExport;
+namespace App\FileHandler;
 
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;

@@ -1,7 +1,7 @@
 <?php
 require '../../vendor/autoload.php';
 
-use App\ImportExport\SpreadsheetHandler;
+use App\FileHandler\SpreadsheetHandler;
 use App\Utils\Session;
 
 

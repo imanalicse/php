@@ -1,10 +1,10 @@
 <?php
 require '../../../vendor/autoload.php';
 
-use App\ImportExport\SpreadsheetHandler;
+use App\FileHandler\SpreadsheetHandler;
 use App\Utils\Session;
 use App\FileHandler\FileHandler;
-use App\ImportExport\ImportWithFieldMapping\ImporterUtils;
+use App\FileHandler\ImportWithFieldMapping\ImporterUtils;
 
 $post_data = $_POST;
 $import_utils = new ImporterUtils();

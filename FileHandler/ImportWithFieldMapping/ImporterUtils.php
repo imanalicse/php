@@ -1,10 +1,10 @@
 <?php
-namespace App\ImportExport\ImportWithFieldMapping;
+namespace App\FileHandler\ImportWithFieldMapping;
 
 use App\Utils\Session;
 use App\MySQL\QueryBuilder;
 use App\FileHandler\FileHandler;
-use App\ImportExport\SpreadsheetHandler;
+use App\FileHandler\SpreadsheetHandler;
 
 class ImporterUtils {
 

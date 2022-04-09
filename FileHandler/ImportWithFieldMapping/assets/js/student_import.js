@@ -1,5 +1,5 @@
 var $modal;
-const base_url = 'http://localhost/codehub/php/ImportExport/ImportWithFieldMapping';
+const base_url = 'http://localhost/codehub/php/FileHandler/ImportWithFieldMapping';
 
 jQuery(document).ready(function(){
     $modal = $("#staticBackdrop");

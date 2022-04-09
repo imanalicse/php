@@ -36,7 +36,7 @@
                 </span>
                 <h3><?php echo $sample_file_info['file_name']; ?></h3>
             </div>
-            <button class="btn btn-border"><a href="http://localhost/codehub/php/ImportExport/ImportWithFieldMapping/downloadSampleFile.php">DownLoad sample CSV</button>
+            <button class="btn btn-border"><a href="http://localhost/codehub/php/FileHandler/ImportWithFieldMapping/downloadSampleFile.php">DownLoad sample CSV</button>
         <?php } ?>
    </div>
 </div>
