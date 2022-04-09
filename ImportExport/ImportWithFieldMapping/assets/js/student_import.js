@@ -2,26 +2,22 @@ var $modal;
 const base_url = 'http://localhost/codehub/php/ImportExport/ImportWithFieldMapping';
 
 jQuery(document).ready(function(){
-    //loadPreDefinedFieldMapping();
     $modal = $("#staticBackdrop");
     $(".js-import-student-button").click(function(){
         var _self = $(this);
         var initial_popup = $(_self).data("initial-popup");
-        //loadPreDefinedFieldMapping();
         $modal.modal({
             backdrop: 'static',
             keyboard: false
         });
         if (initial_popup) {
-            console.log('here 1');
             importBind();
         } else {
             setModalTitle("Import From CSV/Excel");
             $(".modal-body").html('<div class="js-loader" style="display:block; text-align: Center">\n' +
-                'Please Wait. <img src="../img/ajax-loader.gif" alt=""></div>');
+                'Please Wait. <img src="' + base_url + '/assets/img/ajax-loader.gif" alt=""></div>');
 
             $.ajax({
-                url: '/admin/student-importer/getPopupInitBody',
                 url: base_url + '/ajax/getPopupInitBody.php',
                 type: 'POST',
                 data: {},
@@ -29,9 +25,7 @@ jQuery(document).ready(function(){
                 },
                 success: function (resp) {
                     $(".modal-body").html(resp);
-                    console.log('here 2');
                     importBind();
-                    //loadPreDefinedFieldMapping();
                 }
             });
         }
@@ -103,55 +97,15 @@ function loadFieldMapping() {
     });
 }
 
-function loadPreDefinedFieldMapping() {
-    var student_import_form = $("#init-student-mapping");
-    var isTrue = true;
-    student_import_form.on('click', function(e) {
-        console.log('init-student-mapping');
-        $(".js-message").empty();
-        e.preventDefault();
-
-        setModalTitle("Field Mapping");
-        $(".modal-body").html('<div class="js-loader" style="display:block; text-align: Center">\n' +
-            'Please Wait. <img src="../img/ajax-loader.gif" alt=""></div>');
-
-        $.ajax({
-            url: base_url + '/ajax/fieldMapping',
-            type: 'POST',
-            data: {preDefinedForm: isTrue},
-            cache: false,
-            beforeSend: function (request) {
-
-            },
-            success: function (result) {
-                //console.log(result);
-                //setModalTitle("Import From CSV/Excel - Field Mapping");
-                $(".modal-body").html(result);
-                fieldMappingFormEvent();
-            },
-            complete: function () {
-                $('.js-loader').hide();
-            }
-        });
-    });
-}
-
 function fieldMappingFormEvent() {
     var $js_mandatory_error_box = $(".js-mandatory-error-box");
     var $field_mapping_form = $("#field-mapping-form");
-    var $is_pre_mapping = $("#field-mapping-form").data('premapping');
     var url = base_url + '/ajax/saveFieldMapping';
-
-    if($is_pre_mapping){
-        url = base_url + '/ajax/savePreMapping';
-        console.log('url - '+url);
-    }
     $field_mapping_form.find(':submit').prop('disabled', false);
     $field_mapping_form.submit(function (e) {
         e.preventDefault();
         $field_mapping_form.find(':submit').prop('disabled', true);
         var formData = new FormData(this);
-        //loadPreDefinedFieldMapping();
         $.ajax({
             url: url,
             type: 'POST',
@@ -166,7 +120,6 @@ function fieldMappingFormEvent() {
             },
             success: function (resp) {
                 var response = JSON.parse(resp);
-                console.log(response);
                 if (response.status == true) {
                     itemListing();
                 }
@@ -227,8 +180,6 @@ function saveImportBinding() {
     if($errorMessage.length == 0){
         $import_save_button.prop('disabled', false);
     }
-    //$import_save_button.prop('disabled', false);
-
     $import_save_button.click(function () {
         $(".js-message").empty();
         $import_save_button.prop('disabled', true);
@@ -282,29 +233,17 @@ function paginate(_self) {
     var total_record = parseInt(pagination_container.find(".js-total-record").val());
     var item_per_page = parseInt(pagination_container.find(".js-item-per-page").val());
     var page = parseInt(pagination_container.find(".js-page").val());
-
-    // if(total_record > item_per_page){
-    //     var items = (total_record / item_per_page);
-    //     console.log(items);
-    //     page = Math.ceil(items);
-    //     console.log(items);
-    // }
-
-    console.log(total_record);
-    console.log(item_per_page);
-    console.log(page);
+    console.log('total_record', total_record, 'item_per_page', item_per_page, 'page', page);
     if (_self.hasClass("js-prev")) {
         if (page == 1) return false;
         page = page > 1 ? page - 1 : page;
     }
     if (_self.hasClass("js-next")){
         if(page * item_per_page >= total_record) {
-            console.log('yes');
             return false;
         }
         page = page + 1;
     }
-
 
     $.ajax({
         url: base_url + '/ajax/paging',
@@ -337,7 +276,6 @@ function paginate(_self) {
                 });
                 newTableData += '<tr class="'+errorClass+'">'+newTableRowData+'</tr>';
             });
-            //console.log(newTableData);
             $(".js-item-list-table tbody").html(newTableData);
             pagination_container.find(".js-page").val(page);
             var lower_limit = (page - 1) * item_per_page + 1;

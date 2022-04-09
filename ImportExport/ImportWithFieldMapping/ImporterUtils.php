@@ -253,24 +253,22 @@ class ImporterUtils {
         ];
     }
 
-    public function paging() {
-         $this->viewBuilder()->setLayout('ajax');
-         $list_data = [];
+    public function paging($post_data) : array {
          $listing_mapped_index = [];
-         if ($this->request->is("post") && $this->request->getData()) {
-             $post_data = $this->request->getData();
-             $item_per_page = $post_data['item_per_page'];
-             $page = $post_data['page'];
-             if ($page <= 0) {
-                $page = 1;
-             }
-            $offset = ($page - 1) * $item_per_page;
-            $import_session_data = $this->getImportedSessionData();
-            $list_data = $import_session_data['list_data'];
-            $list_data = array_slice($list_data, $offset, $item_per_page);
-            $listing_mapped_index = $this->session->read('listing_mapped_index');
+         $item_per_page = $post_data['item_per_page'];
+         $page = $post_data['page'];
+         if ($page <= 0) {
+            $page = 1;
          }
-         $this->set(compact('listing_mapped_index','list_data'));
+        $offset = ($page - 1) * $item_per_page;
+        $import_session_data = $this->getImportedSessionData();
+        $list_data = $import_session_data['list_data'];
+        $list_data = array_slice($list_data, $offset, $item_per_page);
+        $listing_mapped_index = Session::read('listing_mapped_index');
+        return [
+            "listing_mapped_index" => $listing_mapped_index,
+            "list_data" => $list_data,
+        ];
     }
 
     public function saveImportData() {
