@@ -4,15 +4,13 @@ require '../../../vendor/autoload.php';
 use App\ImportExport\SpreadsheetHandler;
 use App\Utils\Session;
 use App\FileHandler\FileHandler;
+use App\ImportExport\ImportWithFieldMapping\ImporterUtils;
 
-
-//$excelFilePath = "../../test_importer.xlsx";
-//$arrayExcelData = SpreadsheetHandler::readSpreadsheet($excelFilePath, 0);
-//echo "<pre>";
-//print_r($arrayExcelData);
-//echo "</pre>";
-//die("dddd");
-
+$post_data = $_POST;
+$import_utils = new ImporterUtils();
+$response = $import_utils->importFile($_FILES);
+echo json_encode($response);
+/*
 $response = [
     'status'=> false,
     'msg' => 'Please upload file'
@@ -52,3 +50,4 @@ if (!empty($_FILES)) {
 }
 echo json_encode($response);
 die();
+*/

@@ -1,5 +1,10 @@
 <?php
 include('header.php');
+require '../../vendor/autoload.php';
+use App\ImportExport\ImportWithFieldMapping\ImporterUtils;
+
+$import_utils = new ImporterUtils();
+$sample_file_info = $import_utils->getSampleFileInfo();
 ?>
 <div class="workspace-dashboard page page-forms-elements">
     <div class="page-wrap">

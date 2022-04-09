@@ -3,6 +3,8 @@ namespace App\ImportExport\ImportWithFieldMapping;
 
 use App\Utils\Session;
 use App\MySQL\QueryBuilder;
+use App\FileHandler\FileHandler;
+use App\ImportExport\SpreadsheetHandler;
 
 class ImporterUtils {
 
@@ -32,53 +34,54 @@ class ImporterUtils {
     }
 
     public function import() {
-        $sample_file_info = $this->getComponent('AttendeeImport.Importer')->getSampleFileInfo();
-        $this->set('sample_file_info', $sample_file_info);
+
+    }
+
+    public function getSampleFileInfo() {
+        $sample_file_info = [];
+        $file_name = 'sample.xlsx';
+        $file_path = dirname(__FILE__). DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . $file_name;
+        if (file_exists($file_path)) {
+            $sample_file_info = [
+                'file_name' => $file_name,
+                'file_path' => $file_path
+            ];
+        }
+        return $sample_file_info;
     }
 
     public function downloadSampleFile() {
-        $sample_file_info = $this->getComponent('AttendeeImport.Importer')->getSampleFileInfo();
+        $sample_file_info = $this->getSampleFileInfo();
         if (!empty($sample_file_info) && file_exists($sample_file_info['file_path'])) {
-            $this->getComponent('FileHandler')->download($sample_file_info['file_path']);
+            $file_handler = new FileHandler();
+            $file_handler->download($sample_file_info['file_path']);
         }
         exit();
     }
 
-    public function getPopupInitBody() {
-        $sample_file_info = $this->getComponent('AttendeeImport.Importer')->getSampleFileInfo();
-        $this->set('sample_file_info', $sample_file_info);
-    }
-
-    public function importFile() {
-        Configure::write('debug',false);
+    public function importFile($files) : array {
         $response = [
             'status'=> false,
             'msg' => 'Please upload file'
         ];
-        if ($this->request->is('post') && $this->request->getData()) {
-            ini_set('memory_limit', '1024M');
-            $post_data = $this->request->getData();
-            $currentTime = FrozenTime::now()->toUnixString();
-            $orgId = $this->getOrgId();
-            $orgHash = $this->getOrgTokenMd5($orgId);
-            $uploadDirRoot = $this->getOrgUploadRootDirectory();
-            $file_relative_path = $orgHash. DS ."import-attendee". DS .$currentTime;
-            $upload_file_path = $uploadDirRoot. DS .$file_relative_path;
-            $file = $_FILES["file_name"];
-            $result = $this->getComponent('FileHandler')->uploadFileNew($file, $upload_file_path, ['xls','xlsx']);
+        if (!empty($files)) {
+            $upload_file_path = __DIR__ . '/uploads/';
+            $file = $files["file_name"];
+            $file_handler = new FileHandler();
+            $result = $file_handler->uploadFile($file, $upload_file_path, ['xls','xlsx']);
             if ($result['is_success']) {
-                $uploadFileName = $this->getComponent('FileHandler')->_uploadimgname;
-                $excelFilePath = $upload_file_path . DS . $uploadFileName;
-                $arrayExcelData = $this->getComponent('AttendeeImport.ExcelHandler')->read_excel($excelFilePath, 0);
+                $uploadFileName = $file_handler->_uploadimgname;
+                $excelFilePath = $upload_file_path . DIRECTORY_SEPARATOR . $uploadFileName;
+                $arrayExcelData = SpreadsheetHandler::readSpreadsheet($excelFilePath, 0);
                 if ($arrayExcelData) {
                     if (count($arrayExcelData) > 1) {
-                        $import_file_id = $this->getComponent('AttendeeImport.Importer')->saveImportFile($uploadFileName);
+                        //$import_file_id = $this->getComponent('AttendeeImport.Importer')->saveImportFile($uploadFileName);
+                        $import_file_id = 2;
                         $process_students = [
                             'excel_data' => $arrayExcelData,
                             'import_file_id' => $import_file_id
                         ];
-                        $this->session->write('import_students', $process_students);
-
+                        Session::write('import_students', $process_students);
                         $response['status'] = true;
                         $response['msg'] = "Total number of processed students: " . (count($arrayExcelData) - 1);
                     } else {
@@ -94,8 +97,7 @@ class ImporterUtils {
                 $response['msg'] = $result['message'];
             }
         }
-        echo json_encode($response);
-        die();
+        return $response;
     }
 
     public function fieldMapping() : array {

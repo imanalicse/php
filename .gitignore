@@ -1,6 +1,5 @@
 .idea
 *.log
 vendor/
-*.xlsx
 .env
 uploads/
