@@ -19,7 +19,7 @@ jQuery(document).ready(function(){
         } else {
             setModalTitle("Import From CSV/Excel");
             $(".modal-body").html('<div class="js-loader" style="display:block; text-align: Center">\n' +
-                'Please Wait. <img src="/student_import/img/ajax-loader.gif" alt=""></div>');
+                'Please Wait. <img src="../img/ajax-loader.gif" alt=""></div>');
 
             $.ajax({
                 url: '/admin/student-importer/getPopupInitBody',
@@ -113,11 +113,10 @@ function loadPreDefinedFieldMapping() {
 
         setModalTitle("Field Mapping");
         $(".modal-body").html('<div class="js-loader" style="display:block; text-align: Center">\n' +
-            'Please Wait. <img src="/student_import/img/ajax-loader.gif" alt=""></div>');
+            'Please Wait. <img src="../img/ajax-loader.gif" alt=""></div>');
 
         $.ajax({
-            //url: '/admin/student-importer/preDefinedFieldMapping',
-            url: '/admin/student-importer/fieldMapping',
+            url: base_url + '/ajax/fieldMapping',
             type: 'POST',
             data: {preDefinedForm: isTrue},
             cache: false,
@@ -141,10 +140,10 @@ function fieldMappingFormEvent() {
     var $js_mandatory_error_box = $(".js-mandatory-error-box");
     var $field_mapping_form = $("#field-mapping-form");
     var $is_pre_mapping = $("#field-mapping-form").data('premapping');
-    var url = '/admin/student-importer/saveFieldMapping';
+    var url = base_url + '/ajax/saveFieldMapping';
 
     if($is_pre_mapping){
-        url = '/admin/student-importer/savePreMapping';
+        url = base_url + '/ajax/savePreMapping';
         console.log('url - '+url);
     }
     $field_mapping_form.find(':submit').prop('disabled', false);
@@ -192,7 +191,7 @@ function fieldMappingFormEvent() {
 
 function itemListing() {
     $.ajax({
-        url: '/admin/student-importer/itemListing',
+        url: base_url + '/ajax/itemListing',
         type: 'GET',
         cache: false,
         beforeSend: function (request) {
@@ -238,7 +237,7 @@ function saveImportBinding() {
         $(".js-message").empty();
         $import_save_button.prop('disabled', true);
         $.ajax({
-            url: '/admin/student-importer/saveImportData',
+            url: base_url + '/ajax/saveImportData',
             type: 'POST',
             cache: false,
             beforeSend: function (request) {
@@ -320,7 +319,7 @@ function paginate(_self) {
 
 
     $.ajax({
-        url: '/admin/student-importer/paging',
+        url: base_url + '/ajax/paging',
         type: 'POST',
         data: {
             total_record: total_record,

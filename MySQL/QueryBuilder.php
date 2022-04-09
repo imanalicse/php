@@ -114,53 +114,25 @@ class QueryBuilder
         return 0;
     }
 
-    /*
-    public function update(string $table_name) : QueryBuilder {
-        $this->update_query = "UPDATE $table_name";
-        return $this;
-    }
-
-    public function setUpdateData(array $data) : QueryBuilder {
-        $new_data = [];
-        foreach ($data as $key => $datum) {
-            $new_data[] = "$key = "."'" .$datum ."'";
-        }
-        $set_data = implode(', ', $new_data);
-        $this->update_query .= " SET $set_data";
-        return $this;
-    }
-
-    public function setUpdateCondition(array $conditions) : QueryBuilder {
-        $new_conditions = [];
-        foreach ($conditions as $key => $datum) {
-            $new_conditions[] = "$key = "."'" .$datum ."'";
-        }
-        $where_data = implode('AND ', $new_conditions);
-        $this->update_query .= "  WHERE $where_data";
-        return $this;
-    }
-
-    public function executeUpdate($debug = false): int {
-        try {
-            if ($debug) {
-                echo $this->update_query;
-            }
-            if ($this->connection->query($this->update_query)) {
-                return 1;
-            }
-        }
-        catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
-        }
-        return 0;
-    }
-    */
-
     public function insertRaw($query) {
         return $this->connection->query($query);
     }
 
     public function rawExecute($query) {
+        return $this->connection->query($query);
+    }
+
+    public function delete($table_name, array $conditions = []) {
+        $conditions_query = "1";
+        if (!empty($conditions)) {
+            $new_conditions = [];
+            foreach ($conditions as $key => $datum) {
+                $new_conditions[] = "$key = " . "'" . $datum . "'";
+            }
+            $conditions_query = implode('AND ', $new_conditions);
+        }
+
+        $query = "DELETE FROM $table_name WHERE $conditions_query";
         return $this->connection->query($query);
     }
 

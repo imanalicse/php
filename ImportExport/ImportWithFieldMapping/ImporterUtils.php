@@ -6,9 +6,6 @@ use App\MySQL\QueryBuilder;
 
 class ImporterUtils {
 
-    public $layout;
-    public $session;
-
     protected $list_table_columns = [
         "uuid",
         "event_name"
@@ -21,7 +18,7 @@ class ImporterUtils {
 
     const ITEM_PER_PAGE = 10;
 
-    protected function getRequiredFields() {
+    protected function getRequiredFields() : array {
         return ["student_id"];
     }
 
@@ -131,33 +128,24 @@ class ImporterUtils {
     }
 
 
-    public function saveFieldMapping() {
-        $response = ['status'=> false, 'msg'=> 'Please submit data'];
-        if ($this->request->is("post") && $this->request->getData()) {
-            $response = ['status'=> false, 'msg'=> 'Something went wrong. please try again'];
-            $post_data = $this->request->getData();
-            $this->validateRequiredFields($post_data);
+    public function saveFieldMapping($post_data) {
 
-            $this->ImportMapper = $this->getDbTable("AttendeeImport.ImportMapper");
-            if (!empty($post_data)) {
-                $mapped_arr = [];
-                foreach ($post_data as $db_field => $excel_field_label) {
-                    $mapped_arr[] = [
-                        'db_field' => $db_field,
-                        'excel_field_label' => $excel_field_label,
-                    ];
-                }
-
-                $this->ImportMapper->deleteAll(['1' => '1']);
-                $original = $this->ImportMapper->find()->toArray();
-                $patched = $this->ImportMapper->patchEntities($original, $mapped_arr);
-                if ($this->ImportMapper->saveMany($patched)) {
-                    $response = ['status' => true, 'msg' => 'Mapped data save successfully'];
-                }
+        $response = ['status'=> false, 'msg'=> 'Something went wrong. please try again'];
+        $this->validateRequiredFields($post_data);
+        if (!empty($post_data)) {
+            $query_builder = new QueryBuilder();
+            $query_builder->delete("import_mapper");
+            foreach ($post_data as $db_field => $excel_field_label) {
+                $mapped_arr = [
+                    'db_field' => $db_field,
+                    'excel_field_label' => $excel_field_label,
+                ];
+                $query_builder = new QueryBuilder();
+                $query_builder->insert("import_mapper", $mapped_arr);
             }
+            $response = ['status' => true, 'msg' => 'Mapped data save successfully'];
         }
-        echo json_encode($response);
-        die();
+        return $response;
     }
 
     protected function validateRequiredFields($post_data) {
@@ -171,18 +159,16 @@ class ImporterUtils {
         }
 
         if (!empty($required_field_errors)) {
-            $response = ['status' => false, 'msg' => implode(', ', $required_field_errors) . ' are mandatory'];
-            echo json_encode($response);
-            die();
+            return $response = ['status' => false, 'msg' => implode(', ', $required_field_errors) . ' are mandatory'];
         }
 
         $required_field_errors = $this->getRequiredFieldErrorsForListingData($post_data);
 
         if (!empty($required_field_errors)) {
-            $response = ['status' => false, 'msg' => implode(', ', $required_field_errors) . ' are mandatory'];
-            echo json_encode($response);
-            die();
+           return $response = ['status' => false, 'msg' => implode(', ', $required_field_errors) . ' are mandatory'];
         }
+
+        return ['status' => false, 'msg' => implode(', ', $required_field_errors) . ' are mandatory'];
     }
 
     protected function getRequiredFieldErrorsForListingData($post_data) {

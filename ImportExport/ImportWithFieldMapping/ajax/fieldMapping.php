@@ -83,7 +83,7 @@ extract($field_mapping);
             <button type="submit" class="btn brn-blue">Save & Continue</button>
         </div>
         <div class="js-loader" style="display:none; text-align: Center">
-            Please Wait. <?php echo $this->Html->image('AttendeeImport.ajax-loader.gif'); ?>
+            Please Wait. <img src="../assets/img/ajax-loader.gif">
         </div>
     </form>
 </div>
