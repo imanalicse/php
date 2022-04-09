@@ -1,7 +1,6 @@
 <?php
 require '../../../vendor/autoload.php';
 
-use App\Utils\Session;
 use App\ImportExport\ImportWithFieldMapping\ImporterUtils;
 
 $import_utils = new ImporterUtils();

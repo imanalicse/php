@@ -7,13 +7,6 @@ CREATE TABLE `students` (
 	`email_address` VARCHAR(100) NULL DEFAULT NULL,
 	`address_line_1` VARCHAR(250) NULL DEFAULT NULL,
 	`address_line_2` VARCHAR(250) NULL DEFAULT NULL,
-	`address_line_3` VARCHAR(250) NULL DEFAULT NULL,
-	`mailing_address` VARCHAR(250) NULL DEFAULT NULL,
-	`street_address` VARCHAR(250) NULL DEFAULT NULL,
-	`city` VARCHAR(250) NULL DEFAULT NULL,
-	`postcode` VARCHAR(100) NULL DEFAULT NULL,
-	`state` VARCHAR(100) NULL DEFAULT NULL,
-	`country` VARCHAR(100) NULL DEFAULT NULL,
 	`dob` VARCHAR(10) NULL DEFAULT NULL,
 	`created` datetime DEFAULT NULL,
     `modified` datetime DEFAULT NULL

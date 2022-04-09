@@ -7,13 +7,18 @@ use App\MySQL\QueryBuilder;
 class ImporterUtils {
 
     protected $list_table_columns = [
-        "uuid",
-        "event_name"
+        "student_id",
+        "first_name",
+        "last_name",
+        "email_address"
     ];
 
     protected $db_field_aliasing = [
-        "uuid" => "UUID",
-        "event_name" => "Event Name"
+        "student_id" => "Student ID",
+        "first_name" => "First Name",
+        "last_name" => "Last Name",
+        "email_address" => "Email Address",
+        "address_line_1" => "Address 1"
     ];
 
     const ITEM_PER_PAGE = 10;
@@ -23,7 +28,7 @@ class ImporterUtils {
     }
 
     protected function excludeDbFields() : array {
-        return ['id', 'created', 'modified'];
+        return ['id', 'user_id', 'created', 'modified'];
     }
 
     public function import() {
@@ -213,7 +218,6 @@ class ImporterUtils {
     }
 
     public function itemListing() {
-        $this->viewBuilder()->setLayout('ajax');
         $import_session_data = $this->getImportedSessionData();
         $list_heading = $import_session_data['list_heading'];
         $list_data = $import_session_data['list_data'];
@@ -231,7 +235,7 @@ class ImporterUtils {
             }
         }
 
-        $this->session->write('listing_mapped_index', $listing_mapped_index);
+        Session::write('listing_mapped_index', $listing_mapped_index);
 
         $item_per_page = self::ITEM_PER_PAGE;
         $list_data = array_slice($list_data, 0, $item_per_page);
@@ -241,7 +245,12 @@ class ImporterUtils {
             'item_per_page' => $item_per_page,
             'page' => 1
         ];
-        $this->set(compact('pagination_setting', 'listing_mapped_index', 'list_heading', 'list_data'));
+        return [
+            "pagination_setting" => $pagination_setting,
+            "listing_mapped_index" => $listing_mapped_index,
+            "list_heading" => $list_heading,
+            "list_data" => $list_data
+        ];
     }
 
     public function paging() {

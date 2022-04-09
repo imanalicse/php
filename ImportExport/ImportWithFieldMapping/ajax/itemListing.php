@@ -1,3 +1,12 @@
+<?php
+require '../../../vendor/autoload.php';
+
+use App\ImportExport\ImportWithFieldMapping\ImporterUtils;
+
+$import_utils = new ImporterUtils();
+$response = $import_utils->itemListing();
+extract($response);
+?>
 <div class="mapping-table">
     <div class="table-responsive">
         <table class="table js-item-list-table">
@@ -52,7 +61,7 @@
               </div>
         </div>
         <div class="js-loader" style="display:none; text-align: Center;display: flex">
-            Please Wait. <?php echo $this->Html->image('AttendeeImport.ajax-loader.gif'); ?>
+            Please Wait. <img src="../assets/img/ajax-loader.gif">
         </div>
         <div class="page-move">
             <span class="js-pagination-counter">1 - <?php echo $pagination_setting['item_per_page']; ?> of <?php echo $pagination_setting['total_record']; ?></span>
@@ -75,7 +84,7 @@
         <button type="submit" class="btn brn-blue js-save-import-data">Save</button>
     </div>
     <div class="js-saving-loader" style="display:none; text-align: Center">
-        Please Wait. <?php echo $this->Html->image('AttendeeImport.ajax-loader.gif'); ?>
+        Please Wait. <img src="../assets/img/ajax-loader.gif">
     </div>
     <div class="message js-message" style="text-align: center"></div>
 </div>

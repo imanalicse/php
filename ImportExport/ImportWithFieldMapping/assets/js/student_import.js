@@ -15,7 +15,6 @@ jQuery(document).ready(function(){
         if (initial_popup) {
             console.log('here 1');
             importBind();
-            loadPreDefinedFieldMapping();
         } else {
             setModalTitle("Import From CSV/Excel");
             $(".modal-body").html('<div class="js-loader" style="display:block; text-align: Center">\n' +
@@ -23,6 +22,7 @@ jQuery(document).ready(function(){
 
             $.ajax({
                 url: '/admin/student-importer/getPopupInitBody',
+                url: base_url + '/ajax/getPopupInitBody.php',
                 type: 'POST',
                 data: {},
                 beforeSend: function (request) {
@@ -31,7 +31,7 @@ jQuery(document).ready(function(){
                     $(".modal-body").html(resp);
                     console.log('here 2');
                     importBind();
-                    loadPreDefinedFieldMapping();
+                    //loadPreDefinedFieldMapping();
                 }
             });
         }
@@ -53,7 +53,7 @@ function importBind() {
         e.preventDefault();
         var formData = new FormData(this);
         $.ajax({
-            url: base_url + '/ajax/upload_file.php',
+            url: base_url + '/ajax/uploadFile.php',
             type: 'POST',
             data: formData,
             cache: false,
@@ -151,7 +151,7 @@ function fieldMappingFormEvent() {
         e.preventDefault();
         $field_mapping_form.find(':submit').prop('disabled', true);
         var formData = new FormData(this);
-        loadPreDefinedFieldMapping();
+        //loadPreDefinedFieldMapping();
         $.ajax({
             url: url,
             type: 'POST',
@@ -167,12 +167,8 @@ function fieldMappingFormEvent() {
             success: function (resp) {
                 var response = JSON.parse(resp);
                 console.log(response);
-                if ( response.status == true && $is_pre_mapping == false ) {
+                if (response.status == true) {
                     itemListing();
-                } else if( $is_pre_mapping == true && response.resetPopup== true ){
-                    console.log('close modal and page refresh');
-                    console.log(response);
-                    window.location.reload(true);
                 }
                 else {
                     $field_mapping_form.find(':submit').prop('disabled', false);
@@ -243,14 +239,6 @@ function saveImportBinding() {
             beforeSend: function (request) {
                 $('.js-saving-loader').show();
             },
-            // xhr: function () {
-            //     var xhr = new window.XMLHttpRequest();
-            //     xhr.addEventListener("progress", function (e) {
-            //         console.log('e.currentTarget.response', e.currentTarget.response);
-            //         $("#generateReport").html(e.currentTarget.response);
-            //     });
-            //     return xhr;
-            // },
             success: function (result) {
                 console.log(result);
                 $import_save_button.prop('disabled', false);

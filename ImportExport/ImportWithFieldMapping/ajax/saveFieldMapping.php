@@ -1,7 +1,6 @@
 <?php
 require '../../../vendor/autoload.php';
 
-use App\Utils\Session;
 use App\ImportExport\ImportWithFieldMapping\ImporterUtils;
 
 $post_data = $_POST;
