@@ -1,5 +1,9 @@
 <?php
-include "include.php";
+namespace App\Payment\Stripe;
+
+require '../../vendor/autoload.php';
+use App\DotEnv;
+(new DotEnv(__DIR__ . '/.env'))->load();
 
 $stripe = new \Stripe\StripeClient(getenv("STRIPE_SK_TEST_KEY"));
 $log_file_name = "stripe_3";
