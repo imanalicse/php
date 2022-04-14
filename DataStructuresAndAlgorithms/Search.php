@@ -5,12 +5,11 @@ namespace App\DataStructuresAndAlgorithms;
     /*
      * Time complexity: Worse case - O(n), Best case - O(1), Average case - O(n/2)
      */
-    public static function linearSearch(array $a, int $x): int {
-        $count = count($a);
+    public static function linearSearch(array $arr, int $x): int {
+        $count = count($arr);
         for($i = 0; $i < $count; $i++) {
-            if ($a[$i] == $x) {
+            if ($arr[$i] == $x)
                 return $i;
-            }
         }
         return -1;
     }
@@ -27,6 +26,7 @@ namespace App\DataStructuresAndAlgorithms;
         $right_index = $total - 1;
         while ($left_index <= $right_index) {
             $mid_index = floor(($left_index + $right_index) / 2);
+
             if ($arr[$mid_index] == $search_item)
                 return $mid_index;
 
