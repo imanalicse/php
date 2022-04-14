@@ -28,8 +28,7 @@ class Sorts
         return $arr;
     }
 
-    public static function BubbleSort(array $arr): array
-    {
+    public static function bubbleSort(array $arr): array {
         $n = count($arr);
         for ($i = 0; $i < $n; $i++) {
             for ($j = 0; $j < $n - $i -1; $j++) {
@@ -42,10 +41,24 @@ class Sorts
         }
         return $arr;
     }
+
+    public static function insertionSort(array $arr): array {
+        $n = count($arr);
+        for ($i = 1; $i < $n; $i++) {
+            $item = $arr[$i];
+            $j = $i - 1;
+            while ($j >= 0 && $arr[$j] > $item) {
+                $arr[$j+1] = $arr[$j];
+                $j = $j - 1;
+            }
+            $arr[$j+1] = $item;
+        }
+        return $arr;
+    }
 }
 
 $data = [3, 44, 38, 5, 15, 26, 27, 2, 46, 4];
-$sorted = Sorts::BubbleSort($data);
+$sorted = Sorts::insertionSort($data);
 echo "<pre>";
 print_r($sorted);
 echo "</pre>";
