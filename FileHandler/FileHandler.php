@@ -57,42 +57,35 @@ class FileHandler
         return $response;
     }
 
+    function isPdf( $fileName ) : bool {
+        return preg_match("/pdf/i",$fileName);
+    }
+
+    function isExel( $fileName ) : bool {
+        return preg_match("/xls|xlsx/i",$fileName);
+    }
+
+    function isCsv( $fileName ) : bool {
+        return preg_match("/csv/i",$fileName);
+    }
+
+    function isFile( $file ) : bool {
+        $file_name = basename($file);
+        $file_types = implode('|', $this->allowFileUploadExtensions());
+        return preg_match("/$file_types/i",$file_name);
+    }
+
+    function imageExtensions() : array {
+        return ['jpg','jpeg','gif','png','bmp','jfif'];
+    }
+
     function allowFileUploadExtensions() : array {
-        return [
-            'gif',
-            'png',
-            'jpg',
-            'jpeg',
-            'tiff',
-            'tif',
-            'pdf',
-            'csv',
-            'xls',
-            'xlsx',
-            'doc',
-            'docx',
-            'rtf',
-            'ppt',
-            'pptx',
-            'mp3',
-            'mp4',
-            'mpeg',
-            'mpg',
-            'mpeg',
-            'wma',
-            'wav',
-            'avi',
-            'mov',
-            'acc',
-            'flac',
-            'm4a',
-            'ai',
-            'psd',
+        return ['gif','png','jpg','jpeg','tiff','tif','pdf', 'csv', 'xls', 'xlsx', 'doc', 'docx', 'rtf', 'ppt', 'pptx',
+            'mp3', 'mp4', 'mpeg', 'mpg', 'mpeg', 'wma', 'wav', 'avi', 'mov', 'acc', 'flac', 'm4a', 'ai', 'psd',
         ];
     }
 
-    function formatSizeUnits($bytes)
-    {
+    function formatSizeUnits($bytes) : string {
         if ($bytes >= 1073741824)
         {
             $bytes = number_format($bytes / 1073741824, 2) . ' GB';
@@ -121,7 +114,7 @@ class FileHandler
         return $bytes;
     }
 
-    function maxFileSize() {
+    function maxFileSize() : int {
         // 1MB = 1048576 Bytes (1*1024*1024)
         $size = 20 * 1048576; // 20MB
         return $size;
@@ -161,11 +154,10 @@ class FileHandler
                 'message' => 'File with extension .'. $ext . ' not allowed to upload.'
             ];
         }
-
         return $response;
     }
 
-    function upload($src, $dest){
+    function upload($src, $dest) : bool {
         $ret = false;
         $dest = $this->clean($dest);
         $baseDir = dirname($dest);
@@ -175,22 +167,11 @@ class FileHandler
         return $ret;
     }
 
-    function clean($path, $ds = DIRECTORY_SEPARATOR)
-    {
-        $path = trim($path);
-
-        if (empty($path)) {
-            $path = WWW_ROOT;
-        }
-        else {
-            $path = preg_replace('#[/\\\\]+#', $ds, $path);
-        }
-
-        return $path;
+    function clean($path) : string {
+        return preg_replace('#[/\\\\]+#', DIRECTORY_SEPARATOR, trim($path));
     }
 
-    function download($abspath)
-    {
+    function download($abspath) {
         ob_start();
         $file = basename($abspath);
         if (!is_file($abspath)) {
@@ -206,49 +187,49 @@ class FileHandler
         }
         switch ($ext) {
             case "pdf":
-                $ctype = "application/pdf";
+                $content_type = "application/pdf";
                 break;
             case "exe":
-                $ctype = "application/octet-stream";
+                $content_type = "application/octet-stream";
                 break;
             case "rar":
             case "zip":
-                $ctype = "application/zip";
+                $content_type = "application/zip";
                 break;
             case "txt":
-                $ctype = "text/plain";
+                $content_type = "text/plain";
                 break;
             case "doc":
-                $ctype = "application/msword";
+                $content_type = "application/msword";
                 break;
             case "xls":
-                $ctype = "application/vnd.ms-excel";
+                $content_type = "application/vnd.ms-excel";
                 break;
             case "ppt":
-                $ctype = "application/vnd.ms-powerpoint";
+                $content_type = "application/vnd.ms-powerpoint";
                 break;
             case "gif":
-                $ctype = "image/gif";
+                $content_type = "image/gif";
                 break;
             case "png":
-                $ctype = "image/png";
+                $content_type = "image/png";
                 break;
             case "jpeg":
             case "jpg":
-                $ctype = "image/jpg";
+                $content_type = "image/jpg";
                 break;
             case "mp3":
-                $ctype = "audio/mpeg";
+                $content_type = "audio/mpeg";
                 break;
             default:
-                $ctype = "application/force-download";
+                $content_type = "application/force-download";
         }
 
         header("Pragma: public"); // required
         header("Expires: 0");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Cache-Control: private", false); // required for certain browsers
-        header("Content-Type: $ctype");
+        header("Content-Type: $content_type");
         //quotes to allow spaces in filenames
         header("Content-Disposition: attachment; filename=\"" . $file . "\";");
         header("Content-Transfer-Encoding: binary");
@@ -259,9 +240,8 @@ class FileHandler
         return true;
     }
 
-    function getExt($file) {
-        $ext = pathinfo($file, PATHINFO_EXTENSION);
-        return $ext;
+    function getExt($file) : string {
+        return pathinfo($file, PATHINFO_EXTENSION);
     }
 
     function createFolder($path, $mode = 0777) {
@@ -331,31 +311,7 @@ class FileHandler
         return preg_replace($regex, '_', $file);
             /*
              Replacing following character by _
-
-            \
-            /
-            ;
-            ,
-            :
-            $
-            #
-            *
-            %
-            ^
-            &
-            (
-            )
-            {
-            }
-            [
-            ]
-            ~
-            <
-            >
-            ?
-            "
-            '
-            |
+            \/;,:$#*%^&(){}[]~<>?"'|
             */
     }
 
