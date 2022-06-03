@@ -1,7 +1,5 @@
 <?php
 namespace App\FileHandler;
-use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\Pure;
 
 class FileHandler
 {
@@ -166,7 +164,6 @@ class FileHandler
          return $response;
     }
 
-    #[Pure] #[ArrayShape(['is_success' => "bool", 'message' => "string"])]
     function validateFileExtension($file, $allow_extensions = []): array {
         $response = [
             'is_success' => true,
@@ -188,7 +185,6 @@ class FileHandler
         return $response;
     }
 
-    #[ArrayShape(['is_success' => "bool", 'message' => "string"])]
     function validateDimension($file, $dimension = []) : array {
         $response = ['is_success' => true, 'message' => 'Dimension is ok'];
         if (!empty($dimension) && isset($file["tmp_name"])) {
