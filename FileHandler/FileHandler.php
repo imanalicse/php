@@ -349,7 +349,7 @@ class FileHandler
         }
     }
 
-    function makeSafe($file) {
+    function makeSafe($file) : string {
         $regex = ['#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#', '/\s+/'];
         return preg_replace($regex, '_', $file);
             /*
