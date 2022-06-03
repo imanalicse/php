@@ -68,7 +68,7 @@ class ImporterUtils {
             $upload_file_path = __DIR__ . '/uploads/';
             $file = $files["file_name"];
             $file_handler = new FileHandler();
-            $result = $file_handler->uploadFile($file, $upload_file_path, ['xls','xlsx']);
+            $result = $file_handler->upload($file, $upload_file_path, ['xls','xlsx']);
             if ($result['is_success']) {
                 $uploadFileName = $file_handler->uploaded_file_name;
                 $excelFilePath = $upload_file_path . DIRECTORY_SEPARATOR . $uploadFileName;
