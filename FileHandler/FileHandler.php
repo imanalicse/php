@@ -3,12 +3,12 @@ namespace App\FileHandler;
 
 class FileHandler
 {
-    public $_uploadimgname;
+    public string $uploaded_file_name;
 
-    function uploadFile($file, $filepath = null, $allow_extensions = [], $max_size = null, $new_file_name = null, $dimension = []) : array
+    function upload($file, $file_path = null, $allow_extensions = [], $max_size = null, $new_file_name = null, $dimension = []) : array
     {
-        if(!$filepath) {
-            $filepath = __DIR__ . '/uploads';
+        if(!$file_path) {
+            $file_path = __DIR__ . '/uploads';
         }
         $response = ['is_success' => false, 'message' => 'File not found'];
 
@@ -30,22 +30,22 @@ class FileHandler
                 }
             }
 
-            if (!is_dir($filepath) && !is_file($filepath)) {
-                $this->createFolder($filepath,'0775');
+            if (!is_dir($file_path) && !is_file($file_path)) {
+                $this->createFolder($file_path,'0775');
             }
 
             //set image name
             $new_file_name = $new_file_name ?? $file['name'];
-            $this->setUniqueName($filepath, $new_file_name);
-            $filepath = $filepath. DIRECTORY_SEPARATOR . $this->_uploadimgname;
+            $this->setUniqueName($file_path, $new_file_name);
+            $file_path = $file_path. DIRECTORY_SEPARATOR . $this->uploaded_file_name;
 
-            if ($this->upload($file['tmp_name'], $filepath)) {
+            if ($this->moveFile($file['tmp_name'], $file_path)) {
                 $response = [
                     'is_success' => true,
                     'message' => 'File uploaded successfully'
                 ];
             } else {
-                $baseDir = dirname($filepath);
+                $baseDir = dirname($file_path);
                 $response = [
                     'is_success' => false,
                     'message' => 'File not uploaded. Please try again.',
@@ -53,7 +53,7 @@ class FileHandler
                     //debug data: we should not be here in live!
                     'is_writable' => is_writeable($baseDir),
                     'src'  => $file['tmp_name'],
-                    'dest' => $filepath,
+                    'dest' => $file_path,
                     'test' => 0
                 ];
             }
@@ -61,22 +61,21 @@ class FileHandler
         return $response;
     }
 
-    function isPdf( $fileName ) : bool {
-        return preg_match("/pdf/i",$fileName);
+    function isPdf( $file_name ) : bool {
+        return preg_match("/pdf/i", $file_name);
     }
 
-    function isExel( $fileName ) : bool {
-        return preg_match("/xls|xlsx/i",$fileName);
+    function isExel( $file_name ) : bool {
+        return preg_match("/xls|xlsx/i", $file_name);
     }
 
-    function isCsv( $fileName ) : bool {
-        return preg_match("/csv/i",$fileName);
+    function isCsv( $file_name ) : bool {
+        return preg_match("/csv/i", $file_name);
     }
 
-    function isFile( $file ) : bool {
-        $file_name = basename($file);
+    function isFile( $file_name ) : bool {
         $file_types = implode('|', $this->allowFileUploadExtensions());
-        return preg_match("/$file_types/i",$file_name);
+        return preg_match("/$file_types/i", $file_name);
     }
 
     function isImage($file_name) : bool {
@@ -169,8 +168,7 @@ class FileHandler
             'is_success' => true,
             'message' => 'File extension allowed.'
         ];
-        $file_name = basename($file);
-        $ext = strtolower($this->getExt($file_name));
+        $ext = strtolower($this->getExt(basename($file)));
         if (!empty($allow_extensions) && !in_array($ext, $allow_extensions)) {
            $response = [
                 'is_success' => false,
@@ -199,14 +197,12 @@ class FileHandler
         return $response;
     }
 
-    function upload($src, $dest) : bool {
-        $ret = false;
-        $dest = $this->clean($dest);
-        $baseDir = dirname($dest);
-        if (is_writeable($baseDir) && move_uploaded_file($src, $dest)) {
-            $ret = true;
+    private function moveFile($source, $destination) : bool {
+        $destination = $this->clean($destination);
+        if (is_writeable(dirname($destination)) && move_uploaded_file($source, $destination)) {
+            return true;
         }
-        return $ret;
+        return false;
     }
 
     function clean($path) : string {
@@ -269,8 +265,8 @@ class FileHandler
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Cache-Control: private", false); // required for certain browsers
         header("Content-Type: $content_type");
-        //quotes to allow spaces in filenames
-        header("Content-Disposition: attachment; filename=\"" . basename($absolute_path) . "\";");
+        //quotes to allow spaces in file_names
+        header("Content-Disposition: attachment; file_name=\"" . basename($absolute_path) . "\";");
         header("Content-Transfer-Encoding: binary");
         header("Content-Length: " . filesize($absolute_path));
         ob_clean();
@@ -335,13 +331,13 @@ class FileHandler
         }
     }
 
-    function setUniqueName ($filePath, $fileName) {
-        $fileName = $this->makeSafe($fileName);
-        if (file_exists($filePath . DIRECTORY_SEPARATOR . $fileName)) {
-            $this->_uploadimgname = time() . "_".$fileName;
+    function setUniqueName ($file_path, $file_name) {
+        $file_name = $this->makeSafe($file_name);
+        if (file_exists($file_path . DIRECTORY_SEPARATOR . $file_name)) {
+            $this->uploaded_file_name = time() . "_". $file_name;
         }
         else{
-            $this->_uploadimgname =  $fileName;
+            $this->uploaded_file_name =  $file_name;
         }
     }
 

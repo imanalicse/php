@@ -70,7 +70,7 @@ class ImporterUtils {
             $file_handler = new FileHandler();
             $result = $file_handler->uploadFile($file, $upload_file_path, ['xls','xlsx']);
             if ($result['is_success']) {
-                $uploadFileName = $file_handler->_uploadimgname;
+                $uploadFileName = $file_handler->uploaded_file_name;
                 $excelFilePath = $upload_file_path . DIRECTORY_SEPARATOR . $uploadFileName;
                 $arrayExcelData = SpreadsheetHandler::readSpreadsheet($excelFilePath, 0);
                 if ($arrayExcelData) {
