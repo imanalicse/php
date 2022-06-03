@@ -1,15 +1,18 @@
 <?php
 namespace App\FileHandler;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
+
 class FileHandler
 {
     public $_uploadimgname;
 
-    function uploadFile($file, $filepath = null, $allow_extensions = [], $max_size = null, $new_file_name = null) : array
+    function uploadFile($file, $filepath = null, $allow_extensions = [], $max_size = null, $new_file_name = null, $dimension = []) : array
     {
-        $response = [
-            'is_success' => false,
-            'message' => 'File not found'
-        ];
+        if(!$filepath) {
+            $filepath = __DIR__ . '/uploads';
+        }
+        $response = ['is_success' => false, 'message' => 'File not found'];
 
         if (isset($file['name']) && !empty($file['name'])) {
             $validate_file_extension = $this->validateFileExtension($file['name'], $allow_extensions);
@@ -22,8 +25,11 @@ class FileHandler
                 return $validate_file_size;
             }
 
-            if(!$filepath) {
-                $filepath = __DIR__ . '/uploads';
+            if( $this->isImageByAbsPath($file) ){
+                $validate_dimension = $this->validateDimension($file, $dimension);
+                if (!$validate_dimension['is_success']) {
+                    return $validate_dimension;
+                }
             }
 
             if (!is_dir($filepath) && !is_file($filepath)) {
@@ -73,6 +79,30 @@ class FileHandler
         $file_name = basename($file);
         $file_types = implode('|', $this->allowFileUploadExtensions());
         return preg_match("/$file_types/i",$file_name);
+    }
+
+    function isImage($file_name) : bool {
+        $image_types = 'xcf|odg|gif|jpg|png|bmp|jpeg|ico';
+        return preg_match("/$image_types/i", $file_name);
+    }
+
+    function isVideo($file_name) : bool {
+        $types = 'swf|flv|mp3|wma|mp4';
+        return preg_match("/$types/i", $file_name);
+    }
+
+    function isAudio($file_name) : bool {
+        $types = 'wav|flv|mp3|wma|m4a';
+        return preg_match("/$types/i", $file_name);
+    }
+
+    function isImageByAbsPath($path) : bool {
+        $a = getimagesize($path);
+        $image_type = $a[2]??'';
+        if (!empty($image_type) && in_array($image_type , array(IMAGETYPE_GIF,IMAGETYPE_JPEG,IMAGETYPE_PNG,IMAGETYPE_BMP))) {
+            return true;
+        }
+        return false;
     }
 
     function imageExtensions() : array {
@@ -136,6 +166,7 @@ class FileHandler
          return $response;
     }
 
+    #[Pure] #[ArrayShape(['is_success' => "bool", 'message' => "string"])]
     function validateFileExtension($file, $allow_extensions = []): array {
         $response = [
             'is_success' => true,
@@ -157,6 +188,21 @@ class FileHandler
         return $response;
     }
 
+    #[ArrayShape(['is_success' => "bool", 'message' => "string"])]
+    function validateDimension($file, $dimension = []) : array {
+        $response = ['is_success' => true, 'message' => 'Dimension is ok'];
+        if (!empty($dimension) && isset($file["tmp_name"])) {
+            list($width, $height) = getimagesize($file["tmp_name"]);
+            if (isset($dimension["min_width"]) && isset($dimension["min_height"])) {
+                $min_width = $dimension["min_width"]; $min_height = $dimension["min_height"];
+                if (($width < $min_width) || ($height < $min_height)) {
+                    $response = ['is_success' => false, 'message' => 'image size must be greater than '. $min_width . 'x' . $min_height . ' pixel.'];
+                }
+            }
+        }
+        return $response;
+    }
+
     function upload($src, $dest) : bool {
         $ret = false;
         $dest = $this->clean($dest);
@@ -171,15 +217,12 @@ class FileHandler
         return preg_replace('#[/\\\\]+#', DIRECTORY_SEPARATOR, trim($path));
     }
 
-    function download($abspath) {
+    function download($absolute_path) : bool {
         ob_start();
-        $file = basename($abspath);
-        if (!is_file($abspath)) {
+        if (!is_file($absolute_path)) {
             return false;
         }
-
-        $size = filesize($abspath);
-        $ext = strtolower($this->getExt($abspath));
+        $ext = strtolower($this->getExt($absolute_path));
 
         // required for IE, otherwise Content-disposition is ignored
         if (ini_get('zlib.output_compression')) {
@@ -231,12 +274,12 @@ class FileHandler
         header("Cache-Control: private", false); // required for certain browsers
         header("Content-Type: $content_type");
         //quotes to allow spaces in filenames
-        header("Content-Disposition: attachment; filename=\"" . $file . "\";");
+        header("Content-Disposition: attachment; filename=\"" . basename($absolute_path) . "\";");
         header("Content-Transfer-Encoding: binary");
-        header("Content-Length: " . $size);
+        header("Content-Length: " . filesize($absolute_path));
         ob_clean();
         flush();
-        readfile($abspath);
+        readfile($absolute_path);
         return true;
     }
 
@@ -244,7 +287,7 @@ class FileHandler
         return pathinfo($file, PATHINFO_EXTENSION);
     }
 
-    function createFolder($path, $mode = 0777) {
+    function createFolder($path, $mode = 0777) : bool {
         $folder_permissions = $mode;
         $folder = $path;
         if (strlen($folder) > 0) {
@@ -313,20 +356,5 @@ class FileHandler
              Replacing following character by _
             \/;,:$#*%^&(){}[]~<>?"'|
             */
-    }
-
-    function isImage( $fileName ) {
-        static $imageTypes = 'xcf|odg|gif|jpg|png|bmp|jpeg|ico';
-        return preg_match("/$imageTypes/i",$fileName);
-    }
-
-    function isVideo( $fileName ) {
-        static $imageTypes = 'swf|flv|mp3|wma|mp4';
-        return preg_match("/$imageTypes/i",$fileName);
-    }
-
-    function isAudio( $fileName ) {
-        static $imageTypes = 'wav|flv|mp3|wma|m4a';
-        return preg_match("/$imageTypes/i",$fileName);
     }
 }
