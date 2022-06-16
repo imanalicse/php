@@ -14,9 +14,7 @@ class Firebase
     protected function getFireBaseDomainUriPrefix() : string {
         return getenv('FIREBASE_DOMAIN_URI_PREFIX'); // "eventbookings.page.link";
     }
-    /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
+
     private function createFirebaseDynamicLink ($longUrl) : array {
         $key =  getenv('FIREBASE_WEB_API_KEY');
         $url = 'https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=' . $key;
@@ -25,12 +23,13 @@ class Firebase
                 "domainUriPrefix" => $this->getFireBaseDomainUriPrefix(),
                 "link" => $longUrl,
                 "androidInfo" => [
-                   "androidPackageName" => "com.eventbookings.android", // apn=com.eventbookings.android
-                   //"androidFallbackLink" => "https://www.eventbookings.com/",
+                   "androidPackageName" => "com.eventbookings.androidapp",
+                   "androidFallbackLink" => $longUrl,
                    //"androidMinPackageVersionCode" => "1",
                 ],
                 "iosInfo" => [
                     "iosBundleId" => "com.eventbookings.app", //ibi=com.eventbookings.app
+                    "iosFallbackLink" => $longUrl,
                 ]
              ],
              "suffix" => [
@@ -38,25 +37,25 @@ class Firebase
              ]
         ];
 
-        $http = new Client();
-        $response = $http->post($url, [
-            'body' => json_encode($data),
-            'headers' => ['X-Requested-With' => 'XMLHttpRequest', 'Content-Type' => 'application/json']
-        ]);
-
-        $parse_response = json_decode($response->getBody()->getContents(), true);
-        $return_response = [
-            'is_success' => true,
-            'message' => '',
-            'shortLink' => '',
-        ];
-        if ($response->getStatusCode() == 200) {
-            $shortLink = $parse_response["shortLink"];
-            $return_response['shortLink'] = $shortLink;
+        $return_response = [];
+        try {
+            $http = new Client();
+            $response = $http->post($url, [
+                'body' => json_encode($data),
+                'headers' => ['X-Requested-With' => 'XMLHttpRequest', 'Content-Type' => 'application/json']
+            ]);
+            $parse_response = json_decode($response->getBody()->getContents(), true);
+            if ($response->getStatusCode() == 200) {
+                $shortLink = $parse_response["shortLink"];
+                $return_response['shortLink'] = $shortLink;
+            }
+            else {
+                $message = $parse_response["error"]["message"];
+                throw new Exception("Unable to create short link: ". $message);
+            }
         }
-        else {
-            $message = $parse_response["error"]["message"];
-            throw new Exception("Unable to create short link: ". $message);
+        catch (\Exception $e) {
+            //TODO Log exception
         }
 
         return $return_response;
@@ -64,10 +63,10 @@ class Firebase
 
    /**
     * $firebase = new Firebase();
-       $short_links = $firebase->getFirebaseShortLink("https://olive.doyour.events/b/event/test-speaker-event");
+      $short_link = $firebase->getFirebaseShortLink("https://firebase.google.com/docs/dynamic-links/rest");
     */
    public function getFirebaseShortLink($longLink) : string {
         $firebase_response = $this->createFirebaseDynamicLink($longLink);
-        return $firebase_response["shortLink"];
+        return $firebase_response["shortLink"] ?? $longLink;
    }
 }
