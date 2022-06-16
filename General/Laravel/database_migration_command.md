@@ -7,3 +7,6 @@
 `php artisan migrate:fresh`
 
 `php artisan migrate:fresh --seed`
+
+####The Public Disk
+`php artisan storage:link`
