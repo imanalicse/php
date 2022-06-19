@@ -4,6 +4,7 @@ namespace App\SendgridQuickstart;
 use App\DotEnv;
 use App\MySQL\QueryBuilder;
 use App\SendgridQuickstart\Enum\EmailTransport;
+use SendGrid\Mail\Attachment;
 
 
 class EmailAction
@@ -21,6 +22,18 @@ class EmailAction
         $email->setSubject($subject);
         $email->addTo($email_to);
         $email->addContent("text/html", $content);
+
+        if (!empty($attachments)) {
+            $file_patch = $attachments['file_patch'] ?? '';
+            $file_name = $attachments['file_name'] ?? basename($file_patch);
+            if (!empty($file_patch) && !empty($file_name)) {
+                $file_encoded = base64_encode(file_get_contents($file_patch));
+                $attachment = new Attachment();
+                $attachment->setContent($file_encoded);
+                $attachment->setFilename($file_name);
+                $email->addAttachment($attachment);
+            }
+        }
         $sendgrid_api_key = getenv('SENDGRID_API_KEY');
         $sendgrid = new \SendGrid($sendgrid_api_key);
         try {

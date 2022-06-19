@@ -18,7 +18,12 @@ $content =  "Hello <strong>User</strong>,
 $query = new QueryBuilder();
 $order_last_id =  $query->insert("orders", ["product_name" => "Product 1", "price" => 10.00]);
 
-$attachments = [];
+$attachments = [
+    'file_name' => 'Successful-Game-Team.jpg',
+    'file_patch' => 'https://www.bitmascot.com/wp-content/uploads/2016/09/Successful-Game-Team.jpg'
+];
+// $attachments = [];
+
 $sendgrid_response = $email_action->sendEmail($to, $subject, $content, $attachments);
 if ($sendgrid_response->statusCode() == 202) {
     $sendgrid_response = $email_action->parseSendGridSendEmailResponse($sendgrid_response);
