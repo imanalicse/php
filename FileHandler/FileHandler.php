@@ -349,4 +349,58 @@ class FileHandler
             \/;,:$#*%^&(){}[]~<>?"'|
             */
     }
+
+    function rename($src, $dest) {
+        $ret = false;
+        $dest = $this->clean($dest);
+        if(file_exists($dest)) {
+            return $ret;
+        }
+        $baseDir = dirname($dest);
+        if (is_writeable($baseDir) && rename($src, $dest)) {
+            $ret = true;
+        }
+        return $ret;
+    }
+
+    function setPermissions($path, $filemode = '0644', $foldermode = '0755') {
+
+		// Initialize return value
+		$ret = true;
+
+		if (is_dir($path))
+		{
+			$dh = opendir($path);
+			while ($file = readdir($dh))
+			{
+				if ($file != '.' && $file != '..') {
+					$fullpath = $path.'/'.$file;
+					if (is_dir($fullpath)) {
+						if (!$this->setPermissions($fullpath, $filemode, $foldermode)) {
+							$ret = false;
+						}
+					} else {
+						if (isset ($filemode)) {
+							if (!@ chmod($fullpath, octdec($filemode))) {
+								$ret = false;
+							}
+						}
+					} // if
+				} // if
+			} // while
+			closedir($dh);
+			if (isset ($foldermode)) {
+				if (!@ chmod($path, octdec($foldermode))) {
+					$ret = false;
+				}
+			}
+		}
+		else
+		{
+			if (isset ($filemode)) {
+				$ret = @ chmod($path, octdec($filemode));
+			}
+		} // if
+		return $ret;
+	}
 }
