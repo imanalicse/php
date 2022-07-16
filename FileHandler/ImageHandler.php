@@ -1,14 +1,9 @@
 <?php
+namespace App\FileHandler;
 
-namespace App\Controller\Component;
-
-
-
-class FileHandlerComponent
+class ImageHandler
 {
-
-
-	function resizeImage($orgimagepath, $thumbwidth, $thumbheight, $resizeFollow = 'both'){
+    function resizeImage($orgimagepath, $thumbwidth, $thumbheight, $resizeFollow = 'both'){
 		$resizeWidthHeight = Array();
 
 		$imagepath = $orgimagepath;
@@ -224,5 +219,4 @@ class FileHandlerComponent
 		}
 		return true;
 	}
-
 }
