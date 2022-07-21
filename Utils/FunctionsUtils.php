@@ -122,6 +122,11 @@ class FunctionsUtils
         return $number_format . $suffix;
     }
 
+    public static function numberToWords($number) : string {
+        $f = new \NumberFormatter("en", \NumberFormatter::SPELLOUT);
+        return $f->format($number);
+    }
+
     public static function slugify($text, string $divider = '-') : string {
         // replace non letter or digits by divider
         $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
