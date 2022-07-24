@@ -1,0 +1,8 @@
+file_get_contents() - Reads entire file into a string
+readfile() - Outputs a file
+fopen() - Opens file or URL
+fsockopen() - Open Internet or Unix domain socket connection
+popen() - Opens process file pointer
+include - include
+
+stream_context_create() - Creates a stream context
