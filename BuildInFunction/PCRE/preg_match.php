@@ -11,4 +11,18 @@ $host = $matches[1]; // www.php.net
 preg_match('/[^.]+\.[^.]+$/', $host, $matches);
 echo "domain name is: {$matches[0]}\n"; // domain name is: php.net
 
+// Positive lookahead: match a number followed by the text lb
+if (preg_match('/\d+(?=lb)/', '2 chicken weigh 30lb', $matches)) {
+    echo "<pre>";
+    print_r($matches);
+    echo "</pre>";
+}
+
+// Negative lookahead: match a number not followed by the text lb
+if (preg_match('/\d+(?!lb)/', '2 chicken weigh 30lb', $matches)) {
+    echo "<pre>";
+    print_r($matches);
+    echo "</pre>";
+}
+
 // TODO
