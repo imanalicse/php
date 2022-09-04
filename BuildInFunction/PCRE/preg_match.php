@@ -26,3 +26,15 @@ if (preg_match('/\d+(?!lb)/', '2 chicken weigh 30lb', $matches)) {
 }
 
 // TODO
+
+$file_name = 'S221231AN001-DC001.jpg';
+$first_character =  substr($file_name,0,1);
+$character_before_hyphen = explode('-', $file_name)[0];
+$extension = pathinfo($file_name, PATHINFO_EXTENSION);
+$is_valid_filename = false;
+if ($first_character == 'S' && strlen($character_before_hyphen) == 12 && in_array($extension, ['jpg', 'JPG', 'jpeg', 'JPEG'])) {
+    $is_valid_filename = true;
+}
+echo "<pre>";
+print_r($is_valid_filename);
+echo "</pre>";
