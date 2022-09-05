@@ -4,6 +4,14 @@
  * They are most useful as the value of callable parameters, but they have many other uses.
  */
 
+#Example #1 Anonymous function example
+
+echo preg_replace_callback('~-([a-z])~', function ($match) {
+    return strtoupper($match[1]);
+}, 'hello-world');
+// outputs helloWorld
+echo '<br/>';
+
  // Example #2 Anonymous function variable assignment example
  $greet = function($name)
 {
@@ -27,8 +35,9 @@ $example();
 
 // Closures can also accept regular arguments
 $message = 'world';
-$example = function ($arg) use ($message) {
-    var_dump($arg . ' ' . $message);
+$message2 = 'proxima';
+$example = function ($arg) use ($message, $message2) {
+    var_dump($arg . ' ' . $message . ' '. $message2);
     echo '<br>';
 };
 $example("hello");
@@ -39,5 +48,16 @@ $example = function () use ($message): string {
 };
 var_dump($example());
 echo '<br>';
+
+/**
+ * Inheriting variables from the parent scope is not the same as using global variables.
+ * Global variables exist in the global scope, which is the same no matter what function is executing.
+ * The parent scope of a closure is the function in which the closure was declared (not necessarily the function
+ * it was called from).
+ */
+ // Example #4 Closures and scoping
+
+ // Example #5 Automatic binding of $this
+ // Example #6 Attempting to use $this inside a static anonymous function
 
 // TODO
