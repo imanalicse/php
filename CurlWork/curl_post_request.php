@@ -1,5 +1,5 @@
 <?php
-$url = "http://phphub.com/curl/post_receive.php";
+$url = "http://phphub.com/CurlWork/post_receive.php";
 $curl = curl_init();
 $fields = array(
     'field_name_1' => 'Value 1',

@@ -1,5 +1,5 @@
 <?php
-$url = "http://phphub.com/curl/response.php";
+$url = "http://phphub.com/CurlWork/response.php";
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_URL, $url);
