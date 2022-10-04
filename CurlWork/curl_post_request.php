@@ -13,4 +13,9 @@ curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
 
 $data = curl_exec($curl);
 
+$info = curl_getinfo($curl);
+echo "<pre>";
+print_r($info);
+echo "</pre>";
+
 curl_close($curl);
