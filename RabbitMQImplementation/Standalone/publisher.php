@@ -1,5 +1,8 @@
 <?php
- require_once(__DIR__ . '/../../vendor/autoload.php');
+
+use PhpAmqpLib\Message\AMQPMessage;
+
+require_once(__DIR__ . '/../../vendor/autoload.php');
 
 define("RABBITMQ_HOST", "localhost");
 define("RABBITMQ_PORT", 5672);
@@ -39,7 +42,7 @@ while (true)
 
     $msg = new \PhpAmqpLib\Message\AMQPMessage(
         json_encode($jobArray, JSON_UNESCAPED_SLASHES),
-        array('delivery_mode' => 2) # make message persistent
+        array('delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT) # make message persistent
     );
 
     $channel->basic_publish($msg, '', RABBITMQ_QUEUE_NAME);
