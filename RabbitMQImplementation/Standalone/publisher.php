@@ -3,11 +3,8 @@
 use PhpAmqpLib\Message\AMQPMessage;
 
 require_once(__DIR__ . '/../../vendor/autoload.php');
+require_once __DIR__ . '/../rabbitmq_config.php';
 
-define("RABBITMQ_HOST", "localhost");
-define("RABBITMQ_PORT", 5672);
-define("RABBITMQ_USERNAME", "iman");
-define("RABBITMQ_PASSWORD", "iman");
 define("RABBITMQ_QUEUE_NAME", "task_queue");
 
 $connection = new \PhpAmqpLib\Connection\AMQPStreamConnection(
