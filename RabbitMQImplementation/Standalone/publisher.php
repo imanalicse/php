@@ -17,15 +17,9 @@ $connection = new \PhpAmqpLib\Connection\AMQPStreamConnection(
 $channel = $connection->channel();
 
 # Create the queue if it does not already exist.
-$channel->queue_declare(
-    $queue = RABBITMQ_QUEUE_NAME,
-    $passive = false,
-    $durable = true,
-    $exclusive = false,
-    $auto_delete = false,
-    $nowait = false,
-    $arguments = null,
-    $ticket = null
+$channel->queue_declare(RABBITMQ_QUEUE_NAME, false, true, false, false, false,
+    null,
+    null
 );
 
 $job_id=0;
@@ -46,3 +40,6 @@ while (true)
     print 'Job created' . PHP_EOL;
     sleep(1);
 }
+
+$channel->close();
+$connection->close();
