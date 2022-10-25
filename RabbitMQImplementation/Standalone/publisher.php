@@ -1,13 +1,13 @@
 <?php
-
-use PhpAmqpLib\Message\AMQPMessage;
-
 require_once(__DIR__ . '/../../vendor/autoload.php');
 require_once __DIR__ . '/../rabbitmq_config.php';
 
+use PhpAmqpLib\Message\AMQPMessage;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+
 define("RABBITMQ_QUEUE_NAME", "task_queue");
 
-$connection = new \PhpAmqpLib\Connection\AMQPStreamConnection(
+$connection = new AMQPStreamConnection(
     RABBITMQ_HOST,
     RABBITMQ_PORT,
     RABBITMQ_USERNAME,
@@ -18,8 +18,7 @@ $channel = $connection->channel();
 
 # Create the queue if it does not already exist.
 $channel->queue_declare(RABBITMQ_QUEUE_NAME, false, true, false, false, false,
-    null,
-    null
+    null, null
 );
 
 $job_id=0;

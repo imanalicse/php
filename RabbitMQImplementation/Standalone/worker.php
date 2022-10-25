@@ -2,9 +2,11 @@
 require_once __DIR__ . './../../vendor/autoload.php';
 require_once __DIR__ . '/../rabbitmq_config.php';
 
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+
 define("RABBITMQ_QUEUE_NAME", "task_queue");
 
-$connection = new \PhpAmqpLib\Connection\AMQPStreamConnection(
+$connection = new AMQPStreamConnection(
     RABBITMQ_HOST,
     RABBITMQ_PORT,
     RABBITMQ_USERNAME,
@@ -14,16 +16,13 @@ $connection = new \PhpAmqpLib\Connection\AMQPStreamConnection(
 
 $channel = $connection->channel();
 
+/**
+ * we declare the queue here, as well. Because we might start the consumer before the publisher,
+ * we want to make sure the queue exists before we try to consume messages from it.
+*/
 # Create the queue if it doesnt already exist.
-$channel->queue_declare(
-    $queue = RABBITMQ_QUEUE_NAME,
-    $passive = false,
-    $durable = true,
-    $exclusive = false,
-    $auto_delete = false,
-    $nowait = false,
-    $arguments = null,
-    $ticket = null
+$channel->queue_declare(RABBITMQ_QUEUE_NAME, false, true, false, false, false,
+    null, null
 );
 
 
@@ -37,19 +36,17 @@ $callback = function($msg){
     $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 };
 
+// distribute message fairly
 $channel->basic_qos(null, 1, null);
 
-$channel->basic_consume(
-    $queue = RABBITMQ_QUEUE_NAME,
-    $consumer_tag = '',
-    $no_local = false,
-    $no_ack = false,
-    $exclusive = false,
-    $nowait = false,
+ // start consuming
+$channel->basic_consume(RABBITMQ_QUEUE_NAME, '', false, false, false, false,
     $callback
 );
 
-while (count($channel->callbacks))
+// while (count($channel->callbacks))
+// while ($channel->is_consuming())
+while ($channel->is_open())
 {
     $channel->wait();
 }
