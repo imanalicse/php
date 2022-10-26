@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Stripe Payment</title>
-        <script src="https://olive.doyour.events/js/jquery.min.js"></script>
+        <script src="jquery.min.js"></script>
         <script src="https://js.stripe.com/v3/"></script>
     </head>
 <style>
@@ -63,7 +63,7 @@
 </style>
 <body>
     <?php
-        include "include.php";
+        // include "include.php";
         $stripe_pk = getenv("STRIPE_SK_TEST_KEY");
         $stripe_connect_id = getenv("STRIPE_ACCOUNT_ID");
     ?>
@@ -72,7 +72,7 @@
 
         <div class="mb-3 pt-3 pb-3 border-top d-flex justify-content-between align-items-center">
             <h6 class="color-black mb-0">Accepted Card </h6>
-            <img class="card-icon-group" src="/images/visa-master-card.png" alt="card">
+            <img class="card-icon-group" src="/Payment/Stripe/images/visa-master-card.png" alt="card">
         </div>
 
         <div id="stripe-ui-container" class="stripe-card-wrap">
