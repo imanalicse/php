@@ -1,0 +1,54 @@
+body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Roboto', sans-serif;
+    }
+    .input-box {
+        margin-bottom: 15px;
+    }
+    .field {
+        box-sizing: border-box;
+        padding: 10px;
+        border-radius: 3px;
+        border: 1px solid #d3dbde;
+        width: 100%;
+    }
+    .input-box label {
+        color: #8b8e9a;
+        display: block;
+        padding-bottom: 5px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+    .StripeElement--focus {
+        border: 1px solid #22B0AF;
+    }
+    .StripeElement--invalid {
+        border-color: #f97070;
+    }
+    .StripeElement--complete {
+        border-color: #22B0AF;
+    }
+    .StripeElement--webkit-autofill {
+        background-color: #fff !important;
+    }
+    .button-container {
+        text-align: center;
+    }
+    #card-errors {
+        font-weight: bold;
+        color: #f97070;
+        text-align: center;
+        margin: 15px 0;
+        font-size: 14px;
+    }
+    .securepay-card-form {
+        background: #fff;
+        padding: 30px 30px 30px;
+        border: 1px solid #eee;
+        max-width: 362px;
+        width: 100%;
+    }
+    .securepay-card-form .form-group > label {
+        font-size: 14px;
+    }

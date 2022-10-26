@@ -1,72 +1,24 @@
+<?php
+namespace App\Payment\Stripe;
+
+require '../../vendor/autoload.php';
+use App\DotEnv;
+
+(new DotEnv(__DIR__ . '/.env'))->load();
+
+$stripe_pk = getenv("STRIPE_PK_TEST_KEY");
+$stripe_connect_id = getenv("STRIPE_ACCOUNT_ID");
+
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Stripe Payment</title>
-        <script src="jquery.min.js"></script>
+        <script src="js/jquery.min.js"></script>
         <script src="https://js.stripe.com/v3/"></script>
+        <link rel="stylesheet" href="css/style.css">
     </head>
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Roboto', sans-serif;
-    }
-    .input-box {
-        margin-bottom: 15px;
-    }
-    .field {
-        box-sizing: border-box;
-        padding: 10px;
-        border-radius: 3px;
-        border: 1px solid #d3dbde;
-        width: 100%;
-    }
-    .input-box label {
-        color: #8b8e9a;
-        display: block;
-        padding-bottom: 5px;
-        font-size: 11px;
-        font-weight: 600;
-    }
-    .StripeElement--focus {
-        border: 1px solid #22B0AF;
-    }
-    .StripeElement--invalid {
-        border-color: #f97070;
-    }
-    .StripeElement--complete {
-        border-color: #22B0AF;
-    }
-    .StripeElement--webkit-autofill {
-        background-color: #fff !important;
-    }
-    .button-container {
-        text-align: center;
-    }
-    #card-errors {
-        font-weight: bold;
-        color: #f97070;
-        text-align: center;
-        margin: 15px 0;
-        font-size: 14px;
-    }
-    .securepay-card-form {
-        background: #fff;
-        padding: 30px 30px 30px;
-        border: 1px solid #eee;
-        max-width: 362px;
-        width: 100%;
-    }
-    .securepay-card-form .form-group > label {
-        font-size: 14px;
-    }
-</style>
 <body>
-    <?php
-        // include "include.php";
-        $stripe_pk = getenv("STRIPE_SK_TEST_KEY");
-        $stripe_connect_id = getenv("STRIPE_ACCOUNT_ID");
-    ?>
     <form action="/charge" method="post" id="payment-form" class="mb-3 securepay-card-form">
         <h4 class="pb-2 text-center">Amount : <?php echo "10"; ?></h4>
 
@@ -176,7 +128,7 @@
 
         setTimeout(function(data){
             $.ajax({
-                url: '<?php echo  $this->EbUrl->build(APP_ROUTE_PREFIX.'/checkouts/make-stripe-payment') ?>?_t='+ new Date().getTime(),
+                url: '/checkouts/make-stripe-payment?_t='+ new Date().getTime(),
                 method: 'POST',
                 data: {charge_token:token},
                 dataType: 'html',
