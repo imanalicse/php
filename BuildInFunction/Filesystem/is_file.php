@@ -4,5 +4,19 @@
  * is_file(string $filename): bool
  */
 
-var_dump(is_file('a_file.txt')) . "\n"; // bool(true)
-var_dump(is_file('/usr/bin/')) . "\n"; // bool(false)
+// $filename = 'a_file.txt';
+$filename = __FILE__;
+echo "<pre>";
+print_r($filename);
+echo "</pre>";
+echo "<pre>";
+print_r(var_dump(is_file($filename)));
+echo "</pre>";
+echo '=======';
+$directory = dirname($filename);
+echo "<pre>";
+print_r($directory);
+echo "</pre>";
+echo "<pre>";
+print_r(var_dump(is_file($directory)));
+echo "</pre>";
