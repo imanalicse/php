@@ -9,6 +9,7 @@
  * levels: The number of parent directories to go up. This must be an integer greater than 0.
  */
 
+echo dirname(__FILE__) . "<br>";
 echo dirname("/etc/passwd") . "<br>";
 echo dirname("/etc/") . "<br>";
 echo dirname(".") . "<br>";
