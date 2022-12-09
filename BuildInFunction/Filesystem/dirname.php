@@ -10,6 +10,7 @@
  */
 
 echo dirname(__FILE__) . "<br>";
+echo dirname(__DIR__) . "<br>";
 echo dirname("/etc/passwd") . "<br>";
 echo dirname("/etc/") . "<br>";
 echo dirname(".") . "<br>";
