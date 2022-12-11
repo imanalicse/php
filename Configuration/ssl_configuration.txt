@@ -1,0 +1,9 @@
+https://www.youtube.com/watch?v=TH6evGKgy20
+
+D:\wamp64\bin\apache\apache2.4.54.2\conf\httpd.conf - uncomment following module
+LoadModule ssl_module modules/mod_ssl.so
+Include conf/extra/httpd-ssl.conf
+LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+
+D:\wamp64\bin\apache\apache2.4.54.2\conf\extra\httpd-ssl.conf
+SSLCertificateKeyFile "${SRVROOT}/conf/key/server.key"
