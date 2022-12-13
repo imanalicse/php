@@ -6,4 +6,5 @@ Include conf/extra/httpd-ssl.conf
 LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
 
 D:\wamp64\bin\apache\apache2.4.54.2\conf\extra\httpd-ssl.conf
+SSLCertificateFile "${SRVROOT}/conf/key/server.crt"
 SSLCertificateKeyFile "${SRVROOT}/conf/key/server.key"
