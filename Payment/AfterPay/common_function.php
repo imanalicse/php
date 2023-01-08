@@ -1,7 +1,7 @@
 <?php
 
-const AFTER_PAY_MERCHANT_ID_TEST = 43173;
-const AFTER_PAY_SECRET_KEY_TEST = '20acd502731273c395acf85373371b4c6ff467e1d7e49e8fc53a3e07d8c9db91f362cf3c6778fa6dd630ad6dcf223d740ce651612c76aa40f90bc55962b15469';
+const AFTER_PAY_MERCHANT_ID_TEST = '';
+const AFTER_PAY_SECRET_KEY_TEST = '';
 
 function getAfterPayConfig(): array {
      $transaction_mode = "TEST";
