@@ -4,9 +4,9 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 /**
- * http://localhost:15672
+ * In previous parts of the tutorial we sent and received messages to and from a queue.
  */
-$connection = new AMQPStreamConnection('localhost', 5672, 'iman', 'iman');
+$connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
 $channel = $connection->channel();
 
 /**

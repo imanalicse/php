@@ -6,7 +6,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 /**
  * http://localhost:15672
  */
-$connection = new AMQPStreamConnection('localhost', 5672, 'iman', 'iman');
+$connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
 $channel = $connection->channel();
 
 /**
