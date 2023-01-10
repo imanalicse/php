@@ -1,7 +1,7 @@
 <?php
 
-const AFTER_PAY_MERCHANT_ID_TEST = '';
-const AFTER_PAY_SECRET_KEY_TEST = '';
+const AFTER_PAY_MERCHANT_ID_TEST = 43173;
+const AFTER_PAY_SECRET_KEY_TEST = '20acd502731273c395acf85373371b4c6ff467e1d7e49e8fc53a3e07d8c9db91f362cf3c6778fa6dd630ad6dcf223d740ce651612c76aa40f90bc55962b15469';
 
 function getAfterPayConfig(): array {
      $transaction_mode = "TEST";
@@ -23,13 +23,20 @@ function getAfterPayConfig(): array {
     ];
 }
 
+function paymentAmount() {
+    return 2.00;
+}
+
 function getAfterCheckoutData() {
     $request_data = [
-        'amount' => [ '10.00', 'AUD' ],
+        'amount' => [
+            'amount'=> paymentAmount(),
+            'currency' => 'AUD'
+        ],
         'consumer' => [
             'phoneNumber' => '0400 000 000',
-            'givenNames' => 'Iman',
-            'surname' => 'Ali'
+            'givenNames' => 'Hello',
+            'surname' => 'Test'
         ],
         'billing' => [
             'name' => 'Joe Consumer',
@@ -57,33 +64,11 @@ function getAfterCheckoutData() {
             'tracking' => 'AA0000000000000',
             'priority' => 'STANDARD'
         ],
-        'items' => [
-            [
-                'name' => 'T-Shirt - Blue - Size M',
-                'sku' => 'TSH0001B1MED',
-                'quantity' => 10,
-                'pageUrl' => 'https://iman.daybud.com/',
-                'imageUrl' => 'https://iman.daybud.com/img/images/page-header.jpg',
-                'price' => [ '10.00', 'AUD' ],
-                'categories' => [
-                    [ 'Clothing', 'T-Shirts', 'Under $25' ],
-                    [ 'Sale', 'Clothing' ]
-                ]
-            ]
-        ],
-        'discounts' => [
-            [
-                'displayName' => '20% off SALE',
-                'amount' => [ '24.00', 'AUD' ]
-            ]
-        ],
         'merchant' => [
             'redirectConfirmUrl' => 'http://phphub.com/Payment/AfterPay/redirectConfirmUrl.php',
             'redirectCancelUrl' => 'http://phphub.com/Payment/AfterPay/redirectCancelUrl.php'
-        ],
-        'taxAmount' => [ '0.00', 'AUD' ],
-        'shippingAmount' => [ '0.00', 'AUD' ]
+        ]
     ];
-
+    $request_data = json_encode($request_data, JSON_UNESCAPED_SLASHES);
     return $request_data;
 }
