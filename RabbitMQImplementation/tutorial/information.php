@@ -11,3 +11,5 @@ Actually, quite often the producer doesn't even know if a message will be delive
 
 Instead, the producer can only send messages to an exchange. An exchange is a very simple thing.
 On one side it receives messages from producers and the other side it pushes them to queues.
+
+Topic exchange:
