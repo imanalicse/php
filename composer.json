@@ -8,7 +8,8 @@
         "amphp/parallel": "^1.4",
         "amphp/parallel-functions": "^1.1",
         "cheprasov/php-parallel": "^1.2",
-        "afterpay-global/afterpay-sdk-php": "^1.5"
+        "afterpay-global/afterpay-sdk-php": "^1.5",
+        "josegonzalez/dotenv": "dev-master"
     },
     "autoload": {
         "psr-4": {
