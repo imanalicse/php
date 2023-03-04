@@ -1,7 +1,18 @@
 <?php
-$date = '31/12/2022';
-$date = str_replace("/","-",$date);
-$new_data = date('jS F Y', strtotime($date));
+
+$data = [
+    "name" => "Iman"
+];
+
+$name = "Ishak";
+$product = new stdClass();
+$product->name = "PC";
+$product->price = 1244;
+
 echo "<pre>";
-print_r($new_data);
-echo "</pre>";
+print_r($product);
+
+
+
+echo "hell world";
+    
