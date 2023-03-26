@@ -76,7 +76,11 @@ ffmpeg -i C:/BM/Video/big_video.mp4 -i C:/BM/Video/name_image.png -filter_comple
 ffmpeg -i C:/BM/Video/big_video.mp4 -i C:/BM/Video/name_image.png -filter_complex "[0:v][1:v] overlay=W-w:0:enable='if(lt(mod(t,10),5),1,0)'" C:/BM/Video/big_video_out_final2.mp4
 ffmpeg -i C:/BM/Video/GradClip_Demo_USC.mp4 -i C:/BM/Video/name_image.png -filter_complex "[0:v][1:v] overlay=W-w:0:enable='if(lt(mod(t,10),5),1,0)'" C:/BM/Video/GradClip_Demo_USC_out.mp4
 
+Cut vide:
+ffmpeg -ss 00:00:00 -to 00:00:2 -i input.mp4 -acodec copy -vcodec copy output.mp4
 
+Mute video:
+ffmpeg -i input.mp4 -af "volume=enable='between(t,5,10)':volume=0, volume=enable='between(t,15,20)':volume=0" output.mp4
 
 New Command:
 ffmpeg -i C:/BM/Video/GradClip_Demo_USC.mp4 -i C:/BM/Video/name_image.png -filter_complex "[0:v][1:v] overlay=25:25:enable='between(t,0,20)'" -pix_fmt yuv420p -c:a copy C:/BM/Video/GradClip_Demo_USC_out.mp4
