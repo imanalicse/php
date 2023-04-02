@@ -5,6 +5,7 @@ require './../functions.php';
 require './../DotEnv.php';
 (new DotEnv(__DIR__ . '/.env'))->load();
 
+use App\Google\GoogleAnalytics\GoogleAnalytics;
 use GuzzleHttp\Client;
 
 waLog('$_REQUEST', 'google_auth');

@@ -1,11 +1,16 @@
 <?php
-require "../Utils/FunctionsUtils.php";
-require './../DotEnv.php';
+
+namespace App\Google\GoogleAnalytics;
+use FunctionsUtils;
+
+require "../../Utils/FunctionsUtils.php";
+require './../../DotEnv.php';
 (new DotEnv(__DIR__ . '/.env'))->load();
 
 class GoogleAnalytics
 {
-    public function connectToGoogle() {
+    public function connectToGoogle()
+    {
         $authOptions = self::getoAuthOptions();
         $auth_url = $authOptions['authUrl'];
         $auth_url .= "?response_type=code";
@@ -18,7 +23,8 @@ class GoogleAnalytics
         FunctionsUtils::redirect($auth_url);
     }
 
-    public static function getoAuthOptions() {
+    public static function getoAuthOptions()
+    {
         return [
             'authUrl' => 'https://accounts.google.com/o/oauth2/v2/auth',
             'tokenUrl' => 'https://accounts.google.com/o/oauth2/token',
