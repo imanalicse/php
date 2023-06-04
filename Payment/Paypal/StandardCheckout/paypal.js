@@ -25,13 +25,15 @@ paypal
         // Finalize the transaction after payer approval
         onApprove: function (data) {
             console.log("onApproveData", data);
+            var post_data = new FormData();
+            post_data.append('orderId', data.orderID)
             //  return fetch(`/api/orders/${data.orderID}/capture`, {
-            return fetch(`/paypal/orders/${data.orderID}/capture`, {
+            return fetch("capturePayPalPayment.php", {
                 method: "post",
-                headers: {
-                    'X-CSRF-Token': csrfToken,
-                    'Content-Type': 'application/json',
-                }
+                // headers: {
+                //     'Content-Type': 'application/json',
+                // },
+                body: post_data
             })
                 .then((response) => response.json())
                 .then((orderData) => {

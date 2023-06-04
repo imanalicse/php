@@ -12,6 +12,6 @@
     <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_client_id; ?>&currency=USD"></script>
     <!-- Set up a container element for the button -->
     <div id="paypal-button-container"></div>
-    <script src="paypal.js"></script>
+    <script src="paypal.js?v=<?php echo time() ?>"></script>
   </body>
 </html>

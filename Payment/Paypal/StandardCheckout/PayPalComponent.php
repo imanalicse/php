@@ -3,6 +3,7 @@
 namespace App\Payment\Paypal\StandardCheckout;
 
 use App\Logger\Log;
+use GuzzleHttp\Client;
 
 require '../../../global_config.php';
 
@@ -82,7 +83,7 @@ class PayPalComponent
      */
     public function executePaypalOrder() {
         try {
-            $payment_amount = "2.00";
+            $payment_amount = "3.00";
             $order_data = [];
             $order_data['intent'] = 'CAPTURE';
             $order_data['purchase_units'] = [
@@ -124,10 +125,7 @@ class PayPalComponent
             throw new \Exception($exception);
         }
         catch (\Exception $exception) {
-            echo "<pre>";
-            print_r($exception->getMessage());
-            echo "</pre>";
-            // $this->controller->saveLog(PaymentMethod::PAY_PAL, 'pay_pal_error', 'Error in createPaypalOrder: '. $exception->getMessage());
+            Log::write('Error in createPaypalOrder: '. $exception->getMessage(), 'paypal');
         }
     }
 
@@ -139,13 +137,22 @@ class PayPalComponent
             }
 
             $url = $this->getPayPalBaseUrl() . '/v2/checkout/orders/' . $paypalOrderId . '/capture';
-            $this->controller->saveLog(PaymentMethod::PAY_PAL, 'pay_pal', 'captured_payment_response: '. $url);
-            $http = new Client();
-            $response = $http->post($url, '', [
-                'headers' => $this->getPayPalHeader($access_token),
-            ]);
-            $response_data = $response->getJson();
-            $this->controller->saveLog(PaymentMethod::PAY_PAL, 'pay_pal_error', 'captured_payment_response: '. json_encode($response_data));
+            Log::write('captured_payment_response: '. $url, 'paypal');
+            $client = new \GuzzleHttp\Client();
+//            $response = $client->post($url, '', [
+//                'headers' => $this->getPayPalHeader($access_token),
+//            ]);
+
+            $options = [
+                'headers'=> $this->getPayPalHeader($access_token),
+                'body' => ''
+            ];
+
+            $response = $client->post($url, $options);
+
+            $response_data = $response->getBody()->getContents();
+            $response_data = json_decode($response_data, true);
+            Log::write('captured_payment_response: '. json_encode($response_data), 'paypal');
             if ($response->getStatusCode() === 200 || $response->getStatusCode() === 201) {
                 return $response_data;
             }
@@ -153,7 +160,7 @@ class PayPalComponent
             throw new \Exception($exception);
         }
         catch (\Exception $exception) {
-            $this->controller->saveLog(PaymentMethod::PAY_PAL, 'pay_pal_error', 'Error in executePayPalCapture: '. $exception->getMessage());
+            Log::write('Error in executePayPalCapture: '. $exception->getMessage(), 'paypal');
         }
     }
 }
