@@ -2,6 +2,8 @@
 
 namespace App\Payment\Paypal\StandardCheckout;
 
+use App\Logger\Log;
+
 require '../../../global_config.php';
 
 class PayPalComponent
@@ -19,7 +21,7 @@ class PayPalComponent
         return $paypal_base_url;
     }
 
-    public static function getPayPalClientId() {
+    public function getPayPalClientId() : string {
         $transaction_mode = self::getPayPalTransactionMode();
         return getenv('PAYPAL_CLIENT_ID_'. $transaction_mode);
     }
@@ -30,6 +32,7 @@ class PayPalComponent
         $auth_code = $this->getPayPalClientId() . ':' . $paypal_secret_key;
         return base64_encode($auth_code);
     }
+
     public function getPayPalBasicHeader($authorizationCode): array {
         return [
             'Content-Type' => 'application/json',
@@ -51,21 +54,16 @@ class PayPalComponent
             $request_data['grant_type'] = 'client_credentials';
             $url = $this->getPayPalBaseUrl() . '/v1/oauth2/token';
             $headers = $this->getPayPalBasicHeader($this->getPayPalAuthorizationCode());
-            echo "<pre>";
-            print_r($headers);
-            echo "</pre>";
-            die();
 
             $client = new \GuzzleHttp\Client();
             $options = [
                 'headers'=> $headers,
-                'body' => $request_data
+                // 'body' => $request_data
+                'body' => 'grant_type=client_credentials'
             ];
             $response = $client->post($url, $options);
-            $response_data = $response->getJson();
-            echo "<pre>";
-            print_r($response_data);
-            echo "</pre>";
+            $response_data = $response->getBody()->getContents();
+            $response_data = json_decode($response_data, true);
             if ($response->getStatusCode() === 200 || $response->getStatusCode() === 201) {
                 return $response_data['access_token'] ?? '';
             }
@@ -73,7 +71,8 @@ class PayPalComponent
             throw new \Exception($exception);
         }
         catch (\Exception $exception) {
-            // $this->controller->saveLog(PaymentMethod::PAY_PAL, 'pay_pal_error', 'Error in payPal token request: ' . $exception->getMessage());
+            $error_message = $exception->getMessage();
+            Log::write('Error in payPal token request:: '. $error_message, 'paypal');
         }
         return $access_token;
     }
@@ -82,8 +81,6 @@ class PayPalComponent
      * @throws \Exception
      */
     public function executePaypalOrder() {
-        echo "hello";
-        die('xx');
         try {
             $payment_amount = "2.00";
             $order_data = [];
@@ -96,10 +93,7 @@ class PayPalComponent
                     ]
                 ]
             ];
-            echo "<pre>";
-            print_r($order_data);
-            echo "</pre>";
-            die('xxx');
+
             $order_data = json_encode($order_data);
 
             $access_token = self::generatePapPalAccessToken();
@@ -119,11 +113,10 @@ class PayPalComponent
 //            $response = $http->post($url, $order_data, [
 //                'headers' => self::getPayPalHeader($access_token),
 //            ]);
-            $response_data = $response->getJson();
-            echo "<pre>";
-            print_r($response_data);
-            echo "</pre>";
+
             if ($response->getStatusCode() === 200 || $response->getStatusCode() === 201) {
+                $response_data = $response->getBody()->getContents();
+                $response_data = json_decode($response_data, true);
                 return $response_data;
             }
             // $this->controller->saveLog(PaymentMethod::PAY_PAL, 'paypal_error', 'order_response: '. $response->getStringBody());

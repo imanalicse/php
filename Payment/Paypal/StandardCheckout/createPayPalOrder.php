@@ -3,21 +3,19 @@ namespace App\Payment\Paypal\StandardCheckout;
 
 require '../../../global_config.php';
 use App\Payment\Paypal\StandardCheckout\PayPalComponent;
+use App\Logger\Log;
 
 try {
-    $paypal_compo = new \App\Payment\Paypal\StandardCheckout\PayPalComponent();
+    $paypal_compo = new PayPalComponent();
     $order = $paypal_compo->executePaypalOrder();
-    echo "<pre>";
-    print_r($order);
-    echo "</pre>";
     if (empty($order)) {
         throw new \Exception('Unable to create paypal order');
     }
-//    $this->saveLog(PaymentMethod::PAY_PAL, 'pay_pal', 'createPayPalOrder response:');
-//    $this->saveLog(PaymentMethod::PAY_PAL, 'pay_pal', $order);
+    Log::write('createPayPalOrder response:', 'paypal');
+    Log::write($order, 'paypal');
     echo json_encode($order);
 }
 catch (\Exception $exception) {
-    // $this->saveLog(PaymentMethod::PAY_PAL, 'pay_pal_error', 'Error in createPayPalOrder: '. $exception->getMessage());
+    Log::write('Error in createPayPalOrder: '. $exception->getMessage(), 'paypal');
 }
 exit('');

@@ -2,6 +2,7 @@ paypal
     .Buttons({
         // Sets up the transaction when a payment button is clicked
         createOrder: function () {
+            console.log("createOrder called")
             return fetch("createPayPalOrder.php", {
                 method: "post",
                 // use the "body" param to optionally pass additional order information
