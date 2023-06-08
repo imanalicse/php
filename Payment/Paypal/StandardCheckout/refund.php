@@ -22,6 +22,9 @@ try {
     $refund_response = json_decode($refund_response, true);
     Log::write('Error in Paypal refund: ', 'paypal_refund');
     Log::write($refund_response, 'paypal_refund');
+    echo '<pre>';
+    print_r($refund_response);
+    echo '</pre>';
 }
 catch (\Exception $exception) {
     Log::write('Error in Paypal refund: '. $exception->getMessage(), 'paypal_refund');
