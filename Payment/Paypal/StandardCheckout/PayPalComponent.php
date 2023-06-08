@@ -88,8 +88,9 @@ class PayPalComponent
             $order_data['intent'] = 'CAPTURE';
             $order_data['purchase_units'] = [
                 [
+                    "reference_id" => "merchant-ref-".uniqid(),
                     'amount' => [
-                        'currency_code' => 'USD',
+                        'currency_code' => 'AUD',
                         'value' => $payment_amount,
                     ]
                 ]
@@ -103,7 +104,7 @@ class PayPalComponent
             }
 
             $url = self::getPayPalBaseUrl() . '/v2/checkout/orders';
-            // $http = new Client();
+            Log::write('executePaypalOrder request data: '. $order_data, 'paypal');
             $client = new \GuzzleHttp\Client();
             $options = [
                 'headers'=> self::getPayPalHeader($access_token),
@@ -111,12 +112,10 @@ class PayPalComponent
             ];
 
             $response = $client->post($url, $options);
-//            $response = $http->post($url, $order_data, [
-//                'headers' => self::getPayPalHeader($access_token),
-//            ]);
 
             if ($response->getStatusCode() === 200 || $response->getStatusCode() === 201) {
                 $response_data = $response->getBody()->getContents();
+                Log::write('executePaypalOrder response data: '. $order_data, 'paypal');
                 $response_data = json_decode($response_data, true);
                 return $response_data;
             }
@@ -139,9 +138,6 @@ class PayPalComponent
             $url = $this->getPayPalBaseUrl() . '/v2/checkout/orders/' . $paypalOrderId . '/capture';
             Log::write('captured_payment_response: '. $url, 'paypal');
             $client = new \GuzzleHttp\Client();
-//            $response = $client->post($url, '', [
-//                'headers' => $this->getPayPalHeader($access_token),
-//            ]);
 
             $options = [
                 'headers'=> $this->getPayPalHeader($access_token),
