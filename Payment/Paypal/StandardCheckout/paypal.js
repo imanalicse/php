@@ -1,5 +1,9 @@
 paypal
     .Buttons({
+        style: {
+            label:  'pay',
+            // height: 40
+        },
         // Sets up the transaction when a payment button is clicked
         createOrder: function () {
             console.log("createOrder called")
