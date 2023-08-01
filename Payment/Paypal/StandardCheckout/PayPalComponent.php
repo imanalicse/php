@@ -83,18 +83,73 @@ class PayPalComponent
      */
     public function executePaypalOrder() {
         try {
-            $payment_amount = "3.00";
+            $payment_amount = "5.00";
+            $currency = 'AUD';
+
+            $items = [
+                [
+                    "name"=> "AAA",
+                    "quantity"=> "1",
+                    "unit_amount"=> [
+                        "currency_code"=> $currency,
+                        "value"=> $payment_amount
+                    ]
+                ]
+            ];
+
+            $shipping_address =  [
+                "address_line_1" => "9 Yarra",
+                "address_line_2" => "Address line 2",
+                "admin_area_2" => "Melbourne",
+                "admin_area_1" => "Victoria",
+                "postal_code" => "3100",
+                "country_code" => "AU"
+            ];
+
+            $shipping = [
+                'type' => 'SHIPPING', //SHIPPING, PICKUP_IN_PERSON
+                'name' => [
+                    'full_name' => 'Iman Ali'
+                ],
+                'address' => $shipping_address
+            ];
+            $shipping_amount = 0;
+            $service_charge_amount = 0;
+            $discount = 0;
+
             $order_data = [];
             $order_data['intent'] = 'CAPTURE';
             $order_data['purchase_units'] = [
                 [
                     "reference_id" => "merchant-ref-".uniqid(),
+                    'items' => $items,
                     'amount' => [
                         'currency_code' => 'AUD',
                         'value' => $payment_amount,
-                    ]
+                        'breakdown' => [
+                            'item_total' => [
+                                'currency_code' => 'AUD',
+                                'value' => $payment_amount,
+                            ],
+                            'shipping' => [
+                                'currency_code' => $currency,
+                                'value' => $shipping_amount,
+                            ],
+                            'handling' => [
+                                'currency_code' => $currency,
+                                'value' => $service_charge_amount,
+                            ],
+                            "discount" => [
+                                "currency_code" => $currency,
+                                "value"=> $discount
+                            ]
+                        ]
+                    ],
+                    'shipping' => $shipping,
                 ]
             ];
+
+            Log::write($order_data, 'paypal');
 
             $order_data = json_encode($order_data);
 
@@ -124,7 +179,8 @@ class PayPalComponent
             throw new \Exception($exception);
         }
         catch (\Exception $exception) {
-            Log::write('Error in createPaypalOrder: '. $exception->getMessage(), 'paypal');
+            $exception_message = $exception->getMessage();
+            Log::write('Error in createPaypalOrder: '. $exception_message, 'paypal');
         }
     }
 
