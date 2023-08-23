@@ -36,7 +36,7 @@ $callback = function($msg){
     $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 };
 
-// distribute message fairly
+// distribute message fairly - use the basic_qos method with the prefetch_count = 1 setting. This tells RabbitMQ not to give more than one message to a worker at a time. Or, in other words, don't dispatch a new message to a worker until it has processed and acknowledged the previous one. Instead, it will dispatch it to the next worker that is not still busy.
 $channel->basic_qos(null, 1, null);
 
  // start consuming
