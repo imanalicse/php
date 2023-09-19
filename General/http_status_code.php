@@ -29,6 +29,7 @@ abstract class HttpStatusCode {
     const NOT_ACCEPTABLE_HTTP_CODE = 406; // Not Acceptable - The requested resource is capable of generating only content not acceptable according to the Accept headers sent in the request
     const CONFLICT_HTTP_CODE = 409; // Conflict - Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.
     const UNPROCESSABLE_HTTP_CODE = 422;
+    const LOCKED_HTTP_CODE = 423; // Locked - The resource that is being accessed is locked.
     const FILE_TOO_LARGE_CODE = 413; // Payload Too Large - The request is larger than the server is willing or able to process.
 
     //Server error code
