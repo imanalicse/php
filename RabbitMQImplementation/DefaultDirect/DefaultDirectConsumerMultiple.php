@@ -4,7 +4,7 @@ require_once(__DIR__ . '/../../vendor/autoload.php');
 use App\RabbitMQImplementation\Connection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class DefaultDirectConsumer {
+class DefaultDirectConsumerMultiple {
     private $channel;
     protected static $instance = null;
     private $listeners = [];
@@ -17,9 +17,9 @@ class DefaultDirectConsumer {
         $this->instance_name = $instance_name;
     }
 
-    public static function instance($instance_name): DefaultDirectConsumer {
+    public static function instance($instance_name): DefaultDirectConsumerMultiple {
         if (is_null(self::$instance)) {
-            self::$instance = new DefaultDirectConsumer($instance_name);
+            self::$instance = new DefaultDirectConsumerMultiple($instance_name);
         }
         return self::$instance;
     }
@@ -80,7 +80,7 @@ class DefaultDirectConsumer {
     }
 }
 
-$consumer = DefaultDirectConsumer::instance("rgs");
+$consumer = DefaultDirectConsumerMultiple::instance("rgs");
 $consumer->listen_to('notificationGroup', function ($msg) {
     echo $msg->body .  "\n";
     // $msg->ack();
@@ -88,7 +88,7 @@ $consumer->listen_to('notificationGroup', function ($msg) {
 });
 $consumer->start_consumer();
 
-$consumer = DefaultDirectConsumer::instance("rgs");
+$consumer = DefaultDirectConsumerMultiple::instance("rgs");
 $consumer->listen_to('notification', function ($msg) {
     echo $msg->body .  "\n";
     // $msg->ack();
