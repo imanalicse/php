@@ -5,93 +5,27 @@ use App\RabbitMQImplementation\Connection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class DefaultDirectConsumer {
-    private $channel;
-    protected static $instance = null;
-    private $listeners = [];
-    private $instance_name;
 
-
-    private function __construct($instance_name) {
+    public static function listenRabbitMQ($binding_key, $callback) {
+        $queue_name = 'rgs.' . $binding_key;
+        echo $binding_key . ' started listener'. "\n";
         $connection = Connection::instance();
-        $this->channel = $connection->channel();
-        $this->instance_name = $instance_name;
-    }
+        $channel = $connection->channel();
 
-    public static function instance($instance_name): DefaultDirectConsumer {
-        if (is_null(self::$instance)) {
-            self::$instance = new DefaultDirectConsumer($instance_name);
-        }
-        return self::$instance;
-    }
-
-    public function listen_to($binding_key, $callback) {
-        $consume_data  = [
-            'binding_key' => $binding_key,
-            'callback' => $callback
-        ];
-        array_push($this->listeners, $consume_data);
-    }
-
-
-    public function start_consumer() {
-        if (empty($this->listeners)) {
-            echo 'No listener is registered yet. Closing channel...\r\n';
-            $this->channel->close();
-            exit();
-        }
-        if (!isset($this->instance_name)) {
-            echo 'empty instance detected. Please provide an instance name.\r\n';
-            $this->channel->close();
-            exit();
-        }
-
-        foreach ($this->listeners as $listener) {
-            $binding_key = $listener['binding_key'];
-            $callback = $listener['callback'];
-            // create a queue name consisting of binding key
-            // $queue_name = 'rgs.' . $binding_key;
-            $queue_name = $this->instance_name .'.' . $binding_key;
-            $this->channel->queue_declare($queue_name, false, true, false, false);
-            $this->channel->basic_qos(null, 1, null);
-            $this->channel->basic_consume($queue_name, '', false, false, false,
-                false, function($msg) use($callback) {
-                    $callback($msg);
-                }
-            );
-
-            while ($this->channel->is_consuming())
-            {
-                $this->channel->wait();
+        # Create the queue if it doesn't already exist.
+        $channel->queue_declare($queue_name, false, true, false, false);
+        $channel->basic_qos(null, 1, null);
+        $channel->basic_consume($queue_name, '', false, false, false,
+            false, function($msg) use($callback) {
+                $callback($msg);
             }
+        );
 
-            // $this->channel->close();
-            // $this->connection->close();
+        while (count($channel->callbacks))
+        {
+            $channel->wait();
         }
-    }
-
-    public function stop_consumer() {
-        if (isset($this->channel) && $this->channel->is_open()) {
-            $this->channel->close();
-        }
-    }
-
-    public function __destruct() {
-        $this->stop_consumer();
+        $channel->close();
+        $connection->close();
     }
 }
-
-$consumer = DefaultDirectConsumer::instance("rgs");
-$consumer->listen_to('notificationGroup', function ($msg) {
-    echo $msg->body .  "\n";
-    // $msg->ack();
-    $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
-});
-$consumer->start_consumer();
-
-$consumer = DefaultDirectConsumer::instance("rgs");
-$consumer->listen_to('notification', function ($msg) {
-    echo $msg->body .  "\n";
-    // $msg->ack();
-    $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
-});
-$consumer->start_consumer();
