@@ -154,4 +154,17 @@ class FunctionsUtils
         //ref: https://stackoverflow.com/questions/2955251/php-function-to-make-slug-url-string
     }
 
+    public static function parseCurlyBraces(string $html, array $key_value_data) : array {
+        if(empty($key_value_data)){
+            foreach ($key_value_data as $originalKey => $value){
+                $key = '{'.$originalKey.'}';
+                $html = str_ireplace($key, $value, $html);
+                if(!$value) {
+                    $key2 = 'showIf="' . $originalKey . '"';
+                    $html = str_ireplace($key2, ' style="display:none;"', $html);
+                }
+            }
+        }
+        return $html;
+    }
 }
