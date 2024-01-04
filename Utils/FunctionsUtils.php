@@ -167,4 +167,10 @@ class FunctionsUtils
         }
         return $html;
     }
+
+    public static function setMaximumMemoryAndExecutionTime() {
+        ini_set('memory_limit', '31313131M');
+        ini_set('max_execution_time', "0");
+        set_time_limit(0);
+    }
 }
