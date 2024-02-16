@@ -140,7 +140,7 @@ class AwsComponent
         echo '</pre>';
     }
 
-    public function uploadToS3($image_abs_path, $s3_directory) {
+    public function uploadToS3($image_abs_path, $s3_directory) : string {
         $args =$this->awsClientArguments();
         $bucket_name = $this->awsBucket();
         $s3Client = new S3Client($args);
@@ -154,20 +154,24 @@ class AwsComponent
             // 'ACL' => 'public-read',
         ];
 
-        $is_upload_to_s3 = false;
+        $object_url = '';
         try {
             $result = $s3Client->putObject($put_object);
+            // $this->customLog('base_image_upload_response: '. json_encode($result), 'aws', 'image');
             if (!empty($result)) {
                 $status_code = $result['@metadata']['statusCode'] ?? '';
-                $object_url = $result['ObjectURL'] ?? '';
-                if ($status_code == 200 && !empty($object_url)) {
-                    $is_upload_to_s3 = true;
+                if ($status_code == 200) {
+                    $object_url = $result['ObjectURL'] ?? '';
+                }
+                else {
+                    // $this->customLog('s3 upload status_code error: '. json_encode($result), 'aws_error', 'image');
                 }
             }
         }
         catch (\Aws\S3\Exception\S3Exception $e) {
             echo "There was an error uploading the file.\n";
         }
+        return $object_url;
     }
 }
 
