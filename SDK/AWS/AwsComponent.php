@@ -140,20 +140,17 @@ class AwsComponent
         echo '</pre>';
     }
 
-    public function uploadToS3() {
+    public function uploadToS3($image_abs_path, $s3_directory) {
         $args =$this->awsClientArguments();
         $bucket_name = $this->awsBucket();
         $s3Client = new S3Client($args);
-        $file_path = 'C:\Users\iman\Desktop\RGS-Images\G230823LA002/G230823LA002-DA0002.JPG';
 
-        $aws_folder_path = 'compare/latrobe/230823';
-
-        $aws_file_path = $aws_folder_path. '/'. basename($file_path);
+        $aws_file_path = $s3_directory. '/'. basename($image_abs_path);
 
         $put_object = [
             'Bucket' => $bucket_name,
             'Key' => $aws_file_path,
-            'Body' => fopen($file_path, 'r'),
+            'Body' => fopen($image_abs_path, 'r'),
             // 'ACL' => 'public-read',
         ];
 
@@ -176,5 +173,7 @@ class AwsComponent
 
 $aws_component_obj = new AwsComponent();
 // $aws_component_obj->faceRecognizedWithAwsImages();
-$aws_component_obj->uploadToS3();
+$s3_directory = 'compare/latrobe/230823';
+$image_abs_path = 'C:\Users\iman\Desktop\RGS-Images\G230823LA002/G230823LA002-DA0003.JPG';
+$aws_component_obj->uploadToS3($image_abs_path, $s3_directory);
 
