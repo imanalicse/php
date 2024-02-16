@@ -87,4 +87,94 @@ class AwsComponent
         $body->rewind();
         return $body;
     }
+
+    public function faceRecognizedWithAwsImages() {
+        $args =$this->awsClientArguments();
+        $bucket = $this->awsBucket();
+        $prefix = '231101';
+        $s3Client = new S3Client($args);
+        $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
+
+        $target_image = 'C:\Users\iman\Desktop\images\RGS\face\compares/G221019DK083-BL011.JPG';
+
+        $list_objects = $s3Client->listObjects([
+            'Bucket' => $bucket,
+            'Prefix'  => $prefix,
+        ]);
+        if (isset($list_objects['Contents']) && !empty($list_objects['Contents'])) {
+            foreach ($list_objects['Contents'] as $content) {
+                $key = $content['Key'];
+                $extension = pathinfo($key, PATHINFO_EXTENSION);
+                if (in_array($extension, $this->allowExtension())) {
+                    echo '<pre>';
+                    echo print_r($key);
+                    echo '</pre>';
+                    // $target_image_bytes = $this->getS3ObjectAsBytes($bucket, $key);
+                }
+            }
+        }
+
+
+        // Specify the source and target images (stored in S3)
+        $sourceImage = [
+            'S3Object' => [
+                'Bucket' => $bucket,
+                'Name'   => '231101/G221019DK083-BL011.JPG',
+            ],
+        ];
+
+        $targetImage = [
+            'S3Object' => [
+                'Bucket' => $bucket,
+                'Name'   => '231101/G221019DK083-BL011.JPG',
+            ],
+        ];
+
+        $result = $rekognition_client->compareFaces([
+            'SimilarityThreshold' => 70, // Adjust as needed
+            'SourceImage'        => $sourceImage,
+            'TargetImage'        => $targetImage,
+        ]);
+        echo '<pre>';
+        echo print_r($result);
+        echo '</pre>';
+    }
+
+    public function uploadToS3() {
+        $args =$this->awsClientArguments();
+        $bucket_name = $this->awsBucket();
+        $s3Client = new S3Client($args);
+        $file_path = 'C:\Users\iman\Desktop\RGS-Images\G230823LA002/G230823LA002-DA0002.JPG';
+
+        $aws_folder_path = 'compare/latrobe/230823';
+
+        $aws_file_path = $aws_folder_path. '/'. basename($file_path);
+
+        $put_object = [
+            'Bucket' => $bucket_name,
+            'Key' => $aws_file_path,
+            'Body' => fopen($file_path, 'r'),
+            // 'ACL' => 'public-read',
+        ];
+
+        $is_upload_to_s3 = false;
+        try {
+            $result = $s3Client->putObject($put_object);
+            if (!empty($result)) {
+                $status_code = $result['@metadata']['statusCode'] ?? '';
+                $object_url = $result['ObjectURL'] ?? '';
+                if ($status_code == 200 && !empty($object_url)) {
+                    $is_upload_to_s3 = true;
+                }
+            }
+        }
+        catch (\Aws\S3\Exception\S3Exception $e) {
+            echo "There was an error uploading the file.\n";
+        }
+    }
 }
+
+$aws_component_obj = new AwsComponent();
+// $aws_component_obj->faceRecognizedWithAwsImages();
+$aws_component_obj->uploadToS3();
+
