@@ -173,11 +173,201 @@ class AwsComponent
         }
         return $object_url;
     }
+
+    public function createAwsRecognitionCollection($collection_id) : bool {
+        $args = $this->awsClientArguments();
+        try {
+            $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
+            $result = $rekognition_client->createCollection([
+                'CollectionId' => $collection_id, // REQUIRED
+            ]);
+            $status_code = $result['StatusCode'] ?? '';
+            if ($status_code == 200) {
+                return true ;
+            }
+        }
+        catch (\Exception $e) {
+            echo "Error: " . $e->getMessage() . "\n";
+        }
+        return false;
+    }
+
+    public function searchAwsFacesByImage($collection_id, $aws_base_image_path) : array {
+        $matched_images = [];
+        $args = $this->awsClientArguments();
+        $bucket_name = $this->awsBucket();
+        $inputImage = [
+            'S3Object' => [
+                'Bucket' => $bucket_name,
+                'Name'   => $aws_base_image_path,
+            ]
+        ];
+        try {
+            $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
+            $compare_result = $rekognition_client->searchFacesByImage([
+                'CollectionId' => $collection_id,
+                'Image'        => $inputImage,
+            ]);
+            if (!empty($compare_result['FaceMatches'])) {
+                foreach ($compare_result['FaceMatches'] as $faceMatch) {
+                    $similarity = $faceMatch['Similarity'];
+                    $face = $faceMatch['Face'];
+                    $matched_images[] = [
+                        'image_name' => basename($face['ExternalImageId']),
+                        'similarity' => $similarity,
+                    ];
+                }
+            }
+        }
+        catch (\Exception $e) {
+            echo "Error: " . $e->getMessage() . "\n";
+        }
+        return $matched_images;
+    }
+
+
+    public function getAwsCollections() : array {
+        $args =$this->awsClientArguments();
+        $collect_ids = [];
+        try {
+            $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
+            $result = $rekognition_client->listCollections();
+            $collect_ids = $result['CollectionIds'] ?? [];
+        }
+        catch (\Exception $e) {
+            echo "Error: " . $e->getMessage() . "\n";
+        }
+        return $collect_ids;
+    }
+
+    public function hasAwsCollection($collect_name) : bool {
+        $collect_ids = $this->getAwsCollections();
+        $has_collection = false;
+        if (in_array($collect_name, $collect_ids)) {
+            $has_collection = true;
+        }
+        return $has_collection;
+    }
+
+
+    public function deleteCollection($collect_id) : bool {
+        $args = $this->awsClientArguments();
+        try {
+            $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
+            $result = $rekognition_client->deleteCollection([
+                'CollectionId' => $collect_id, // REQUIRED
+            ]);
+            $status_code = $result['StatusCode'] ?? '';
+            if ($status_code == 200) {
+                return true;
+            }
+        }
+        catch (\Exception $e) {
+            echo "Error: " . $e->getMessage() . "\n";
+        }
+        return false;
+    }
+
+    public function indexFaces($collect_id, $inputImage) {
+        $args =$this->awsClientArguments();
+        try {
+            $ExternalImageId = basename($inputImage['S3Object']['Name']);
+            $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
+            $param = [
+                'CollectionId' => $collect_id,
+                'Image'        => $inputImage,
+                'ExternalImageId'        => $ExternalImageId,
+            ];
+            echo '<pre>';
+            echo print_r($param);
+            echo '</pre>';
+            $result = $rekognition_client->indexFaces($param);
+            echo '<pre>';
+            echo print_r($result);
+            echo '</pre>';
+        }
+        catch (\Exception $e) {
+            echo "Error: " . $e->getMessage() . "\n";
+        }
+    }
+
+    public function getListFaces($collect_id, $faceId = '') {
+        $args =$this->awsClientArguments();
+        try {
+            $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
+            $param = [
+                'CollectionId' => $collect_id
+            ];
+            if (!empty($faceId)) {
+                $param['FaceId'] = $faceId;
+            }
+            $result = $rekognition_client->listFaces($param);
+            return $result;
+        }
+        catch (\Exception $e) {
+            echo "Error: " . $e->getMessage() . "\n";
+        }
+    }
+
+    public function deleteFaces($collect_id, $faceIdsToDelete) {
+        $args =$this->awsClientArguments();
+        try {
+            $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
+
+            $result = $rekognition_client->deleteFaces([
+                'CollectionId' => $collect_id,
+                'FaceIds' => $faceIdsToDelete
+            ]);
+            echo '<pre>';
+            echo print_r($result);
+            echo '</pre>';
+        }
+        catch (\Exception $e) {
+            echo "Error: " . $e->getMessage() . "\n";
+        }
+    }
 }
 
 $aws_component_obj = new AwsComponent();
 // $aws_component_obj->faceRecognizedWithAwsImages();
-$s3_directory = 'compare/latrobe/230823';
-$image_abs_path = 'C:\Users\iman\Desktop\RGS-Images\G230823LA002/G230823LA002-DA0003.JPG';
-$aws_component_obj->uploadToS3($image_abs_path, $s3_directory);
+//$s3_directory = 'compare/latrobe/230823';
+//$image_abs_path = 'C:\Users\iman\Desktop\RGS-Images\G230823LA002/G230823LA002-DA0003.JPG';
+//$aws_component_obj->uploadToS3($image_abs_path, $s3_directory);
+$collection_id = 'latrobe_230823';
+//$is_created_collection = $aws_component_obj->createAwsRecognitionCollection($collection_id);
+//var_dump($is_created_collection);
 
+$collection_ids = $aws_component_obj->getAwsCollections();
+var_dump($collection_ids);
+$has_collection = $aws_component_obj->hasAwsCollection($collection_id);
+var_dump($has_collection);
+//$is_deleted = $aws_component_obj->deleteCollection('latrobe_230823_3');
+//var_dump($is_deleted);
+
+$bucket_name = $aws_component_obj->awsBucket();
+// $aws_component_obj->searchFacesByImage($collection_id);
+
+$inputImage = [
+    'S3Object' => [
+        'Bucket' => $bucket_name,
+        'Name'   => 'compare/latrobe/230823/G230823LA001-DA0001.JPG',
+        // 'Name'   => 'compare/latrobe/230823/S230823LA001-DA0021.JPG',
+        // 'Name'   => 'compare/latrobe/230823/G230823LA002-DA0002.JPG',
+    ]
+];
+
+// $aws_component_obj->indexFaces($collection_id, $inputImage);
+// $faces = $aws_component_obj->getListFaces($collection_id);
+//echo '<pre>';
+//echo print_r($faces);
+//echo '</pre>';
+$faceIdsToDelete = [];
+if(!empty($faces['Faces'])) {
+    foreach ($faces['Faces'] as $face) {
+        $faceIdsToDelete[] = $face['FaceId'];
+    }
+}
+// $aws_component_obj->deleteFaces($collection_id, $faceIdsToDelete);
+$aws_base_image_path = 'compare/latrobe/base/c9d0a7a0-6cb2-4d28-b7fd-46945df3336b.JPG';
+$match_images = $aws_component_obj->searchAwsFacesByImage($collection_id, $aws_base_image_path);
+var_dump($match_images);
