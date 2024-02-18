@@ -174,8 +174,9 @@ class AwsComponent
         return $object_url;
     }
 
-    public function createAwsRecognitionCollection($collection_id) : bool {
+    public function createAwsRecognitionCollection($collection_id) : string {
         $args = $this->awsClientArguments();
+        $created_collection_id = '';
         try {
             $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
             $result = $rekognition_client->createCollection([
@@ -183,13 +184,13 @@ class AwsComponent
             ]);
             $status_code = $result['StatusCode'] ?? '';
             if ($status_code == 200) {
-                return true ;
+                $created_collection_id = $collection_id ;
             }
         }
-        catch (\Exception $e) {
-            echo "Error: " . $e->getMessage() . "\n";
+        catch (\Exception $exception) {
+            echo "Error: " . $exception->getMessage() . "\n";
         }
-        return false;
+        return $created_collection_id;
     }
 
     public function searchAwsFacesByImage($collection_id, $aws_base_image_path) : array {
@@ -219,8 +220,8 @@ class AwsComponent
                 }
             }
         }
-        catch (\Exception $e) {
-            echo "Error: " . $e->getMessage() . "\n";
+        catch (\Exception $exception) {
+            echo "Error: " . $exception->getMessage() . "\n";
         }
         return $matched_images;
     }
@@ -234,8 +235,8 @@ class AwsComponent
             $result = $rekognition_client->listCollections();
             $collect_ids = $result['CollectionIds'] ?? [];
         }
-        catch (\Exception $e) {
-            echo "Error: " . $e->getMessage() . "\n";
+        catch (\Exception $exception) {
+            echo "Error: " . $exception->getMessage() . "\n";
         }
         return $collect_ids;
     }
@@ -268,27 +269,43 @@ class AwsComponent
         return false;
     }
 
-    public function indexFaces($collect_id, $inputImage) {
-        $args =$this->awsClientArguments();
+    public function addAwsIndexFaces($collection_id, $aws_image_path) : bool {
+
+        $has_collection = $this->hasAwsCollection($collection_id);
+        if (!$has_collection) {
+            $collection_id = $this->createAwsRecognitionCollection($collection_id);
+        }
+
+        $args = $this->awsClientArguments();
+        $bucket_name = $this->awsBucket();
         try {
-            $ExternalImageId = basename($inputImage['S3Object']['Name']);
-            $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
+            $ExternalImageId = basename($aws_image_path);
+            $inputImage = [
+                'S3Object' => [
+                    'Bucket' => $bucket_name,
+                    'Name'   => $aws_image_path
+                ]
+            ];
             $param = [
-                'CollectionId' => $collect_id,
+                'CollectionId' => $collection_id,
                 'Image'        => $inputImage,
                 'ExternalImageId'        => $ExternalImageId,
             ];
-            echo '<pre>';
-            echo print_r($param);
-            echo '</pre>';
+            $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
             $result = $rekognition_client->indexFaces($param);
-            echo '<pre>';
-            echo print_r($result);
-            echo '</pre>';
+            $status_code = $result['@metadata']['statusCode'] ?? null;
+            $face_records = $result['FaceRecords'] ?? null;
+            if ($status_code == 200 && !empty($face_records)) {
+                return true;
+            }
+            else {
+                echo "unable to add index for collection_id($collection_id) image($aws_image_path):". json_encode($result);
+            }
         }
-        catch (\Exception $e) {
-            echo "Error: " . $e->getMessage() . "\n";
+        catch (\Exception $exception) {
+            echo "Error: " . $exception->getMessage() . "\n";
         }
+        return false;
     }
 
     public function getListFaces($collect_id, $faceId = '') {
@@ -304,8 +321,8 @@ class AwsComponent
             $result = $rekognition_client->listFaces($param);
             return $result;
         }
-        catch (\Exception $e) {
-            echo "Error: " . $e->getMessage() . "\n";
+        catch (\Exception $exception) {
+            echo "Error: " . $exception->getMessage() . "\n";
         }
     }
 
@@ -322,8 +339,8 @@ class AwsComponent
             echo print_r($result);
             echo '</pre>';
         }
-        catch (\Exception $e) {
-            echo "Error: " . $e->getMessage() . "\n";
+        catch (\Exception $exception) {
+            echo "Error: " . $exception->getMessage() . "\n";
         }
     }
 }
@@ -336,6 +353,7 @@ $aws_component_obj = new AwsComponent();
 $collection_id = 'latrobe_230823';
 //$is_created_collection = $aws_component_obj->createAwsRecognitionCollection($collection_id);
 //var_dump($is_created_collection);
+
 
 $collection_ids = $aws_component_obj->getAwsCollections();
 var_dump($collection_ids);
@@ -356,7 +374,8 @@ $inputImage = [
     ]
 ];
 
-// $aws_component_obj->indexFaces($collection_id, $inputImage);
+$aws_image_path = 'compare/latrobe/230823/G230823LA002-DA0002.JPG';
+$aws_component_obj->addAwsIndexFaces($collection_id, $aws_image_path);
 // $faces = $aws_component_obj->getListFaces($collection_id);
 //echo '<pre>';
 //echo print_r($faces);
@@ -369,5 +388,5 @@ if(!empty($faces['Faces'])) {
 }
 // $aws_component_obj->deleteFaces($collection_id, $faceIdsToDelete);
 $aws_base_image_path = 'compare/latrobe/base/c9d0a7a0-6cb2-4d28-b7fd-46945df3336b.JPG';
-$match_images = $aws_component_obj->searchAwsFacesByImage($collection_id, $aws_base_image_path);
-var_dump($match_images);
+//$match_images = $aws_component_obj->searchAwsFacesByImage($collection_id, $aws_base_image_path);
+//var_dump($match_images);
