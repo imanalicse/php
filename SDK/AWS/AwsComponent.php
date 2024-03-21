@@ -271,6 +271,38 @@ class AwsComponent
         return $object_url;
     }
 
+    public function deleteS3Object($aws_file_path, $bucket_name) : array {
+        $response = [
+            'is_deleted'  => 0,
+            'message' => '',
+            's3_response' => ''
+        ];
+        $args = $this->awsClientArguments();
+        try {
+            $s3Client = new \Aws\S3\S3Client($args);
+            $arg_arr = [
+                'Bucket' => $bucket_name,
+                'Key'    => $aws_file_path,
+            ];
+            $result = $s3Client->deleteObject($arg_arr);
+            $status_code = $result['@metadata']['statusCode'] ?? null;
+            $response['s3_response'] = $result;
+            if ($status_code == 204) {
+                $response['is_deleted'] = 1;
+                $response['message'] = 'successfully deleted';
+            }
+            else {
+                $response['message'] = 'update to delete object: '.$aws_file_path;
+                // write log
+            }
+        }
+        catch (\Exception $e) {
+            $response['message'] = "deleteObjectFromS3 Error: ($aws_file_path): ". $e->getMessage();
+        }
+        return $response;
+    }
+
+
     public function createAwsRecognitionCollection($collection_id) : string {
         $args = $this->awsClientArguments();
         $created_collection_id = '';
@@ -446,9 +478,10 @@ class AwsComponent
             echo "Error: " . $exception->getMessage() . "\n";
         }
     }
+
 }
 
-$aws_component_obj = new AwsComponent();
+// $aws_component_obj = new AwsComponent();
 // $aws_component_obj->faceRecognizedWithAwsImages();
 $s3_directory = 'compare/latrobe/230823';
 $image_abs_path = 'C:\Users\iman\Desktop\RGS-Images\G230823LA002/G230823LA002-DA0003.JPG';
@@ -456,14 +489,12 @@ $image_abs_path = 'C:\Users\iman\Desktop\RGS-Images\G230823LA002/G230823LA002-DA
 $image_abs_path = 'C:\xampp\htdocs\rgs-app\webroot\uploads\deakin\videos/S240219DK001-641_smal.mp4';
 $image_abs_path = 'C:\xampp\htdocs\rgs-app\webroot\uploads\deakin\videos/S240219DK001-641.mp4';
 // $object_url = $aws_component_obj->uploadToS3($image_abs_path, $s3_directory);
-$public_bucket = $aws_component_obj->awsBucketPublic();
+// $public_bucket = $aws_component_obj->awsBucketPublic();
 
 $s3_directory = 'latrobe/videos';
 // $object_url = $aws_component_obj->uploadToS3Public($image_abs_path, $s3_directory, $public_bucket);
-$object_url = $aws_component_obj->uploadLargeFileToS3Public($image_abs_path, $s3_directory, $public_bucket);
-echo '<pre>';
-echo print_r($object_url);
-echo '</pre>';
+// $object_url = $aws_component_obj->uploadLargeFileToS3Public($image_abs_path, $s3_directory, $public_bucket);
+
 
 $collection_id = 'latrobe_230823';
 //$is_created_collection = $aws_component_obj->createAwsRecognitionCollection($collection_id);
@@ -477,17 +508,17 @@ $collection_id = 'latrobe_230823';
 //$is_deleted = $aws_component_obj->deleteCollection('latrobe_230823_2');
 //var_dump($is_deleted);
 
-$bucket_name = $aws_component_obj->awsBucket();
+// $bucket_name = $aws_component_obj->awsBucket();
 // $aws_component_obj->searchFacesByImage($collection_id);
-
-$inputImage = [
-    'S3Object' => [
-        'Bucket' => $bucket_name,
-        'Name'   => 'compare/latrobe/230823/G230823LA001-DA0001.JPG',
-        // 'Name'   => 'compare/latrobe/230823/S230823LA001-DA0021.JPG',
-        // 'Name'   => 'compare/latrobe/230823/G230823LA002-DA0002.JPG',
-    ]
-];
+//
+//$inputImage = [
+//    'S3Object' => [
+//        'Bucket' => $bucket_name,
+//        'Name'   => 'compare/latrobe/230823/G230823LA001-DA0001.JPG',
+//        // 'Name'   => 'compare/latrobe/230823/S230823LA001-DA0021.JPG',
+//        // 'Name'   => 'compare/latrobe/230823/G230823LA002-DA0002.JPG',
+//    ]
+//];
 
 $aws_image_path = 'compare/latrobe/230823/G230823LA002-DA0002.JPG';
 // $aws_component_obj->addAwsIndexFaces($collection_id, $aws_image_path);
