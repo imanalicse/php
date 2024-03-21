@@ -5,11 +5,17 @@ namespace App\SDK\AWS;
 require '../../global_config.php';
 
 use Aws\S3\S3Client;
+use Aws\S3\MultipartUploader;
+use Aws\Exception\MultipartUploadException;
 
 class AwsComponent
 {
     public function awsBucket() {
         return getenv("AWS_BUCKET");
+    }
+
+    public function awsBucketPublic() {
+        return getenv("AWS_BUCKET_PUBLIC");
     }
 
     public function awsClientArguments() : array {
@@ -169,8 +175,99 @@ class AwsComponent
             }
         }
         catch (\Aws\S3\Exception\S3Exception $e) {
-            echo "There was an error uploading the file.\n";
+            echo "There was an error uploading the file:\n";
+            echo '<pre>';
+            echo print_r($e->getMessage());
+            echo '</pre>';
         }
+        return $object_url;
+    }
+
+    public function uploadToS3Public($file_abs_path, $s3_directory, $bucket_name) : string {
+        ini_set('memory_limit', '31313131M');
+        ini_set('max_execution_time', "0");
+        set_time_limit(0);
+
+        echo '<pre>';
+        echo print_r($file_abs_path);
+        echo '</pre>';
+
+        $args = $this->awsClientArguments();
+        $s3Client = new S3Client($args);
+
+        $aws_file_path = $s3_directory. '/'. basename($file_abs_path);
+
+        $put_object = [
+            'Bucket' => $bucket_name,
+            'Key' => $aws_file_path,
+            'Body' => fopen($file_abs_path, 'r'),
+            'ACL' => 'public-read',
+        ];
+
+        $object_url = '';
+        $result = '';
+        try {
+            $result = $s3Client->putObject($put_object);
+//            $this->customLog('base_image_upload_response:: '. $aws_file_path, 'aws', 'image');
+//            $this->customLog($result, 'aws', 'image');
+            echo '<pre>';
+            echo print_r($result);
+            echo '</pre>';
+            if (!empty($result)) {
+                $status_code = $result['@metadata']['statusCode'] ?? '';
+                if ($status_code == 200) {
+                    $object_url = $result['ObjectURL'] ?? '';
+                }
+            }
+        }
+        catch (\Aws\S3\Exception\S3Exception $e) {
+            echo "There was an error uploading the file:\n";
+            echo '<pre>';
+            echo print_r($e->getMessage());
+            echo '</pre>';
+        }
+
+//        if (empty($object_url)) {
+//            $this->customLog('base_image_upload_error_response:: '. $aws_file_path. '->>>image_abs_path:'. $image_abs_path, 'aws_base_image_error', 'image');
+//            $is_file_exist = is_file($image_abs_path);
+//            if (!$is_file_exist) {
+//                $this->customLog('base_image_upload_file_not_exist:: '. $image_abs_path, 'aws_base_image_error', 'image');
+//            }
+//            $this->customLog($result, 'aws_base_image_error', 'image');
+//        }
+
+        return $object_url;
+    }
+
+    public function uploadLargeFileToS3Public($file_abs_path, $s3_directory, $bucket_name) : string {
+        ini_set('memory_limit', '31313131M');
+        ini_set('max_execution_time', "0");
+        set_time_limit(0);
+
+        $args = $this->awsClientArguments();
+        $s3Client = new S3Client($args);
+
+        $aws_file_path = $s3_directory. '/'. basename($file_abs_path);
+
+        // Use multipart upload
+        $source = $file_abs_path;
+        $uploader = new MultipartUploader($s3Client, $source, [
+            'bucket' => $bucket_name,
+            'key' => $aws_file_path,
+            'ACL' => 'public-read',
+        ]);
+
+        $object_url = '';
+        try {
+            $result = $uploader->upload();
+            if ($result["@metadata"]["statusCode"] == '200') {
+                $object_url = $result['ObjectURL'];
+            }
+        }
+        catch (MultipartUploadException $e) {
+            echo $e->getMessage() . "\n";
+        }
+
         return $object_url;
     }
 
@@ -203,6 +300,12 @@ class AwsComponent
                 'Name'   => $aws_base_image_path,
             ]
         ];
+        echo '<pre>';
+        echo print_r($args);
+        echo '</pre>';
+        echo '<pre>';
+        echo print_r($inputImage);
+        echo '</pre>';
         try {
             $rekognition_client = new \Aws\Rekognition\RekognitionClient($args);
             $compare_result = $rekognition_client->searchFacesByImage([
@@ -347,19 +450,31 @@ class AwsComponent
 
 $aws_component_obj = new AwsComponent();
 // $aws_component_obj->faceRecognizedWithAwsImages();
-//$s3_directory = 'compare/latrobe/230823';
-//$image_abs_path = 'C:\Users\iman\Desktop\RGS-Images\G230823LA002/G230823LA002-DA0003.JPG';
-//$aws_component_obj->uploadToS3($image_abs_path, $s3_directory);
+$s3_directory = 'compare/latrobe/230823';
+$image_abs_path = 'C:\Users\iman\Desktop\RGS-Images\G230823LA002/G230823LA002-DA0003.JPG';
+
+$image_abs_path = 'C:\xampp\htdocs\rgs-app\webroot\uploads\deakin\videos/S240219DK001-641_smal.mp4';
+$image_abs_path = 'C:\xampp\htdocs\rgs-app\webroot\uploads\deakin\videos/S240219DK001-641.mp4';
+// $object_url = $aws_component_obj->uploadToS3($image_abs_path, $s3_directory);
+$public_bucket = $aws_component_obj->awsBucketPublic();
+
+$s3_directory = 'latrobe/videos';
+// $object_url = $aws_component_obj->uploadToS3Public($image_abs_path, $s3_directory, $public_bucket);
+$object_url = $aws_component_obj->uploadLargeFileToS3Public($image_abs_path, $s3_directory, $public_bucket);
+echo '<pre>';
+echo print_r($object_url);
+echo '</pre>';
+
 $collection_id = 'latrobe_230823';
 //$is_created_collection = $aws_component_obj->createAwsRecognitionCollection($collection_id);
 //var_dump($is_created_collection);
 
 
-$collection_ids = $aws_component_obj->getAwsCollections();
-var_dump($collection_ids);
-$has_collection = $aws_component_obj->hasAwsCollection($collection_id);
-var_dump($has_collection);
-//$is_deleted = $aws_component_obj->deleteCollection('latrobe_230823_3');
+//$collection_ids = $aws_component_obj->getAwsCollections();
+//var_dump($collection_ids);
+//$has_collection = $aws_component_obj->hasAwsCollection($collection_id);
+//var_dump($has_collection);
+//$is_deleted = $aws_component_obj->deleteCollection('latrobe_230823_2');
 //var_dump($is_deleted);
 
 $bucket_name = $aws_component_obj->awsBucket();
@@ -375,18 +490,19 @@ $inputImage = [
 ];
 
 $aws_image_path = 'compare/latrobe/230823/G230823LA002-DA0002.JPG';
-$aws_component_obj->addAwsIndexFaces($collection_id, $aws_image_path);
-// $faces = $aws_component_obj->getListFaces($collection_id);
-//echo '<pre>';
-//echo print_r($faces);
-//echo '</pre>';
+// $aws_component_obj->addAwsIndexFaces($collection_id, $aws_image_path);
+/*
+$faces = $aws_component_obj->getListFaces($collection_id);
 $faceIdsToDelete = [];
 if(!empty($faces['Faces'])) {
     foreach ($faces['Faces'] as $face) {
         $faceIdsToDelete[] = $face['FaceId'];
     }
 }
+*/
+
 // $aws_component_obj->deleteFaces($collection_id, $faceIdsToDelete);
-$aws_base_image_path = 'compare/latrobe/base/c9d0a7a0-6cb2-4d28-b7fd-46945df3336b.JPG';
+// $aws_base_image_path = 'compare/latrobe/base/89b37c2b-cfe7-440b-b619-5f8546680c88.JPG';
+//$aws_base_image_path = 'compare/latrobe/base/4f5be918-efb5-4b82-890a-ef1a2832a55d.JPG';
 //$match_images = $aws_component_obj->searchAwsFacesByImage($collection_id, $aws_base_image_path);
 //var_dump($match_images);
