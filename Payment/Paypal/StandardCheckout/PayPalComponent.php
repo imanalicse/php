@@ -34,18 +34,34 @@ class PayPalComponent
         return base64_encode($auth_code);
     }
 
+    public function sellerMerchantId() {
+        $transaction_mode = self::getPayPalTransactionMode();
+        return getenv('PAYPAL_SELLER_PAYER_ID_'. $transaction_mode);
+    }
+
+    public function partnerBNCode() {
+        $transaction_mode = self::getPayPalTransactionMode();
+        return getenv('PAYPAL_PARTNER_BN_CODE_'. $transaction_mode);
+    }
+
     public function getPayPalBasicHeader($authorizationCode): array {
         return [
             'Content-Type' => 'application/json',
             'authorization' => 'Basic '. $authorizationCode,
         ];
     }
+
     public function getPayPalHeader($access_token): array {
-        return [
+        $header_options = [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'authorization' => 'Bearer '. $access_token,
+            'authorization' => 'Bearer '. $access_token
         ];
+        $bn_code = $this->partnerBNCode();
+        if (!empty($bn_code)) {
+            $header_options['PayPal-Partner-Attribution-Id'] = $bn_code;
+        }
+        return $header_options;
     }
 
     public function generatePapPalAccessToken() {
