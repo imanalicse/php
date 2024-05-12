@@ -94,6 +94,44 @@ class PayPalComponent
         return $access_token;
     }
 
+
+    public function getSellerOnboardStatus($partner_merchant_id, $seller_merchant_id): array {
+        $return_response = [
+            'status' => 0,
+            'message' => '',
+            'data' => ''
+        ];
+        $access_token = $this->generatePapPalAccessToken();
+        try {
+            $request_data = [];
+            $url = $this->getPayPalBaseUrl() . '/v1/customer/partners/'. $partner_merchant_id . '/merchant-integrations/' . $seller_merchant_id;
+            $headers = $this->getPayPalHeader($access_token);
+            $options = [
+                'headers'=> $headers
+            ];
+
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get($url, $options);
+            $response_data = $response->getBody()->getContents();
+            $response_data = json_decode($response_data, true);
+
+            Log::write('Onboard status response: '. json_encode($response_data, JSON_UNESCAPED_SLASHES), 'pay_pal_connect', 'pay_pal');
+
+            if ($response->getStatusCode() === 200 || $response->getStatusCode() === 201) {
+                $return_response = [
+                    'status' => 1,
+                    'message' => '',
+                    'data' => $response_data
+                ];
+            }
+        }
+        catch (\Exception $exception) {
+            Log::write('Error in pay pal onboard status: ' . $exception->getMessage(),  'pay_pal_connect_error', 'pay_pal');
+        }
+        return $return_response;
+    }
+
+
     /**
      * @throws \Exception
      */

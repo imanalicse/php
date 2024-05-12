@@ -10,6 +10,11 @@
   $paypal_client_id = PayPalComponent::getPayPalClientId();
   $seller_payer_id = PayPalComponent::sellerMerchantId();
   $partner_bn_code = PayPalComponent::partnerBNCode();
+  $transaction_mode = PayPalComponent::getPayPalTransactionMode();
+  $is_debug = false;
+  if ($transaction_mode == 'TEST') {
+      $is_debug = true;
+  }
   ?>
 
   <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_client_id; ?>&merchant-id=<?php echo $seller_payer_id; ?>&currency=AUD&components=buttons" data-partner-attribution-id="<?php echo $partner_bn_code; ?>"></script>
