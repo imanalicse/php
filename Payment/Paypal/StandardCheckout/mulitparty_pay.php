@@ -8,8 +8,8 @@
   require_once 'PayPalComponent.php';
   use App\Payment\Paypal\StandardCheckout\PayPalComponent;
   $paypal_client_id = PayPalComponent::getPayPalClientId();
-  $seller_payer_id = PayPalComponent::sellerMerchantId();
-  $partner_bn_code = PayPalComponent::partnerBNCode();
+  $seller_payer_id = PayPalComponent::getSellerPayerId();
+  $partner_bn_code = PayPalComponent::getPartnerBNCode();
   $transaction_mode = PayPalComponent::getPayPalTransactionMode();
   $is_debug = false;
   if ($transaction_mode == 'TEST') {

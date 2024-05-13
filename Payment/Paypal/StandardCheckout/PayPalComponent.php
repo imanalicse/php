@@ -34,14 +34,35 @@ class PayPalComponent
         return base64_encode($auth_code);
     }
 
-    public function sellerMerchantId() {
+    public function getSellerPayerId() {
         $transaction_mode = self::getPayPalTransactionMode();
         return getenv('PAYPAL_SELLER_PAYER_ID_'. $transaction_mode);
     }
 
-    public function partnerBNCode() {
+    public function getPartnerBNCode() {
         $transaction_mode = self::getPayPalTransactionMode();
         return getenv('PAYPAL_PARTNER_BN_CODE_'. $transaction_mode);
+    }
+
+    public function paypalAuthAssertion() : string {
+        $client_id = self::getPayPalClientId();
+        $seller_payer_id = self::getSellerPayerId();
+        $assertion_header = [
+            "alg" => "none"
+        ];
+        $assertion_header = json_encode($assertion_header);
+        $assertion_header = base64_encode($assertion_header);
+
+        $assertion_payload = [
+            "iss"=> $client_id,
+            "payer_id"=> $seller_payer_id
+        ];
+        $assertion_payload = json_encode($assertion_payload);
+        $assertion_payload = base64_encode($assertion_payload);
+        
+        $assertion_signature = '';
+        $auth_assertion_header = $assertion_header .'.'. $assertion_payload .'.'. $assertion_signature;
+        return $auth_assertion_header;
     }
 
     public function getPayPalBasicHeader($authorizationCode): array {
@@ -57,10 +78,11 @@ class PayPalComponent
             'Content-Type' => 'application/json',
             'authorization' => 'Bearer '. $access_token
         ];
-        $bn_code = $this->partnerBNCode();
+        $bn_code = $this->getPartnerBNCode();
         if (!empty($bn_code)) {
             $header_options['PayPal-Partner-Attribution-Id'] = $bn_code;
         }
+        $header_options['PayPal-Auth-Assertion'] = $this->paypalAuthAssertion();
         return $header_options;
     }
 
@@ -215,8 +237,9 @@ class PayPalComponent
             $url = self::getPayPalBaseUrl() . '/v2/checkout/orders';
             Log::write('executePaypalOrder request data: '. $order_data, 'paypal');
             $client = new \GuzzleHttp\Client();
+            $headers =  self::getPayPalHeader($access_token);
             $options = [
-                'headers'=> self::getPayPalHeader($access_token),
+                'headers'=> $headers,
                 'body' => $order_data
             ];
 
@@ -249,8 +272,9 @@ class PayPalComponent
             Log::write('captured_payment_response: '. $url, 'paypal');
             $client = new \GuzzleHttp\Client();
 
+            $headers = $this->getPayPalHeader($access_token);
             $options = [
-                'headers'=> $this->getPayPalHeader($access_token),
+                'headers'=> $headers,
                 'body' => ''
             ];
 
