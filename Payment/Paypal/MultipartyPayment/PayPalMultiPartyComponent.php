@@ -109,7 +109,6 @@ class PayPalMultiPartyComponent
             $client = new \GuzzleHttp\Client();
             $options = [
                 'headers'=> $headers,
-                // 'body' => $request_data
                 'body' => 'grant_type=client_credentials'
             ];
             $response = $client->post($url, $options);
@@ -135,6 +134,7 @@ class PayPalMultiPartyComponent
             'data' => ''
         ];
         $access_token = $this->generatePapPalAccessToken();
+        $paypal_return_url = 'http://localhost/phphub/php/Payment/Paypal/MultipartyPayment/multiparty_return_url.php';
         $org_uuid = time();
         try {
             $request_data = [];
@@ -149,7 +149,8 @@ class PayPalMultiPartyComponent
                             "third_party_details" => [
                                 "features" => [
                                     "PAYMENT",
-                                    "REFUND"
+                                    "REFUND",
+                                    "PARTNER_FEE"
                                 ]
                             ],
                         ]
@@ -157,6 +158,7 @@ class PayPalMultiPartyComponent
                 ]
             ];
             $request_data['products'] = ["EXPRESS_CHECKOUT"];
+            // $request_data['capabilities'] = ["PAYPAL_WALLET_VAULTING_ADVANCED"];
             $request_data['legal_consents'] = [
                 [
                     "type" => "SHARE_DATA_CONSENT",
@@ -165,9 +167,6 @@ class PayPalMultiPartyComponent
             ];
 
             $request_data['email'] = $paypal_email;
-
-            $paypal_return_url = 'http://localhost/phphub/php/Payment/Paypal/MultipartyPayment/multiparty_return_url.php';
-
             $request_data['partner_config_override'] = [
                 'return_url' => $paypal_return_url
             ];
@@ -175,17 +174,18 @@ class PayPalMultiPartyComponent
             $request_data = json_encode($request_data, JSON_UNESCAPED_SLASHES);
 
             $url = $this->getPayPalBaseUrl() . '/v2/customer/partner-referrals';
-            $http = new Client();
+            $http_client = new \GuzzleHttp\Client();
             $headers = $this->getPayPalHeader($access_token);
-            $response = $http->post($url, $request_data, [
-                'headers' => $headers,
-            ]);
-            $response_data = $response->getJson();
+            $options = [
+                'headers'=> $headers,
+                'body' => $request_data
+            ];
+            $response = $http_client->post($url, $options);
+            $response_data = $response->getBody()->getContents();
+            $response_data = json_decode($response_data, true);
+            $status_code = $response->getStatusCode();
 
-            Log::write('Paypal connect account url: STATUS CODE - '.$response->getStatusCode(), 'pay_pal_connect', 'pay_pal');
-            Log::write($response_data, 'pay_pal_connect', 'pay_pal');
-
-            if ($response->getStatusCode() === 200 || $response->getStatusCode() === 201) {
+            if ($status_code === 200 || $status_code === 201) {
                 $return_response = [
                     'status' => 1,
                     'message' => 'Account Connected',
@@ -194,8 +194,11 @@ class PayPalMultiPartyComponent
             }
         }
         catch (\Exception $exception) {
-            Log::write('Error in pay pal connect account: ' . $exception->getMessage(), PaymentMethod::PAY_PAL. '_connect_error', PaymentMethod::PAY_PAL);
+            Log::write('Error in pay pal connect account: ' . $exception->getMessage(), 'pay_pal_connect_error', 'pay_pal');
         }
+        echo '<pre>';
+        echo print_r($return_response);
+        echo '</pre>';
         return $return_response;
     }
 
