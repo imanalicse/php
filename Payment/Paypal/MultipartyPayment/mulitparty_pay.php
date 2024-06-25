@@ -5,7 +5,7 @@
   </head>
   <body>
   <?php
-  require_once 'PayPalComponent.php';
+  require_once 'PayPalMultiPartyComponent.php';
   use App\Payment\Paypal\StandardCheckout\PayPalComponent;
   $paypal_client_id = PayPalComponent::getPayPalClientId();
   $seller_payer_id = PayPalComponent::getSellerPayerId();
@@ -19,6 +19,6 @@
 
   <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_client_id; ?>&merchant-id=<?php echo $seller_payer_id; ?>&currency=AUD&components=buttons" data-partner-attribution-id="<?php echo $partner_bn_code; ?>"></script>
     <div id="paypal-button-container"></div>
-    <script src="paypal.js?v=<?php echo time() ?>"></script>
+    <script src="../StandardCheckout/paypal.js?v=<?php echo time() ?>"></script>
   </body>
 </html>
