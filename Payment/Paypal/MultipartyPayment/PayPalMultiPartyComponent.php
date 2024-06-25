@@ -4,11 +4,14 @@ namespace App\Payment\Paypal\MultipartyPayment;
 
 use App\Logger\Log;
 use GuzzleHttp\Client;
+use App\Traits\CommonTrait;
 
 require '../../../global_config.php';
 
 class PayPalMultiPartyComponent
 {
+    // use CommonTrait;
+
     public function getPayPalTransactionMode(): string {
         return 'TEST';
     }
@@ -125,7 +128,7 @@ class PayPalMultiPartyComponent
         return $access_token;
     }
 
-    public function generatePapPalConnectURL($paypal_email): array {
+    public function createPartnerReferralLink($paypal_email): array {
         $return_response = [
             'status' => 0,
             'message' => '',
@@ -163,7 +166,7 @@ class PayPalMultiPartyComponent
 
             $request_data['email'] = $paypal_email;
 
-            $paypal_return_url = 'multiparty_return_url.php';
+            $paypal_return_url = 'http://localhost/phphub/php/Payment/Paypal/MultipartyPayment/multiparty_return_url.php';
 
             $request_data['partner_config_override'] = [
                 'return_url' => $paypal_return_url
