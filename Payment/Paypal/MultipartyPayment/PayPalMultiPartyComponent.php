@@ -294,11 +294,14 @@ class PayPalMultiPartyComponent
             $service_charge_amount = 0;
             $discount = 0;
 
+            $uniqid = uniqid();
             $order_data = [];
             $order_data['intent'] = 'CAPTURE';
             $order_data['purchase_units'] = [
                 [
-                    "reference_id" => "merchant-ref-".uniqid(),
+                    "reference_id" => "merchant-ref-".$uniqid,
+                    "custom_id" => "custom-id-".$uniqid,
+                    "invoice_id" => "order-id-".$uniqid,
                     'items' => $items,
                     'amount' => [
                         'currency_code' => 'AUD',
@@ -337,8 +340,8 @@ class PayPalMultiPartyComponent
 
             $url = self::getPayPalBaseUrl() . '/v2/checkout/orders';
             Log::write('executePaypalOrder request data: '. $order_data, 'paypal');
-            $client = new \GuzzleHttp\Client();
-            $headers =  self::getPayPalHeader($access_token);
+            $client = new Client();
+            $headers = $this->getPayPalPartnerHeader($access_token);
             $options = [
                 'headers'=> $headers,
                 'body' => $order_data

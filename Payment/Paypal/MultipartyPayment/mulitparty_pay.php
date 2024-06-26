@@ -6,18 +6,18 @@
   <body>
   <?php
   require_once 'PayPalMultiPartyComponent.php';
-  use App\Payment\Paypal\StandardCheckout\PayPalComponent;
-  $paypal_client_id = PayPalComponent::getPayPalClientId();
-  $seller_payer_id = PayPalComponent::getSellerPayerId();
-  $partner_bn_code = PayPalComponent::getPartnerBNCode();
-  $transaction_mode = PayPalComponent::getPayPalTransactionMode();
-  $is_debug = false;
+  use App\Payment\Paypal\MultipartyPayment\PayPalMultiPartyComponent;
+  $paypal_client_id = PayPalMultiPartyComponent::getPayPalClientId();
+  $seller_payer_id = PayPalMultiPartyComponent::getSellerPayerId();
+  $partner_bn_code = PayPalMultiPartyComponent::getPartnerBNCode();
+  $transaction_mode = PayPalMultiPartyComponent::getPayPalTransactionMode();
+  $currency = 'AUD';
+  $debug = '';
   if ($transaction_mode == 'TEST') {
-      $is_debug = true;
+      $debug = '&debug=true';
   }
   ?>
-
-  <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_client_id; ?>&merchant-id=<?php echo $seller_payer_id; ?>&currency=AUD&components=buttons" data-partner-attribution-id="<?php echo $partner_bn_code; ?>"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_client_id; ?>&merchant-id=<?php echo $seller_payer_id; ?>&currency=<?php echo $currency; ?>&disable-funding=card<?php echo $debug; ?>" data-partner-attribution-id="<?php echo $partner_bn_code; ?>" data-merchant-id="<?php echo $seller_payer_id; ?>"></script>
     <div id="paypal-button-container"></div>
     <script src="../StandardCheckout/paypal.js?v=<?php echo time() ?>"></script>
   </body>
