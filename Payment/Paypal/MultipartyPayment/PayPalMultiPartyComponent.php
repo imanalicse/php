@@ -207,8 +207,8 @@ class PayPalMultiPartyComponent
                 'headers'=> $headers
             ];
 
-            $client = new \GuzzleHttp\Client();
-            $response = $client->get($url, $options);
+            $http_client = new Client();
+            $response = $http_client->get($url, $options);
             $response_data = $response->getBody()->getContents();
             $response_data = json_decode($response_data, true);
 
@@ -226,6 +226,32 @@ class PayPalMultiPartyComponent
             Log::write('Error in pay pal onboard status: ' . $exception->getMessage(),  'pay_pal_connect_error', 'pay_pal');
         }
         return $return_response;
+    }
+
+    public function getPayPalSellerMerchantIdByTrackingId($partner_merchant_id, $tracking_id): string {
+        $seller_merchant_id = '';
+        $access_token = $this->generatePapPalAccessToken();
+        try {
+            $url = $this->getPayPalBaseUrl() . '/v1/customer/partners/'.$partner_merchant_id.'/merchant-integrations?tracking_id=' . $tracking_id;
+            $headers = $this->getPayPalHeader($access_token);
+            $http_client = new Client();
+            $options = [
+                'headers'=> $headers
+            ];
+            $response = $http_client->get($url, $options);
+            $response_data = $response->getBody()->getContents();
+            $response_data = json_decode($response_data, true);
+            $status_code = $response->getStatusCode();
+            if ($status_code === 200) {
+                $seller_merchant_id =  $response_data['merchant_id'] ?? '';
+            }
+        }
+        catch (\Exception $exception) {
+            Log::write('Error in seller_merchant_id by tacking id: ' . $exception->getMessage(), 'pay_pal_connect_error', 'pay_pal');
+
+        }
+
+        return $seller_merchant_id;
     }
 
 

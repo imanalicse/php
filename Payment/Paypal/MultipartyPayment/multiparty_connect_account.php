@@ -4,7 +4,7 @@
 
   $paypal_compo = new PayPalMultiPartyComponent();
   $paypal_email = $_GET['paypal_email'];
-  $tracking_id = 'im_'.time();
+  $tracking_id = 'imn_tracker';
   $referral_create_response = $paypal_compo->createPartnerReferralLink($tracking_id, $paypal_email);
   $action_url = '';
   if (!empty($referral_create_response)) {
