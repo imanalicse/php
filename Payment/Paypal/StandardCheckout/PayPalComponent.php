@@ -34,42 +34,6 @@ class PayPalComponent
         return base64_encode($auth_code);
     }
 
-    public function getPartnerPayerId() {
-        $transaction_mode = self::getPayPalTransactionMode();
-        return getenv('PAYPAL_PARTNER_PAYER_ID_'. $transaction_mode);
-    }
-
-    public function getSellerPayerId() {
-        $transaction_mode = self::getPayPalTransactionMode();
-        return getenv('PAYPAL_SELLER_PAYER_ID_'. $transaction_mode);
-    }
-
-    public function getPartnerBNCode() {
-        $transaction_mode = self::getPayPalTransactionMode();
-        return getenv('PAYPAL_PARTNER_BN_CODE_'. $transaction_mode);
-    }
-
-    public function paypalAuthAssertion() : string {
-        $client_id = self::getPayPalClientId();
-        $seller_payer_id = self::getSellerPayerId();
-        $assertion_header = [
-            "alg" => "none"
-        ];
-        $assertion_header = json_encode($assertion_header);
-        $assertion_header = base64_encode($assertion_header);
-
-        $assertion_payload = [
-            "iss"=> $client_id,
-            "payer_id"=> $seller_payer_id
-        ];
-        $assertion_payload = json_encode($assertion_payload);
-        $assertion_payload = base64_encode($assertion_payload);
-        
-        $assertion_signature = '';
-        $auth_assertion_header = $assertion_header .'.'. $assertion_payload .'.'. $assertion_signature;
-        return $auth_assertion_header;
-    }
-
     public function getPayPalBasicHeader($authorizationCode): array {
         return [
             'Content-Type' => 'application/json',
@@ -85,15 +49,6 @@ class PayPalComponent
         ];
         return $header_options;
     }
-
-    public function getPayPalPartnerHeader($access_token): array {
-        $header_options = $this->getPayPalHeader($access_token);
-        $bn_code = $this->getPartnerBNCode();
-        $header_options['PayPal-Partner-Attribution-Id'] = $bn_code;
-        $header_options['PayPal-Auth-Assertion'] = $this->paypalAuthAssertion();
-        return $header_options;
-    }
-
 
     public function generatePapPalAccessToken() {
         $access_token = '';
@@ -124,45 +79,6 @@ class PayPalComponent
         }
         return $access_token;
     }
-
-
-    public function getSellerOnboardStatus($partner_merchant_id, $seller_merchant_id): array {
-        $return_response = [
-            'status' => 0,
-            'message' => '',
-            'data' => ''
-        ];
-        $access_token = $this->generatePapPalAccessToken();
-        try {
-            $request_data = [];
-            $url = $this->getPayPalBaseUrl() . '/v1/customer/partners/'. $partner_merchant_id . '/merchant-integrations/' . $seller_merchant_id;
-            $headers = $this->getPayPalHeader($access_token);
-            $options = [
-                'headers'=> $headers
-            ];
-
-            $client = new \GuzzleHttp\Client();
-            $response = $client->get($url, $options);
-            $response_data = $response->getBody()->getContents();
-            $response_data = json_decode($response_data, true);
-
-            Log::write('Onboard status response: '. json_encode($response_data, JSON_UNESCAPED_SLASHES), 'pay_pal_connect', 'pay_pal');
-
-            if ($response->getStatusCode() === 200 || $response->getStatusCode() === 201) {
-                $return_response = [
-                    'status' => 1,
-                    'message' => '',
-                    'data' => $response_data
-                ];
-            }
-        }
-        catch (\Exception $exception) {
-            Log::write('Error in pay pal onboard status: ' . $exception->getMessage(),  'pay_pal_connect_error', 'pay_pal');
-        }
-        return $return_response;
-    }
-
-
     /**
      * @throws \Exception
      */
