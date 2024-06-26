@@ -127,18 +127,13 @@ class PayPalMultiPartyComponent
         return $access_token;
     }
 
-    public function createPartnerReferralLink($paypal_email): array {
-        $return_response = [
-            'status' => 0,
-            'message' => '',
-            'data' => ''
-        ];
+    public function createPartnerReferralLink($tracking_id, $paypal_email): array {
+        $response_data = null;
         $access_token = $this->generatePapPalAccessToken();
         $paypal_return_url = 'http://localhost/phphub/php/Payment/Paypal/MultipartyPayment/multiparty_return_url.php';
-        $org_uuid = time();
         try {
             $request_data = [];
-            $request_data['tracking_id'] = $org_uuid;
+            $request_data['tracking_id'] = $tracking_id;
             $request_data['operations'] = [
                 [
                     "operation" => "API_INTEGRATION",
@@ -186,20 +181,13 @@ class PayPalMultiPartyComponent
             $status_code = $response->getStatusCode();
 
             if ($status_code === 200 || $status_code === 201) {
-                $return_response = [
-                    'status' => 1,
-                    'message' => 'Account Connected',
-                    'data' => $response_data
-                ];
+
             }
         }
         catch (\Exception $exception) {
             Log::write('Error in pay pal connect account: ' . $exception->getMessage(), 'pay_pal_connect_error', 'pay_pal');
         }
-        echo '<pre>';
-        echo print_r($return_response);
-        echo '</pre>';
-        return $return_response;
+        return $response_data;
     }
 
 
