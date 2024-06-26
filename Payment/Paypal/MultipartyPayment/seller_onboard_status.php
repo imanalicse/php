@@ -1,9 +1,10 @@
   <?php
   require_once 'PayPalMultiPartyComponent.php';
-  use App\Payment\Paypal\StandardCheckout\PayPalComponent;
 
-  $paypal_compo = new PayPalComponent();
-  $partner_merchant_id = $paypal_compo->getPartnerPayerId();
+  use App\Payment\Paypal\MultipartyPayment\PayPalMultiPartyComponent;
+
+  $paypal_compo = new PayPalMultiPartyComponent();
+  $partner_merchant_id = $paypal_compo->getPayPalPartnerMerchantId();
   $seller_merchant_id = $paypal_compo->getSellerPayerId();
   $response = $paypal_compo->getSellerOnboardStatus($partner_merchant_id, $seller_merchant_id);
   echo '<pre>';

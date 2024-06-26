@@ -27,17 +27,18 @@ class PayPalMultiPartyComponent
 
     public function getPayPalClientId() : string {
         $transaction_mode = self::getPayPalTransactionMode();
-        return getenv('PAYPAL_CLIENT_ID_'. $transaction_mode);
+        return getenv('PAYPAL_PARTNER_CLIENT_ID_'. $transaction_mode);
     }
 
     public function getPayPalAuthorizationCode() : string {
         $transaction_mode = $this->getPayPalTransactionMode();
-        $paypal_secret_key =  getenv('PAYPAL_SECRET_KEY_'. $transaction_mode);
+        $paypal_secret_key =  getenv('PAYPAL_PARTNER_SECRET_KEY_'. $transaction_mode);
         $auth_code = $this->getPayPalClientId() . ':' . $paypal_secret_key;
         return base64_encode($auth_code);
     }
 
-    public function getPartnerPayerId() {
+
+    public function getPayPalPartnerMerchantId() {
         $transaction_mode = self::getPayPalTransactionMode();
         return getenv('PAYPAL_PARTNER_PAYER_ID_'. $transaction_mode);
     }
