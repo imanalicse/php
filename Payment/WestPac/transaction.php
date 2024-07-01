@@ -7,11 +7,12 @@ $request_data = [];
 $request_data['grant_type'] = 'client_credentials';
 $api_base_url = 'https://api.quickstream.support.qvalent.com/rest/v1';
 $url = $api_base_url . '/transactions';
+$supplierBusinessCode = '';
 
 $request_data = [
     'transactionType' => 'PAYMENT',
     'singleUseTokenId' => $singleUseTokenId,
-    'supplierBusinessCode' => 'C01397',
+    'supplierBusinessCode' => $supplierBusinessCode,
     'principalAmount' => 10.00,
     "currency" => "AUD",
     "eci" => "INTERNET",
