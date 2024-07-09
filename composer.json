@@ -1,6 +1,6 @@
 {
     "require": {
-        "guzzlehttp/guzzle": "7.0",
+        "guzzlehttp/guzzle": "^7.8",
         "sendgrid/sendgrid": "^7.11",
         "phpoffice/phpspreadsheet": "^1.22",
         "stripe/stripe-php": "^7.122",
