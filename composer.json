@@ -2,7 +2,8 @@
     "require": {
         "guzzlehttp/guzzle": "^7.8",
         "sendgrid/sendgrid": "^7.11",
-        "stripe/stripe-php": "^7.122",
+        "phpoffice/phpspreadsheet": "^1.22",
+        "stripe/stripe-php": "^15.0",
         "php-amqplib/php-amqplib": "^3.2",
         "amphp/parallel": "^1.4",
         "amphp/parallel-functions": "^1.1",
