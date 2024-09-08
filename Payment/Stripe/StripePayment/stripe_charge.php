@@ -15,7 +15,7 @@ $token_info = $_POST['token_info'];
 $stripe_charge_request_data = [
     // 'customer' => $customer_id,
     'source' => $token_info['id'],
-    'receipt_email' => $user_email,
+    // 'receipt_email' => $user_email,
     'amount' => round($amount * 100),
     'currency' => 'AUD',
     'description'=> 'Charge for RGS Order '. $unique_id,
@@ -33,7 +33,7 @@ $ajax_response = [
 try {
     \Stripe\Stripe::setApiKey($stripe_secret_key);
     $charge_response = \Stripe\Charge::create($stripe_charge_request_data);
-    // Convert the object to an array using get_object_vars
+    // $charge_response is object
     $charge_response_json = json_encode($charge_response, JSON_UNESCAPED_UNICODE);
     $charge_response_array = json_decode($charge_response_json, true);
     if ($charge_response->paid) {
