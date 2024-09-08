@@ -123,6 +123,8 @@ class PayPalComponent
             $order_data['purchase_units'] = [
                 [
                     "reference_id" => "merchant-ref-".uniqid(),
+                    // "custom_id" => $reference_token,
+                    "invoice_id" => "invoice-".uniqid(),
                     'items' => $items,
                     'amount' => [
                         'currency_code' => 'AUD',
