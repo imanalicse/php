@@ -8,41 +8,12 @@ use App\Logger\Log;
 $stripe_public_key = getenv('STRIPE_PUBLIC_KEY');
 $stripe_secret_key = getenv('STRIPE_SECRET_KEY');
 
-$stripe = new \Stripe\StripeClient([
-    'api_key' => $stripe_secret_key,
-    'stripe_version' => '2020-08-27',
-]);
-
-
-try {
-    $paymentIntent = $stripe->paymentIntents->create([
-        'payment_method_types' => ['card'],
-        'amount' => 1999,
-        'currency' => 'usd',
-    ]);
-}
-catch (\Stripe\Exception\ApiErrorException $e) {
-    http_response_code(400);
-    error_log($e->getError()->message);
-    ?>
-    <h1>Error</h1>
-    <p>Failed to create a PaymentIntent</p>
-    <p>Please check the server logs for more information</p>
-    <?php
-    exit;
-}
-catch (Exception $e) {
-    error_log($e);
-    http_response_code(500);
-    exit;
-}
-
 ?>
 <link rel="stylesheet" href="style.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://js.stripe.com/v3/"></script>
-<script src="./stripe_custom.js"></script>
+<script src="./stripe_payment_3.js"></script>
 <input type="hidden" id="stripe_public_key" value="<?php echo $stripe_public_key; ?>">
-<input type="hidden" id="paymentIntent_client_secret" value="<?php echo $paymentIntent->client_secret; ?>">
 
 <div id="stripe-ui-container" class="stripe-card-wrap">
     <form id="payment-form">
