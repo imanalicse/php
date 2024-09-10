@@ -13,7 +13,7 @@ $stripe_public_key = getenv('STRIPE_PUBLIC_KEY');
 <input type="hidden" id="stripe_public_key" value="<?php echo $stripe_public_key; ?>">
 
 <form action="" method="get" id="payment-form" class="mb-3 securepay-card-form" autocomplete="off">
-<div id="stripe-ui-container" class="stripe-card-wrap">
+    <div id="stripe-ui-container" class="stripe-card-wrap">
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
@@ -34,9 +34,7 @@ $stripe_public_key = getenv('STRIPE_PUBLIC_KEY');
             </div>
         </div>
     </div>
-
     <div id="card-errors" role="alert"></div>
-
     <div class="button-container"><button class="btn-normal" id="stripe-pay-now-btn">Confirm & Pay</button></div>
-
-</div>
+    </div>
+</form>
