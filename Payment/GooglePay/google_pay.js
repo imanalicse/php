@@ -58,7 +58,7 @@ paymentDataRequest.transactionInfo = {
     countryCode: 'US'
 };
 paymentDataRequest.merchantInfo = {
-    merchantName: 'Example Merchant',
+    merchantName: 'Reed Events',
     merchantId: '12345678901234567890'
 };
 
