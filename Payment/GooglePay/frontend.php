@@ -1,3 +1,6 @@
+<?php
+require '../../global_config.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +15,7 @@
 
 </head>
 <body>
+<input type="hidden" id="stripe_public_key" value="<?php echo getenv('STRIPE_PUBLIC_KEY'); ?>">
 <div id="container"></div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", (event) => {
-    console.log('aaaaaaaa')
+const stripe_public_key = document.getElementById('stripe_public_key').value;
+    console.log('stripe_public_key', stripe_public_key)
 const paymentsClient = new google.payments.api.PaymentsClient({ environment: 'TEST' });
 console.log('paymentsClient', paymentsClient)
 
@@ -23,7 +24,7 @@ const tokenizationSpecification = {
     parameters: {
         "gateway": "stripe",
         "stripe:version": "2018-10-31",
-        "stripe:publishableKey": ""
+        "stripe:publishableKey": stripe_public_key
     }
 };
 

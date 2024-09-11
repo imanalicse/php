@@ -1,3 +1,6 @@
+<?php
+require '../../global_config.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +11,7 @@
     <script src="google_pay2.js"></script>
 </head>
 <body>
+<input type="hidden" id="stripe_public_key" value="<?php echo getenv('STRIPE_PUBLIC_KEY'); ?>">
 <!--<div id="container"></div>-->
 <div id="google-checkout-pay" button-type="pay" button-color="black"></div>
 </body>
