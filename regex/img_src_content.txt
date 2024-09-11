@@ -1,0 +1,6 @@
+<img src='path/to/image/name.jpg' />
+aaaaa
+<img src='path/to/image/name.jpg'  alt="name here"/><p>test card 22</p>
+<img  src="path/to/image/name.jpg"/><p>test card 22</p>
+<img   src="http://media.cheggcdn.com/media%2Fd08%2Fd087a4d3-8e4e-4e42-8cf0-2b03238a33ef%2Fimage"/><p>test card 22</p>
+<img   src='http://media.cheggcdn.com/media%2Fd08%2Fd087a4d3-8e4e-4e42-8cf0-2b03238a33ef%2Fimage'/><p>test card 22</p>
