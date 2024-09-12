@@ -10,12 +10,11 @@ $amount = 5;
 $unique_id = uniqid();
 $customer_id = 'cus-'. $unique_id;
 $user_email = $customer_id . '@yopmail.com';
-$token_info = $_POST['token'];
-$token_info = json_decode($token_info, true);
+$token_id = $_POST['token_id'];
 
 $stripe_charge_request_data = [
     // 'customer' => $customer_id,
-    'source' => $token_info['id'],
+    'source' =>$token_id,
     // 'receipt_email' => $user_email,
     'amount' => round($amount * 100),
     'currency' => 'AUD',
