@@ -10,7 +10,8 @@ $amount = 5;
 $unique_id = uniqid();
 $customer_id = 'cus-'. $unique_id;
 $user_email = $customer_id . '@yopmail.com';
-$token_info = $_POST['token_info'];
+$token_info = $_POST['token'];
+$token_info = json_decode($token_info, true);
 
 $stripe_charge_request_data = [
     // 'customer' => $customer_id,
