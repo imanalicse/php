@@ -11,7 +11,7 @@ require '../../global_config.php';
             src="https://pay.google.com/gp/p/js/pay.js"
             onload="console.log('TODO: add onload function')">
     </script>
-    <script src="google_pay.js"></script>
+    <script src="google_pay_learning.js"></script>
 
 </head>
 <body>
