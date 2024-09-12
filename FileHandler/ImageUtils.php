@@ -2,7 +2,7 @@
 namespace App\Controller\Component\V1;
 
 
-class ImageComponent
+class ImageUtils
 {
 
     function getImagesByDirectory($directory) : array {
