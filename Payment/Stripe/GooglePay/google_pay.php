@@ -1,5 +1,5 @@
 <?php
-require '../../global_config.php';
+require '../../../global_config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

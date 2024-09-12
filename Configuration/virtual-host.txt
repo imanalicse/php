@@ -1,0 +1,27 @@
+<VirtualHost php.dev.com:80>
+    ServerName php.dev.com
+    DocumentRoot "C:\xampp\htdocs\phphub\php"
+    <Directory "C:\xampp\htdocs\phphub\php">
+    AllowOverride All
+    Require all granted
+    </Directory>
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName php.dev.com
+    DocumentRoot "C:\xampp\htdocs\phphub\php"
+    SetEnv APPLICATION_ENV "development"
+
+    SSLEngine on
+	SSLCertificateFile "C:/xampp/apache/conf/ssl.crt/server.crt"
+	SSLCertificateKeyFile "C:/xampp/apache/conf/ssl.key/server.key"
+
+    <Directory "C:\xampp\htdocs\phphub\php">
+        Options FollowSymLinks
+        Order deny,allow
+        Allow from all
+        Require all granted
+        AllowOverride All
+		Options +Indexes
+    </Directory>
+</VirtualHost>

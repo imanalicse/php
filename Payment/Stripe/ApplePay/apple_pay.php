@@ -16,9 +16,11 @@ require '../../../global_config.php';
         const stripe_public_key = document.getElementById('stripe_public_key').value;
         Stripe.setPublishableKey(stripe_public_key);
         Stripe.applePay.checkAvailability(function(available) {
+            console.log('available', available)
             if (available) {
                 document.getElementById('apple-pay-button').style.display = 'block';
-            } else {
+            }
+            else {
                 document.getElementsByClassName('apple-pay-express-checkout')[0].classList.add("apple-pay-not-available");
             }
         });
