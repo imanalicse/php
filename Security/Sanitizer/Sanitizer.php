@@ -11,7 +11,7 @@ class Sanitizer
 {
     static function tmpFolder() : string {
         $dir = dirname(__FILE__, 2);
-        $dir .= '/HTMLPurifier/DefinitionCache/Serializer';
+        $dir .= '/tmp/HTMLPurifier/DefinitionCache/Serializer';
         return $dir;
     }
 
