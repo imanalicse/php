@@ -14,7 +14,8 @@
         "firebase/php-jwt": "^6.3",
         "google/analytics-data": "^0.9.4",
         "aws/aws-sdk-php": "^3.226",
-        "phpoffice/phpspreadsheet": "^2.1"
+        "phpoffice/phpspreadsheet": "^2.1",
+        "ezyang/htmlpurifier": "^4.17"
     },
     "autoload": {
         "psr-4": {
