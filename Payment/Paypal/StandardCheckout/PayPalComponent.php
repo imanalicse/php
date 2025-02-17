@@ -23,7 +23,7 @@ class PayPalComponent
     }
 
     public function getPayPalClientId() : string {
-        $transaction_mode = self::getPayPalTransactionMode();
+        $transaction_mode = $this->getPayPalTransactionMode();
         return getenv('PAYPAL_CLIENT_ID_'. $transaction_mode);
     }
 
