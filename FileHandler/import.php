@@ -30,7 +30,10 @@
             if ($file_name) {
                 $uploaded_file_location = $upload_file_path . DIRECTORY_SEPARATOR . $file_name;
 
-                $reader = IOFactory::createReader("Xlsx");
+                $filetype = IOFactory::identify($file_name);
+
+                // $reader = IOFactory::createReader("Xlsx");
+                $reader = IOFactory::createReader($filetype);
                 $spreadsheet = $reader->load($uploaded_file_location);
                 $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
                 $importHandler = new ImportHandler();
