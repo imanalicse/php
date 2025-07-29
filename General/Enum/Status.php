@@ -1,4 +1,6 @@
 <?php
+
+namespace App\General\Enum;
 enum Status
 {
     case DRAFT;
@@ -7,8 +9,7 @@ enum Status
 
     public function color(): string
     {
-        return match($this)
-        {
+        return match ($this) {
             Status::DRAFT => 'grey',
             Status::PUBLISHED => 'green',
             Status::ARCHIVED => 'red',

@@ -1,4 +1,6 @@
 <?php
+
+namespace App\General\Enum;
 enum UserRole: int
 {
     case SuperAdmin = 1;

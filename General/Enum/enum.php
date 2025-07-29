@@ -23,6 +23,7 @@
  * Enum can use Traits (without properties)
  */
 
+namespace App\General\Enum;
 enum Suit
 {
     case Hearts;
@@ -30,6 +31,7 @@ enum Suit
     case Clubs;
     case Spades;
 }
+
 // Enums behave similar to classes when they are used with functions that support inspecting classes and objects.
 var_dump(gettype(Suit::Clubs)); // "object"
 //
@@ -43,16 +45,19 @@ var_dump(gettype(Suit::Clubs)); // "object"
 //Suit::Clubs instanceof UnitEnum; // true
 //Suit::Clubs instanceof object; // false
 
-enum HTTPStatus: int {
+enum HTTPStatus: int
+{
     case OK = 200;
     case ACCESS_DENIED = 403;
     case NOT_FOUND = 404;
 
-    public function label(): string {
+    public function label(): string
+    {
         return static::getLabel($this);
     }
 
-    public static function getLabel(self $value): string {
+    public static function getLabel(self $value): string
+    {
         return match ($value) {
             HTTPStatus::OK => 'OK',
             HTTPStatus::ACCESS_DENIED => 'Access Denied',
