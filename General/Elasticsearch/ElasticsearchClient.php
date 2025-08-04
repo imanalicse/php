@@ -13,11 +13,8 @@ $client = ClientBuilder::create()
     ->setSSLVerification(false) // for local
     ->build();
 
-$response = $client->ping();
+$ping_response = $client->ping();
 
-if ($response) {
-    echo "Elasticsearch is up!";
-}
-else {
-    echo "Connection failed.";
+if (!$ping_response) {
+    die("Elasticsearch is down!");
 }
