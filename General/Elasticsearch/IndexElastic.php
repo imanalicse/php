@@ -7,11 +7,12 @@ $params = [
     'body'  => [
         'first_name' => 'Iman',
         'last_name'  => 'Ali',
-        'course'     => 'PHP'
+        'course'     => 'Lar'
     ]
 ];
 
 $response = $client->index($params);
+$status_code = $response->getStatusCode();
 echo '<pre>';
 print_r($response);
 echo '</pre>';
