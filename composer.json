@@ -15,11 +15,17 @@
         "google/analytics-data": "^0.9.4",
         "aws/aws-sdk-php": "^3.226",
         "phpoffice/phpspreadsheet": "^2.1",
-        "ezyang/htmlpurifier": "^4.17"
+        "ezyang/htmlpurifier": "^4.17",
+        "elasticsearch/elasticsearch": "^8.18"
     },
     "autoload": {
         "psr-4": {
             "App\\": ""
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
         }
     }
 }
